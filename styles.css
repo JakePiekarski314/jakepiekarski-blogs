@@ -21,3 +21,18 @@
   position: relative;
   top: 0 !important;
 }
+
+/* Ensure figures and plot images fit within page width (no horizontal scroll) */
+#quarto-document-content .cell-output figure,
+#quarto-document-content .quarto-figure figure,
+#quarto-document-content .figure {
+  max-width: 100%;
+}
+
+#quarto-document-content .cell-output img,
+#quarto-document-content .figure img,
+#quarto-document-content figure img {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+}
