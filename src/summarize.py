@@ -122,7 +122,7 @@ def accuracy_summary_table(
         mean_beta = s["mean_beta"]
         hdi_low, hdi_high = s["hdi_94_low"], s["hdi_94_high"]
         pct_diff = 100 * (mean_beta - true_beta) / true_beta if true_beta != 0 else np.nan
-        pct_str = f"{pct_diff:.2f}%" if not np.isnan(pct_diff) else "—"
+        pct_str = f"{pct_diff:.2f}%" if not np.isnan(pct_diff) else "n/a"
         coverage_str = "Yes" if hdi_low <= true_beta <= hdi_high else "No"
         rows.append(
             {

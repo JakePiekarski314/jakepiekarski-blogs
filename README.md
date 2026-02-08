@@ -1,18 +1,18 @@
 # jakepiekarski-blogs
 
-Personal site for technical writing on Marketing Mix Modelling, Bayesian statistics, and causal inference. Blog posts, case studies, and applied analytics—practical MMM examples, methodological deep-dives, and PyMC implementations.
+Personal site for technical writing on Marketing Mix Modelling, Bayesian statistics, and causal inference. Blog posts, case studies, and applied analytics, practical MMM examples, methodological deep-dives, and PyMC implementations.
 
 **Live site:** [https://jakepiekarski314.github.io/jakepiekarski-blogs/](https://jakepiekarski314.github.io/jakepiekarski-blogs/)
 
 ## Project structure
 
-- `src/` — Python modules (data, models, plotting, summarize, config)
-- `posts/` — Quarto blog posts (e.g. `hierarchical-mmm/`)
-- `_quarto.yml` — Site config, navigation, theme
+- `src/` - Python modules (data, models, plotting, summarize, config)
+- `posts/` - Quarto blog posts (e.g. `hierarchical-mmm/`)
+- `_quarto.yml` - Site config, navigation, theme
 
 ## Render locally
 
-Posts load pre-sampled data from disk — no MCMC runs during render.
+Posts load pre-sampled data from disk, no MCMC runs during render.
 
 1. Create and activate the `blogs` conda environment:
    ```bash

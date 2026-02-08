@@ -6,15 +6,15 @@ alwaysApply: false
 
 # Quarto Site Verification
 
-When making changes to the Quarto site (config, content, styles, or publish workflow), always verify the site works by:
+When the user asks to "render and open" (or similar), or when making changes to the Quarto site (config, content, styles, or publish workflow), **do this by default**:
 
-1. **Re-rendering** the site with:
-   ```bash
-   QUARTO_PYTHON=/opt/anaconda3/envs/blogs/bin/python /Applications/RStudio.app/Contents/Resources/app/quarto/bin/quarto preview
-   ```
+1. Run `quarto preview` in the background (starts the dev server and renders).
+2. Wait a few seconds for it to start, then read the terminal output for the URL (e.g. `http://localhost:XXXX/`).
+3. Run `open <url>` to open the site in the browser.
 
-2. **Opening** the site in the browser (the preview command outputs a URL like `http://localhost:XXXX/` — run `open <url>` to open it).
+```bash
+# Path to Quarto (RStudio bundled):
+/Applications/RStudio.app/Contents/Resources/app/quarto/bin/quarto preview
+```
 
-Or combine: run `quarto preview` in the background, wait for it to start, then `open` the URL from the terminal output.
-
-Use RStudio's bundled Quarto at `/Applications/RStudio.app/Contents/Resources/app/quarto/bin/quarto` and the `blogs` conda env Python for execution.
+Run the preview in the project root. The preview command outputs a URL; run `open <url>` to open it in the browser.
