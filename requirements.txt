@@ -1,0 +1,11 @@
+numpy
+pandas
+pymc
+pymc-extras
+arviz
+matplotlib
+seaborn
+ipykernel
+pyyaml
+nbformat
+nbconvert

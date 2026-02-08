@@ -1,0 +1,38 @@
+project:
+  type: website
+  output-dir: _site
+  execute-dir: project
+  resources: images
+
+format:
+  html:
+    theme: lux
+    css: styles.css
+
+website:
+  search: false
+  sidebar:
+    - id: about
+      style: docked
+      logo: images/Jake-Piekarski.jpeg
+      logo-alt: Jake Piekarski
+      contents:
+        - text: About
+          href: index.qmd
+      tools:
+        - icon: github
+          href: https://github.com/JakePiekarski314
+          aria-label: GitHub
+        - icon: linkedin
+          href: https://www.linkedin.com/in/jake-piekarski-715b6a267
+          aria-label: LinkedIn
+        - icon: envelope
+          href: mailto:jakepiekarski@jtp-analytics.com
+          aria-label: Email
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: blogs.qmd
+        text: Blogs
+  page-navigation: true
