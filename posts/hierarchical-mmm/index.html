@@ -6,6 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jake Piekarski">
+<meta name="dcterms.date" content="2026-09-02">
 
 <title>Improving Marketing Measurement with Hierarchical MMMs</title>
 <style>
@@ -192,7 +194,19 @@ window.Quarto = {
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jake Piekarski </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Publish Date</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">09/02/2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -206,8 +220,8 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p>A low-spend, always-on channel gets an ROI estimate that is either wildly uncertain or clearly implausible.</p>
 </blockquote>
-<p>You’ve probably seen it in your own outputs. The big channels look reasonable, but then one smaller campaign — the one that’s been running quietly in the background for months — shows up with a huge uncertainty interval or a coefficient that just doesn’t pass the sniff test.</p>
-<p>In this post, that channel is <strong>LinkedIn Awareness (Always-on)</strong>: a low-budget paid social campaign that hasn’t had much strategic attention, experimentation, or meaningful budget movement. We’ll walk through <strong>why MMMs struggle with channels like this</strong>, and how <strong>hierarchical modeling</strong> can improve measurement by allowing weak channels to “borrow strength” from the rest of the mix.</p>
+<p>You’ve probably seen it in your own outputs. The big channels look reasonable, but then one smaller campaign (the one that’s been running quietly in the background for months) shows up with a huge uncertainty interval or a coefficient that just doesn’t pass the sniff test.</p>
+<p>In this post, that channel is <strong>LinkedIn Awareness (Always-on)</strong>: a low-budget paid social campaign that hasn’t had much strategic attention, experimentation, or meaningful budget movement. We’ll walk through <strong>why MMMs struggle with channels like this</strong>, and how <strong>hierarchical modelling</strong> can improve measurement by allowing weak channels to “borrow strength” from the rest of the mix.</p>
 <section id="business-context" class="level2">
 <h2 class="anchored" data-anchor-id="business-context">Business context</h2>
 <p>Assume we work at a DTC subscription brand (think: skincare, supplements, meal kits). Each week we spend across a portfolio of <strong>paid social campaigns</strong> spanning platforms like Meta, TikTok, Pinterest, Reddit, X (Twitter), and LinkedIn.</p>
@@ -220,15 +234,15 @@ window.Quarto = {
 </section>
 <section id="a-quick-primer-on-hierarchical-priors" class="level2">
 <h2 class="anchored" data-anchor-id="a-quick-primer-on-hierarchical-priors">A quick primer on hierarchical priors</h2>
-<p>Hierarchical priors are a way of telling the model that some parameters (like campaign effects) are related and should be learned together rather than independently. This allows weak or noisy channels to shrink toward the average effect of similar channels, instead of drifting toward extreme values driven by randomness. This only makes sense when the channels are genuinely comparable. In this post, all campaigns fall under the same broad <strong>paid social</strong> bucket.</p>
+<p>Hierarchical priors are a way of telling the model that some parameters (like campaign effects) are related and should be learned together rather than independently. This allows weak or noisy channels to shrink towards the average effect of similar channels, instead of drifting towards extreme values driven by randomness. This only makes sense when the channels are genuinely comparable. In this post, all campaigns fall under the same broad <strong>paid social</strong> bucket.</p>
 </section>
 <section id="data-inspection" class="level2">
 <h2 class="anchored" data-anchor-id="data-inspection">Data Inspection</h2>
-<p>To keep this post focused on modeling behaviour (rather than the messiness of real-world attribution), we’ll use a <strong>synthetic dataset</strong> that resembles a simplified MMM.</p>
+<p>To keep this post focused on modelling behaviour (rather than the messiness of real-world attribution), we’ll use a <strong>synthetic dataset</strong> that resembles a simplified MMM.</p>
 <p>The data represents a DTC subscription brand with weekly performance data over time. Each week includes an outcome variable (think conversions or revenue) alongside spend across a portfolio of paid social campaigns spanning platforms like Meta, TikTok, Pinterest, Reddit, X (Twitter), and LinkedIn.</p>
-<p>Because the data is simulated, we know the <strong>true underlying coefficients</strong> used to generate the outcome. That gives us a rare advantage: we can directly evaluate whether each modeling approach is recovering the ground truth, and how uncertainty changes depending on the assumptions we make.</p>
+<p>Because the data is simulated, we know the <strong>true underlying coefficients</strong> used to generate the outcome. That gives us a rare advantage: we can directly evaluate whether each modelling approach is recovering the ground truth, and how uncertainty changes depending on the assumptions we make.</p>
 <p>A key part of the setup is that <strong>LinkedIn Awareness (Always-on)</strong> is deliberately designed to be difficult to measure. It has low spend relative to the rest of the portfolio and, more importantly, it shows very little week-to-week variation. This is a common real-world pattern for always-on awareness campaigns, and it’s exactly the kind of situation where MMMs tend to produce unstable or overly uncertain estimates.</p>
-<div id="f9964ac5" class="cell" data-execution_count="3">
+<div id="3e3441fe" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -248,7 +262,13 @@ window.Quarto = {
 <p><span class="math display">\[\log(y_t) = \alpha + \sum_j \beta_j \log(x_{j,t}) + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \sigma)\]</span></p>
 <p>With independent priors per channel:</p>
 <p><span class="math display">\[\beta_j \sim \mathcal{N}(0, 0.1) \quad \text{(independent per channel)}\]</span></p>
-<div id="5c977813" class="cell" data-execution_count="4">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/model_unpooled.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Unpooled model graph</figcaption>
+</figure>
+</div>
+<div id="4e4e97d9" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymc_extras.prior <span class="im">import</span> Prior</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -269,11 +289,11 @@ window.Quarto = {
 </div>
 <section id="interpreting-the-result" class="level3">
 <h3 class="anchored" data-anchor-id="interpreting-the-result">Interpreting the result</h3>
-<p>The forest plot below shows the prior vs posterior distribution of each campaign’s effect size, summarized with a point estimate and a 94% credible interval. In practical terms, this is the MMM’s estimate of how strongly each campaign contributes to the outcome, along with the uncertainty around that estimate.</p>
+<p>The forest plot below shows the prior vs posterior distribution of each campaign’s effect size, summarised with a point estimate and a 94% credible interval. In practical terms, this is the MMM’s estimate of how strongly each campaign contributes to the outcome, along with the uncertainty around that estimate.</p>
 <p>For the larger campaigns, the credible intervals are relatively tight and the posterior is clearly separated from zero. This is what we hope to see: the model is finding enough signal in the data to produce a stable estimate.</p>
 <p>For smaller campaigns, the intervals tend to widen noticeably. This reflects a simple reality of measurement: if a campaign has limited spend or limited variation over time, the model has fewer opportunities to observe how changes in spend relate to changes in the outcome. The result is a posterior distribution that is much less certain.</p>
 <p>This is not necessarily a flaw in the model, it is the unpooled approach being honest about what the data can and cannot support. At this stage, the model is doing exactly what we asked: estimating each campaign independently, with no shared assumptions.</p>
-<div id="7c8619fd" class="cell" data-execution_count="5">
+<div id="36c55fec" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -286,11 +306,17 @@ window.Quarto = {
 </section>
 <section id="centered-hierarchical-approach" class="level2">
 <h2 class="anchored" data-anchor-id="centered-hierarchical-approach">Centered Hierarchical Approach</h2>
-<p>Next, we introduce a hierarchical model using a <strong>centered parameterization</strong>.</p>
+<p>Next, we introduce a hierarchical model using a <strong>centred parameterisation</strong>.</p>
 <p>The key change is that we no longer treat each campaign coefficient as completely independent. Instead, we assume campaign effects are drawn from a shared distribution with a common mean and spread. In practical terms, this reflects a reasonable marketing belief: campaigns within the same paid social portfolio are different, but they are not totally unrelated.</p>
-<p>This is often referred to as <strong>partial pooling</strong>. Campaigns with strong signal are still free to express their own distinct effect sizes, while campaigns with weaker signal are pulled toward the group average. This helps stabilize estimates and reduces the chance that weak campaigns end up with extreme values simply because the model is overfitting noise.</p>
-<p>The centered parameterization is the most direct way to express this hierarchy, and it provides a useful stepping stone before we move to the non-centered form.</p>
+<p>This is often referred to as <strong>partial pooling</strong>. Campaigns with strong signal are still free to express their own distinct effect sizes, while campaigns with weaker signal are pulled towards the group average. This helps stabilise estimates and reduces the chance that weak campaigns end up with extreme values simply because the model is overfitting noise.</p>
+<p>The centred parameterisation is the most direct way to express this hierarchy, and it provides a useful stepping stone before we move to the non-centred form.</p>
 <p><span class="math display">\[\beta_j \sim \mathcal{N}(\mu_\beta, \sigma_\beta)\]</span> <span class="math display">\[\mu_\beta \sim \mathcal{N}(0, 0.1), \quad \sigma_\beta \sim \text{HalfNormal}(0.1)\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/model_centered.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Centred hierarchical model graph</figcaption>
+</figure>
+</div>
 <p>Only the beta prior block changes:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What changed (beta prior block):</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> Prior(</span>
@@ -301,11 +327,11 @@ window.Quarto = {
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>).create_variable(<span class="st">"beta"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="interpreting-the-result-1" class="level3">
 <h3 class="anchored" data-anchor-id="interpreting-the-result-1">Interpreting the result</h3>
-<p>Compared to the unpooled model, the centered hierarchical model produces noticeably different posterior locations for several campaigns. This is an important observation: by introducing partial pooling, we’ve changed the assumptions of the model, and that often leads to meaningful shifts in where the posterior density sits.</p>
-<p>However, the uncertainty for many campaigns remains relatively wide. In other words, the hierarchy has moved estimates toward more plausible values, but it hasn’t dramatically tightened the credible intervals.</p>
-<p>That’s a useful reminder of what hierarchical modeling can and cannot do. Pooling helps the model make better use of shared structure across campaigns, but it doesn’t magically create new information. If a campaign is consistently low-spend and shows little variation over time, the data still limits how confident the model can be.</p>
-<p>At this stage, the hierarchy is improving the <em>stability of the estimates</em> more than it is reducing uncertainty. The next step is to reparameterize the same hierarchical model in a way that tends to behave better when the signal is weak.</p>
-<div id="4358b2fe" class="cell" data-execution_count="6">
+<p>Compared to the unpooled model, the centred hierarchical model produces noticeably different posterior locations for several campaigns. This is an important observation: by introducing partial pooling, we’ve changed the assumptions of the model, and that often leads to meaningful shifts in where the posterior density sits.</p>
+<p>However, the uncertainty for many campaigns remains relatively wide. In other words, the hierarchy has moved estimates towards more plausible values, but it hasn’t dramatically tightened the credible intervals.</p>
+<p>That’s a useful reminder of what hierarchical modelling can and cannot do. Pooling helps the model make better use of shared structure across campaigns, but it doesn’t magically create new information. If a campaign is consistently low-spend and shows little variation over time, the data still limits how confident the model can be.</p>
+<p>At this stage, the hierarchy is improving the <em>stability of the estimates</em> more than it is reducing uncertainty. The next step is to reparameterise the same hierarchical model in a way that tends to behave better when the signal is weak.</p>
+<div id="94b74b04" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -316,11 +342,17 @@ window.Quarto = {
 </div>
 </section>
 </section>
-<section id="non-centered-hierarchical-approach" class="level2">
-<h2 class="anchored" data-anchor-id="non-centered-hierarchical-approach">Non-centered Hierarchical Approach</h2>
-<p>Next, we fit the same hierarchical model using a <strong>non-centered parameterization</strong>.</p>
-<p>This is still the same underlying idea as before: campaign effects are assumed to come from a shared distribution, and weak campaigns are partially pooled toward the group average. What changes is how the hierarchy is expressed, and that can matter depending on both the data and our expectations about how similar campaigns really are.</p>
+<section id="non-centred-hierarchical-approach" class="level2">
+<h2 class="anchored" data-anchor-id="non-centred-hierarchical-approach">Non-centred Hierarchical Approach</h2>
+<p>Next, we fit the same hierarchical model using a <strong>non-centred parameterisation</strong>.</p>
+<p>This is still the same underlying idea as before: campaign effects are assumed to come from a shared distribution, and weak campaigns are partially pooled towards the group average. What changes is how the hierarchy is expressed, and that can matter depending on both the data and our expectations about how similar campaigns really are.</p>
 <p><span class="math display">\[z_j \sim \mathcal{N}(0, 1), \quad \beta_j = \mu_\beta + \sigma_\beta \cdot z_j\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/model_noncentered.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Non-centred hierarchical model graph</figcaption>
+</figure>
+</div>
 <p>Only the beta prior block changes:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What changed (beta prior block):</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> Prior(</span>
@@ -332,10 +364,10 @@ window.Quarto = {
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>).create_variable(<span class="st">"beta"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="interpreting-the-result-2" class="level3">
 <h3 class="anchored" data-anchor-id="interpreting-the-result-2">Interpreting the result</h3>
-<p>The non-centered hierarchical model typically produces similar overall posterior behaviour to the centered model.</p>
+<p>The non-centred hierarchical model typically produces similar overall posterior behaviour to the centred model.</p>
 <p>In terms of results, we again see meaningful movement in the location of some campaign effects compared to the unpooled baseline. The posterior estimates are more consistent with the idea that these campaigns belong to the same paid social portfolio and should not behave like completely independent outliers unless the data strongly supports it.</p>
-<p>At the same time, uncertainty remains present for the weakest campaigns. This is expected. Hierarchical modeling improves estimation by borrowing strength, but it does not remove the fundamental limitation that low-variation campaigns provide less identifiable information.</p>
-<div id="6900e595" class="cell" data-execution_count="7">
+<p>At the same time, uncertainty remains present for the weakest campaigns. This is expected. Hierarchical modelling improves estimation by borrowing strength, but it does not remove the fundamental limitation that low-variation campaigns provide less identifiable information.</p>
+<div id="edba6117" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -346,18 +378,24 @@ window.Quarto = {
 </div>
 </section>
 </section>
-<section id="tuned-non-centered-hierarchical-approach" class="level2">
-<h2 class="anchored" data-anchor-id="tuned-non-centered-hierarchical-approach">Tuned Non-centered Hierarchical Approach</h2>
+<section id="tuned-non-centred-hierarchical-approach" class="level2">
+<h2 class="anchored" data-anchor-id="tuned-non-centred-hierarchical-approach">Tuned Non-centred Hierarchical Approach</h2>
 <p>So far, we’ve introduced partial pooling and improved the stability of our estimates by treating campaign effects as coming from a shared distribution. In this final step, we add a practical extension: a way to <strong>tune the strength of the hierarchy</strong>.</p>
 <p>In many MMM applications, the default hierarchical model learns how much pooling to apply based purely on the data. That is often reasonable, but there are cases where we may want more control. For example, we might believe that certain campaigns should be treated as highly comparable (strong pooling), while others should be allowed more independence (weak pooling).</p>
-<p>To demonstrate this idea, we introduce a multiplier into the non-centered hierarchy. Conceptually, this gives us a “dial” that controls how much each channel is allowed to deviate from the group-level mean. Smaller values increase shrinkage toward the group mean, while larger values allow more channel-specific freedom.</p>
+<p>To demonstrate this idea, we introduce a multiplier into the non-centred hierarchy. Conceptually, this gives us a “dial” that controls how much each channel is allowed to deviate from the group-level mean. Smaller values increase shrinkage towards the group mean, while larger values allow more channel-specific freedom.</p>
 <p>This creates a flexible framework: we still benefit from hierarchical structure, but we also gain a way to encode business judgement about which channels should be pooled tightly and which should be treated more cautiously.</p>
 <p><span class="math display">\[\beta_j = \mu_\beta + \sigma_\beta \cdot s_j \cdot z_j\]</span></p>
 <p>where <span class="math inline">\(z_j \sim \mathcal{N}(0, 1)\)</span> and <span class="math inline">\(s_j\)</span> is a channel-specific multiplier that controls how strongly channel <span class="math inline">\(j\)</span> is allowed to deviate from the group mean.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/model_tuned.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Tuned non-centred hierarchical model graph</figcaption>
+</figure>
+</div>
 <p>Intuitively:</p>
 <ul>
-<li><p>If <span class="math inline">\(s_j &lt; 1\)</span>, the channel is <strong>more strongly pooled</strong> toward <span class="math inline">\(\mu_\beta\)</span>. The posterior is encouraged to stay closer to the group-level average unless the data provides strong evidence otherwise. This is useful for low-signal channels where we want more conservative estimates.</p></li>
-<li><p>If <span class="math inline">\(s_j = 1\)</span>, we recover the standard non-centered hierarchical model. The amount of pooling is driven entirely by the learned group-level variance <span class="math inline">\(\sigma_\beta\)</span>.</p></li>
+<li><p>If <span class="math inline">\(s_j &lt; 1\)</span>, the channel is <strong>more strongly pooled</strong> towards <span class="math inline">\(\mu_\beta\)</span>. The posterior is encouraged to stay closer to the group-level average unless the data provides strong evidence otherwise. This is useful for low-signal channels where we want more conservative estimates.</p></li>
+<li><p>If <span class="math inline">\(s_j = 1\)</span>, we recover the standard non-centred hierarchical model. The amount of pooling is driven entirely by the learned group-level variance <span class="math inline">\(\sigma_\beta\)</span>.</p></li>
 <li><p>If <span class="math inline">\(s_j &gt; 1\)</span>, the channel is <strong>less pooled</strong> (more independent). The model allows that channel’s effect to spread further away from <span class="math inline">\(\mu_\beta\)</span>, increasing flexibility but also increasing uncertainty. This can be useful when we believe a channel is structurally different from the rest of the group.</p></li>
 </ul>
 <p>In this example, we might set something like <span class="math inline">\(s_{\text{LinkedIn}} = 0.05\)</span> to reflect the belief that LinkedIn Awareness should behave similarly to the rest of the paid social portfolio, but is too weakly identified to estimate reliably without stronger shrinkage.</p>
@@ -372,11 +410,11 @@ window.Quarto = {
 <section id="interpreting-the-result-3" class="level3">
 <h3 class="anchored" data-anchor-id="interpreting-the-result-3">Interpreting the result</h3>
 <p>The tuned hierarchical model highlights an important practical point: good MMM measurement is often about balancing what the data is saying with what makes sense from a business perspective.</p>
-<p>By introducing a tuning parameter, we can control how strongly campaign effects are pulled toward the group average. With stronger pooling, the model becomes more conservative and produces more stable estimates that are less likely to swing wildly due to noise. With weaker pooling, the model gives each campaign more freedom to behave independently, but uncertainty typically increases, especially for low-signal campaigns.</p>
+<p>By introducing a tuning parameter, we can control how strongly campaign effects are pulled towards the group average. With stronger pooling, the model becomes more conservative and produces more stable estimates that are less likely to swing wildly due to noise. With weaker pooling, the model gives each campaign more freedom to behave independently, but uncertainty typically increases, especially for low-signal campaigns.</p>
 <p>In this case, tuning has a noticeable impact on the posterior distribution for <strong>LinkedIn Awareness (Always-on)</strong>. This is exactly the kind of channel where the data alone may struggle to provide a clean signal, so the strength of pooling meaningfully shapes the final estimate.</p>
-<p>This also exposes one of the biggest weaknesses of many “black-box” MMM solutions. If the pooling assumptions are hidden, the model can appear confident or decisive without it being clear whether that confidence comes from the data or from strong structural assumptions baked into the model. Having the ability to tune and inspect pooling behaviour makes the modeling process far more transparent and controllable.</p>
+<p>This also exposes one of the biggest weaknesses of many “black-box” MMM solutions. If the pooling assumptions are hidden, the model can appear confident or decisive without it being clear whether that confidence comes from the data or from strong structural assumptions baked into the model. Having the ability to tune and inspect pooling behaviour makes the modelling process far more transparent and controllable.</p>
 <p>From a measurement perspective, this flexibility is valuable. It gives us a practical way to encode reasonable expectations about campaign similarity, while still allowing the model to surface real differences when the data supports them.</p>
-<div id="b6b41dfb" class="cell" data-execution_count="8">
+<div id="9e577bc7" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -389,23 +427,23 @@ window.Quarto = {
 </section>
 <section id="comparing-all-approaches" class="level2">
 <h2 class="anchored" data-anchor-id="comparing-all-approaches">Comparing all approaches</h2>
-<p>At this point we’ve seen four different ways of estimating the same set of campaign effects, using the same underlying dataset. The difference is not the data — it’s the assumptions we allow the model to make.</p>
-<p>This comparison is where hierarchical modeling becomes most intuitive. The unpooled approach treats every campaign as completely independent, which is a clean baseline but often leads to unstable estimates for smaller or low-variation campaigns. The hierarchical approaches introduce the idea that these campaigns belong to the same paid social portfolio, and therefore their effects should live in a similar range unless the data strongly suggests otherwise.</p>
-<p>The plot below summarizes the key takeaway: even though the credible intervals may remain wide for difficult-to-measure campaigns, the hierarchical approaches tend to produce posteriors that are more stable, more realistic, and more aligned with how marketers actually think about campaign performance. Rather than allowing weak channels to drift toward extreme values, the hierarchy pulls them back toward the broader pattern of the portfolio.</p>
+<p>At this point we’ve seen four different ways of estimating the same set of campaign effects, using the same underlying dataset. The difference is not the data, it’s the assumptions we allow the model to make.</p>
+<p>This comparison is where hierarchical modelling becomes most intuitive. The unpooled approach treats every campaign as completely independent, which is a clean baseline but often leads to unstable estimates for smaller or low-variation campaigns. The hierarchical approaches introduce the idea that these campaigns belong to the same paid social portfolio, and therefore their effects should live in a similar range unless the data strongly suggests otherwise.</p>
+<p>The plot below summarises the key takeaway: even though the credible intervals may remain wide for difficult-to-measure campaigns, the hierarchical approaches tend to produce posteriors that are more stable, more realistic, and more aligned with how marketers actually think about campaign performance. Rather than allowing weak channels to drift towards extreme values, the hierarchy pulls them back towards the broader pattern of the portfolio.</p>
 <p>This is also a useful reminder that MMM results are never purely “what the data says.” They are always a combination of data and assumptions. Comparing these models side-by-side makes those assumptions visible, and helps clarify which approach produces estimates that are most useful for decision-making.</p>
-<p>In practice, the goal is not to eliminate uncertainty — it’s to make uncertainty behave sensibly. A good MMM should produce outputs that are credible enough to act on, while still being honest about where the data is weak.</p>
-<div id="8e3b4c80" class="cell" data-execution_count="9">
+<p>In practice, the goal is not to eliminate uncertainty, it’s to make uncertainty behave sensibly. A good MMM should produce outputs that are credible enough to act on, while still being honest about where the data is weak.</p>
+<div id="568d23e7" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-10-output-1.png" width="1266" height="455" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-1.png" width="1255" height="455" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p><strong>Quantitative summary</strong></p>
-<p>To complement the visual comparison, we can also summarize the results numerically. The table below reports the point estimate for each approach, the percentage difference between that estimate and the known true value, and whether the true value falls inside the credible interval (coverage). This provides a simple way to compare accuracy and calibration across the different modeling assumptions.</p>
-<div id="56506788" class="cell" data-execution_count="10">
+<p>To complement the visual comparison, we can also summarise the results numerically. The table below reports the point estimate for each approach, the percentage difference between that estimate and the known true value, and whether the true value falls inside the credible interval (coverage). This provides a simple way to compare accuracy and calibration across the different modelling assumptions.</p>
+<div id="ef3e0198" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -432,7 +470,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
-<td>Centered hierarchy</td>
+<td>Centred hierarchy</td>
 <td>0.4312</td>
 <td>0.4573</td>
 <td>-5.71%</td>
@@ -440,7 +478,7 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2</th>
-<td>Non-centered hierarchy</td>
+<td>Non-centred hierarchy</td>
 <td>0.4344</td>
 <td>0.4573</td>
 <td>-5.01%</td>
@@ -448,7 +486,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">3</th>
-<td>Non-centered + tuned pooling</td>
+<td>Non-centred + tuned pooling</td>
 <td>0.4535</td>
 <td>0.4573</td>
 <td>-0.84%</td>
@@ -466,8 +504,8 @@ window.Quarto = {
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>This example highlights a common reality in MMM: some campaigns are simply hard to measure in isolation. Always-on awareness spend, low-budget channels, and low-variation campaigns often contain too little identifiable signal for an unpooled model to produce stable, decision-ready estimates. In those cases, the model isn’t necessarily “wrong” — it’s being honest about what the data can support.</p>
-<p>Hierarchical modeling offers a practical way forward. By treating campaigns as part of a shared portfolio, we can borrow strength across similar channels and produce estimates that are often more stable and more aligned with business intuition, without pretending uncertainty doesn’t exist. The flexibility to tune pooling strength is especially important, and it exposes a major weakness of many black-box MMM solutions: if the structural assumptions are hidden, it becomes unclear whether confidence is coming from the data or from aggressive shrinkage baked into the model. The good news is that hierarchical approaches are relatively straightforward to implement in PyMC, and they provide a transparent framework for balancing data-driven insights with sensible modeling assumptions grounded in how marketing actually works.</p>
+<p>This example highlights a common reality in MMM: some campaigns are simply hard to measure in isolation. Always-on awareness spend, low-budget channels, and low-variation campaigns often contain too little identifiable signal for an unpooled model to produce stable, decision-ready estimates. In those cases, the model isn’t necessarily “wrong” it’s being honest about what the data can support.</p>
+<p>Hierarchical modelling offers a practical way forward. By treating campaigns as part of a shared portfolio, we can borrow strength across similar channels and produce estimates that are often more stable and more aligned with business intuition, without pretending uncertainty doesn’t exist. The flexibility to tune pooling strength is especially important, and it exposes a major weakness of many black-box MMM solutions: if the structural assumptions are hidden, it becomes unclear whether confidence is coming from the data or from aggressive shrinkage baked into the model. The good news is that hierarchical approaches are relatively straightforward to implement in PyMC, and they provide a transparent framework for balancing data-driven insights with sensible modelling assumptions grounded in how marketing actually works.</p>
 <p><strong>Key take-home:</strong> MMM isn’t just about fitting the data: it’s about combining evidence with reasonable business assumptions, and hierarchical priors are one of the most practical tools for making weak channel measurement more stable and usable.</p>
 
 
