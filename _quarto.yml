@@ -12,13 +12,10 @@ format:
 website:
   search: false
   sidebar:
-    - id: about
-      style: docked
+    - style: docked
       logo: images/Jake-Piekarski.jpeg
       logo-alt: Jake Piekarski
-      contents:
-        - text: About
-          href: index.qmd
+      contents: []
       tools:
         - icon: github
           href: https://github.com/JakePiekarski314
