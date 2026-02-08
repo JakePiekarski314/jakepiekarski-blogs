@@ -224,20 +224,11 @@ window.Quarto = {
 </section>
 <section id="data-inspection" class="level2">
 <h2 class="anchored" data-anchor-id="data-inspection">Data Inspection</h2>
-<div id="bbd0126a" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-stderr">
-<pre><code>/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/arviz/__init__.py:50: FutureWarning: 
-ArviZ is undergoing a major refactor to improve flexibility and extensibility while maintaining a user-friendly interface.
-Some upcoming changes may be backward incompatible.
-For details and migration guidance, visit: https://python.arviz.org/en/latest/user_guide/migration_guide.html
-  warn(</code></pre>
-</div>
-</div>
 <p>To keep this post focused on modeling behaviour (rather than the messiness of real-world attribution), we’ll use a <strong>synthetic dataset</strong> that resembles a simplified MMM.</p>
 <p>The data represents a DTC subscription brand with weekly performance data over time. Each week includes an outcome variable (think conversions or revenue) alongside spend across a portfolio of paid social campaigns spanning platforms like Meta, TikTok, Pinterest, Reddit, X (Twitter), and LinkedIn.</p>
 <p>Because the data is simulated, we know the <strong>true underlying coefficients</strong> used to generate the outcome. That gives us a rare advantage: we can directly evaluate whether each modeling approach is recovering the ground truth, and how uncertainty changes depending on the assumptions we make.</p>
 <p>A key part of the setup is that <strong>LinkedIn Awareness (Always-on)</strong> is deliberately designed to be difficult to measure. It has low spend relative to the rest of the portfolio and, more importantly, it shows very little week-to-week variation. This is a common real-world pattern for always-on awareness campaigns, and it’s exactly the kind of situation where MMMs tend to produce unstable or overly uncertain estimates.</p>
-<div id="d11bbd4c" class="cell" data-execution_count="3">
+<div id="f9964ac5" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -257,24 +248,24 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p><span class="math display">\[\log(y_t) = \alpha + \sum_j \beta_j \log(x_{j,t}) + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \sigma)\]</span></p>
 <p>With independent priors per channel:</p>
 <p><span class="math display">\[\beta_j \sim \mathcal{N}(0, 0.1) \quad \text{(independent per channel)}\]</span></p>
-<div id="429db1d4" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymc_extras.prior <span class="im">import</span> Prior</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>coords <span class="op">=</span> data[<span class="st">"coords"</span>]</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data[<span class="st">"X"</span>]</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>y_obs <span class="op">=</span> data[<span class="st">"y_obs"</span>]</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model(coords<span class="op">=</span>coords) <span class="im">as</span> unpooled_model:</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    Xd <span class="op">=</span> pm.Data(<span class="st">"X"</span>, X, dims<span class="op">=</span>(<span class="st">"date"</span>, <span class="st">"channel"</span>))</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    alpha <span class="op">=</span> Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">0.5</span>).create_variable(<span class="st">"alpha"</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.0</span>, sigma<span class="op">=</span><span class="fl">0.1</span>, dims<span class="op">=</span><span class="st">"channel"</span>).create_variable(<span class="st">"beta"</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> Prior(<span class="st">"HalfNormal"</span>, sigma<span class="op">=</span><span class="fl">0.5</span>).create_variable(<span class="st">"sigma"</span>)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    mu <span class="op">=</span> pm.Deterministic(<span class="st">"mu"</span>, alpha <span class="op">+</span> pm.math.dot(Xd, beta), dims<span class="op">=</span><span class="st">"date"</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    pm.Normal(<span class="st">"y_obs"</span>, mu<span class="op">=</span>mu, sigma<span class="op">=</span>sigma, observed<span class="op">=</span>y_obs, dims<span class="op">=</span><span class="st">"date"</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    pm.Deterministic(<span class="st">"y_mean"</span>, pm.math.exp(mu), dims<span class="op">=</span><span class="st">"date"</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    pm.Deterministic(<span class="st">"y_rep"</span>, pm.math.exp(mu <span class="op">+</span> pm.Normal.dist(<span class="fl">0.0</span>, sigma)), dims<span class="op">=</span><span class="st">"date"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="5c977813" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymc_extras.prior <span class="im">import</span> Prior</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>coords <span class="op">=</span> data[<span class="st">"coords"</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data[<span class="st">"X"</span>]</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>y_obs <span class="op">=</span> data[<span class="st">"y_obs"</span>]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model(coords<span class="op">=</span>coords) <span class="im">as</span> unpooled_model:</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    Xd <span class="op">=</span> pm.Data(<span class="st">"X"</span>, X, dims<span class="op">=</span>(<span class="st">"date"</span>, <span class="st">"channel"</span>))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    alpha <span class="op">=</span> Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">0.5</span>).create_variable(<span class="st">"alpha"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.0</span>, sigma<span class="op">=</span><span class="fl">0.1</span>, dims<span class="op">=</span><span class="st">"channel"</span>).create_variable(<span class="st">"beta"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> Prior(<span class="st">"HalfNormal"</span>, sigma<span class="op">=</span><span class="fl">0.5</span>).create_variable(<span class="st">"sigma"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    mu <span class="op">=</span> pm.Deterministic(<span class="st">"mu"</span>, alpha <span class="op">+</span> pm.math.dot(Xd, beta), dims<span class="op">=</span><span class="st">"date"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    pm.Normal(<span class="st">"y_obs"</span>, mu<span class="op">=</span>mu, sigma<span class="op">=</span>sigma, observed<span class="op">=</span>y_obs, dims<span class="op">=</span><span class="st">"date"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    pm.Deterministic(<span class="st">"y_mean"</span>, pm.math.exp(mu), dims<span class="op">=</span><span class="st">"date"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    pm.Deterministic(<span class="st">"y_rep"</span>, pm.math.exp(mu <span class="op">+</span> pm.Normal.dist(<span class="fl">0.0</span>, sigma)), dims<span class="op">=</span><span class="st">"date"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="interpreting-the-result" class="level3">
 <h3 class="anchored" data-anchor-id="interpreting-the-result">Interpreting the result</h3>
@@ -282,7 +273,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>For the larger campaigns, the credible intervals are relatively tight and the posterior is clearly separated from zero. This is what we hope to see: the model is finding enough signal in the data to produce a stable estimate.</p>
 <p>For smaller campaigns, the intervals tend to widen noticeably. This reflects a simple reality of measurement: if a campaign has limited spend or limited variation over time, the model has fewer opportunities to observe how changes in spend relate to changes in the outcome. The result is a posterior distribution that is much less certain.</p>
 <p>This is not necessarily a flaw in the model, it is the unpooled approach being honest about what the data can and cannot support. At this stage, the model is doing exactly what we asked: estimating each campaign independently, with no shared assumptions.</p>
-<div id="ed0f43a4" class="cell" data-execution_count="5">
+<div id="7c8619fd" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -301,20 +292,20 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>The centered parameterization is the most direct way to express this hierarchy, and it provides a useful stepping stone before we move to the non-centered form.</p>
 <p><span class="math display">\[\beta_j \sim \mathcal{N}(\mu_\beta, \sigma_\beta)\]</span> <span class="math display">\[\mu_\beta \sim \mathcal{N}(0, 0.1), \quad \sigma_\beta \sim \text{HalfNormal}(0.1)\]</span></p>
 <p>Only the beta prior block changes:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What changed (beta prior block):</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> Prior(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Normal"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    mu<span class="op">=</span>Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.0</span>, sigma<span class="op">=</span><span class="fl">0.1</span>),</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    sigma<span class="op">=</span>Prior(<span class="st">"HalfNormal"</span>, sigma<span class="op">=</span><span class="fl">0.1</span>),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    dims<span class="op">=</span><span class="st">"channel"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>).create_variable(<span class="st">"beta"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What changed (beta prior block):</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> Prior(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Normal"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    mu<span class="op">=</span>Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.0</span>, sigma<span class="op">=</span><span class="fl">0.1</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    sigma<span class="op">=</span>Prior(<span class="st">"HalfNormal"</span>, sigma<span class="op">=</span><span class="fl">0.1</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    dims<span class="op">=</span><span class="st">"channel"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>).create_variable(<span class="st">"beta"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="interpreting-the-result-1" class="level3">
 <h3 class="anchored" data-anchor-id="interpreting-the-result-1">Interpreting the result</h3>
 <p>Compared to the unpooled model, the centered hierarchical model produces noticeably different posterior locations for several campaigns. This is an important observation: by introducing partial pooling, we’ve changed the assumptions of the model, and that often leads to meaningful shifts in where the posterior density sits.</p>
 <p>However, the uncertainty for many campaigns remains relatively wide. In other words, the hierarchy has moved estimates toward more plausible values, but it hasn’t dramatically tightened the credible intervals.</p>
 <p>That’s a useful reminder of what hierarchical modeling can and cannot do. Pooling helps the model make better use of shared structure across campaigns, but it doesn’t magically create new information. If a campaign is consistently low-spend and shows little variation over time, the data still limits how confident the model can be.</p>
 <p>At this stage, the hierarchy is improving the <em>stability of the estimates</em> more than it is reducing uncertainty. The next step is to reparameterize the same hierarchical model in a way that tends to behave better when the signal is weak.</p>
-<div id="54b31aa7" class="cell" data-execution_count="6">
+<div id="4358b2fe" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -331,20 +322,20 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>This is still the same underlying idea as before: campaign effects are assumed to come from a shared distribution, and weak campaigns are partially pooled toward the group average. What changes is how the hierarchy is expressed, and that can matter depending on both the data and our expectations about how similar campaigns really are.</p>
 <p><span class="math display">\[z_j \sim \mathcal{N}(0, 1), \quad \beta_j = \mu_\beta + \sigma_\beta \cdot z_j\]</span></p>
 <p>Only the beta prior block changes:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What changed (beta prior block):</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> Prior(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Normal"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    mu<span class="op">=</span>Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.0</span>, sigma<span class="op">=</span><span class="fl">0.1</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    sigma<span class="op">=</span>Prior(<span class="st">"HalfNormal"</span>, sigma<span class="op">=</span><span class="fl">0.1</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    dims<span class="op">=</span><span class="st">"channel"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    centered<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>).create_variable(<span class="st">"beta"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What changed (beta prior block):</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> Prior(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Normal"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    mu<span class="op">=</span>Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.0</span>, sigma<span class="op">=</span><span class="fl">0.1</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    sigma<span class="op">=</span>Prior(<span class="st">"HalfNormal"</span>, sigma<span class="op">=</span><span class="fl">0.1</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    dims<span class="op">=</span><span class="st">"channel"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    centered<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>).create_variable(<span class="st">"beta"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="interpreting-the-result-2" class="level3">
 <h3 class="anchored" data-anchor-id="interpreting-the-result-2">Interpreting the result</h3>
 <p>The non-centered hierarchical model typically produces similar overall posterior behaviour to the centered model.</p>
 <p>In terms of results, we again see meaningful movement in the location of some campaign effects compared to the unpooled baseline. The posterior estimates are more consistent with the idea that these campaigns belong to the same paid social portfolio and should not behave like completely independent outliers unless the data strongly supports it.</p>
 <p>At the same time, uncertainty remains present for the weakest campaigns. This is expected. Hierarchical modeling improves estimation by borrowing strength, but it does not remove the fundamental limitation that low-variation campaigns provide less identifiable information.</p>
-<div id="157b960a" class="cell" data-execution_count="7">
+<div id="6900e595" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -371,13 +362,13 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 </ul>
 <p>In this example, we might set something like <span class="math inline">\(s_{\text{LinkedIn}} = 0.05\)</span> to reflect the belief that LinkedIn Awareness should behave similarly to the rest of the paid social portfolio, but is too weakly identified to estimate reliably without stronger shrinkage.</p>
 <p>Only the beta prior block changes:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What changed (beta prior block):</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>mu_beta <span class="op">=</span> Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.0</span>, sigma<span class="op">=</span><span class="fl">0.1</span>).create_variable(<span class="st">"mu_beta"</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>sigma_beta <span class="op">=</span> Prior(<span class="st">"HalfNormal"</span>, sigma<span class="op">=</span><span class="fl">0.1</span>).create_variable(<span class="st">"sigma_beta"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.0</span>, sigma<span class="op">=</span><span class="fl">1.0</span>, dims<span class="op">=</span><span class="st">"channel"</span>).create_variable(<span class="st">"z"</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>channels <span class="op">=</span> np.asarray(coords[<span class="st">"channel"</span>])</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>s_mult <span class="op">=</span> pm.Data(<span class="st">"s_mult"</span>, np.where(channels <span class="op">==</span> <span class="st">"c10"</span>, <span class="fl">0.05</span>, <span class="fl">1.0</span>), dims<span class="op">=</span><span class="st">"channel"</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> pm.Deterministic(<span class="st">"beta"</span>, mu_beta <span class="op">+</span> sigma_beta <span class="op">*</span> s_mult <span class="op">*</span> z, dims<span class="op">=</span><span class="st">"channel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What changed (beta prior block):</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mu_beta <span class="op">=</span> Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.0</span>, sigma<span class="op">=</span><span class="fl">0.1</span>).create_variable(<span class="st">"mu_beta"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sigma_beta <span class="op">=</span> Prior(<span class="st">"HalfNormal"</span>, sigma<span class="op">=</span><span class="fl">0.1</span>).create_variable(<span class="st">"sigma_beta"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="fl">0.0</span>, sigma<span class="op">=</span><span class="fl">1.0</span>, dims<span class="op">=</span><span class="st">"channel"</span>).create_variable(<span class="st">"z"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>channels <span class="op">=</span> np.asarray(coords[<span class="st">"channel"</span>])</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>s_mult <span class="op">=</span> pm.Data(<span class="st">"s_mult"</span>, np.where(channels <span class="op">==</span> <span class="st">"c10"</span>, <span class="fl">0.05</span>, <span class="fl">1.0</span>), dims<span class="op">=</span><span class="st">"channel"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> pm.Deterministic(<span class="st">"beta"</span>, mu_beta <span class="op">+</span> sigma_beta <span class="op">*</span> s_mult <span class="op">*</span> z, dims<span class="op">=</span><span class="st">"channel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="interpreting-the-result-3" class="level3">
 <h3 class="anchored" data-anchor-id="interpreting-the-result-3">Interpreting the result</h3>
 <p>The tuned hierarchical model highlights an important practical point: good MMM measurement is often about balancing what the data is saying with what makes sense from a business perspective.</p>
@@ -385,7 +376,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>In this case, tuning has a noticeable impact on the posterior distribution for <strong>LinkedIn Awareness (Always-on)</strong>. This is exactly the kind of channel where the data alone may struggle to provide a clean signal, so the strength of pooling meaningfully shapes the final estimate.</p>
 <p>This also exposes one of the biggest weaknesses of many “black-box” MMM solutions. If the pooling assumptions are hidden, the model can appear confident or decisive without it being clear whether that confidence comes from the data or from strong structural assumptions baked into the model. Having the ability to tune and inspect pooling behaviour makes the modeling process far more transparent and controllable.</p>
 <p>From a measurement perspective, this flexibility is valuable. It gives us a practical way to encode reasonable expectations about campaign similarity, while still allowing the model to surface real differences when the data supports them.</p>
-<div id="f537db4f" class="cell" data-execution_count="8">
+<div id="b6b41dfb" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -403,7 +394,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>The plot below summarizes the key takeaway: even though the credible intervals may remain wide for difficult-to-measure campaigns, the hierarchical approaches tend to produce posteriors that are more stable, more realistic, and more aligned with how marketers actually think about campaign performance. Rather than allowing weak channels to drift toward extreme values, the hierarchy pulls them back toward the broader pattern of the portfolio.</p>
 <p>This is also a useful reminder that MMM results are never purely “what the data says.” They are always a combination of data and assumptions. Comparing these models side-by-side makes those assumptions visible, and helps clarify which approach produces estimates that are most useful for decision-making.</p>
 <p>In practice, the goal is not to eliminate uncertainty — it’s to make uncertainty behave sensibly. A good MMM should produce outputs that are credible enough to act on, while still being honest about where the data is weak.</p>
-<div id="3922a0bd" class="cell" data-execution_count="9">
+<div id="8e3b4c80" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -414,7 +405,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 </div>
 <p><strong>Quantitative summary</strong></p>
 <p>To complement the visual comparison, we can also summarize the results numerically. The table below reports the point estimate for each approach, the percentage difference between that estimate and the known true value, and whether the true value falls inside the credible interval (coverage). This provides a simple way to compare accuracy and calibration across the different modeling assumptions.</p>
-<div id="16124d4b" class="cell" data-execution_count="10">
+<div id="56506788" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
