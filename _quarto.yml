@@ -10,6 +10,7 @@ format:
     css: styles.css
 
 website:
+  site-url: https://jakepiekarski314.github.io/jakepiekarski-blogs
   search: false
   sidebar:
     - style: docked
