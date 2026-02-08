@@ -1,0 +1,20 @@
+---
+description: Re-render and open Quarto site when making changes to verify it works
+globs: "**/*.qmd,_quarto.yml,styles.css,.github/workflows/*.yml"
+alwaysApply: false
+---
+
+# Quarto Site Verification
+
+When making changes to the Quarto site (config, content, styles, or publish workflow), always verify the site works by:
+
+1. **Re-rendering** the site with:
+   ```bash
+   QUARTO_PYTHON=/opt/anaconda3/envs/blogs/bin/python /Applications/RStudio.app/Contents/Resources/app/quarto/bin/quarto preview
+   ```
+
+2. **Opening** the site in the browser (the preview command outputs a URL like `http://localhost:XXXX/` — run `open <url>` to open it).
+
+Or combine: run `quarto preview` in the background, wait for it to start, then `open` the URL from the terminal output.
+
+Use RStudio's bundled Quarto at `/Applications/RStudio.app/Contents/Resources/app/quarto/bin/quarto` and the `blogs` conda env Python for execution.
