@@ -1,15 +1,18 @@
-# jakepiekarski-hierarchical-mmm
+# jakepiekarski-blogs
 
-This repository hosts my personal site for technical writing on Marketing Mix Modelling, Bayesian statistics, and causal inference. It serves as a central place for blog posts, case studies, and other work I find worth sharing—ranging from practical MMM examples to methodological deep-dives and applied analytics projects.
+Personal site for technical writing on Marketing Mix Modelling, Bayesian statistics, and causal inference. Blog posts, case studies, and applied analytics—practical MMM examples, methodological deep-dives, and PyMC implementations.
+
+**Live site:** [https://jakepiekarski314.github.io/jakepiekarski-blogs/](https://jakepiekarski314.github.io/jakepiekarski-blogs/)
 
 ## Project structure
 
 - `src/` — Python modules (data, models, plotting, summarize, config)
-- `posts/hierarchical-mmm/` — Quarto blog post (main artifact)
+- `posts/` — Quarto blog posts (e.g. `hierarchical-mmm/`)
+- `_quarto.yml` — Site config, navigation, theme
 
 ## Render locally
 
-The blog post loads pre-sampled idata from disk — no MCMC runs during render.
+Posts load pre-sampled data from disk — no MCMC runs during render.
 
 1. Create and activate the `blogs` conda environment:
    ```bash
@@ -22,11 +25,14 @@ The blog post loads pre-sampled idata from disk — no MCMC runs during render.
    ```bash
    python scripts/fit_and_save.py
    ```
-   Outputs go to `posts/hierarchical-mmm/assets/` (`.nc` and `.pkl` files).
-3. Render the post:
+   Outputs go to `posts/hierarchical-mmm/assets/`.
+3. Render and preview the full site:
    ```bash
-   QUARTO_PYTHON=$CONDA_PREFIX/bin/python quarto render posts/hierarchical-mmm/index.qmd
+   QUARTO_PYTHON=$CONDA_PREFIX/bin/python quarto preview
    ```
-4. Check `posts/hierarchical-mmm/assets/` into version control so others can render without re-running MCMC.
 
-To update results (e.g. after changing data or models), run step 2 again, then step 3.
+To update model results after changing data or models, run step 2 again, then step 3.
+
+## Deployment
+
+The site is built and deployed to GitHub Pages on every push to `main`. See `.github/workflows/publish.yml`.
