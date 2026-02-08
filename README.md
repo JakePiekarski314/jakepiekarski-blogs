@@ -6,7 +6,6 @@ This repository hosts my personal site for technical writing on Marketing Mix Mo
 
 - `src/` — Python modules (data, models, plotting, summarize, config)
 - `posts/hierarchical-mmm/` — Quarto blog post (main artifact)
-- `notebooks/` — Full Jupyter notebook for reference
 
 ## Render locally
 
