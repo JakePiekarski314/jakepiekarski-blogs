@@ -111,6 +111,8 @@ With independent priors per channel:
 
 $$\beta_j \sim \mathcal{N}(0, 0.1) \quad \text{(independent per channel)}$$
 
+![Unpooled model graph](assets/model_unpooled.png){width=100%}
+
 ```{python}
 #| echo: true
 #| eval: false
@@ -164,6 +166,8 @@ The centred parameterisation is the most direct way to express this hierarchy, a
 $$\beta_j \sim \mathcal{N}(\mu_\beta, \sigma_\beta)$$
 $$\mu_\beta \sim \mathcal{N}(0, 0.1), \quad \sigma_\beta \sim \text{HalfNormal}(0.1)$$
 
+![Centred hierarchical model graph](assets/model_centered.png){width=100%}
+
 Only the beta prior block changes:
 
 ```python
@@ -200,6 +204,8 @@ Next, we fit the same hierarchical model using a **non-centred parameterisation*
 This is still the same underlying idea as before: campaign effects are assumed to come from a shared distribution, and weak campaigns are partially pooled towards the group average. What changes is how the hierarchy is expressed, and that can matter depending on both the data and our expectations about how similar campaigns really are.
 
 $$z_j \sim \mathcal{N}(0, 1), \quad \beta_j = \mu_\beta + \sigma_\beta \cdot z_j$$
+
+![Non-centred hierarchical model graph](assets/model_noncentered.png){width=100%}
 
 Only the beta prior block changes:
 
@@ -241,6 +247,8 @@ This creates a flexible framework: we still benefit from hierarchical structure,
 $$\beta_j = \mu_\beta + \sigma_\beta \cdot s_j \cdot z_j$$
 
 where $z_j \sim \mathcal{N}(0, 1)$ and $s_j$ is a channel-specific multiplier that controls how strongly channel $j$ is allowed to deviate from the group mean.
+
+![Tuned non-centred hierarchical model graph](assets/model_tuned.png){width=100%}
 
 Intuitively:
 

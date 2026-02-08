@@ -26,12 +26,17 @@ Posts load pre-sampled data from disk, no MCMC runs during render.
    python scripts/fit_and_save.py
    ```
    Outputs go to `posts/hierarchical-mmm/assets/`.
-3. Render and preview the full site:
+3. Generate model graphs (run once, ~10 s):
+   ```bash
+   python scripts/generate_model_graphs.py
+   ```
+   Creates `model_unpooled.png`, `model_centered.png`, `model_noncentered.png`, `model_tuned.png` in `posts/hierarchical-mmm/assets/`.
+4. Render and preview the full site:
    ```bash
    QUARTO_PYTHON=$CONDA_PREFIX/bin/python quarto preview
    ```
 
-To update model results after changing data or models, run step 2 again, then step 3.
+To update model results after changing data or models, run steps 2 and 3 again, then step 4.
 
 ## Deployment
 
