@@ -65,7 +65,7 @@ def plot_weekly_data(df, weak="c10", normalize_channels=True, channel_map=None):
         d = d.copy()
         d[channel_cols] = Xn
 
-    fig, axes = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
+    fig, axes = plt.subplots(2, 1, figsize=(11.5, 7.5), sharex=True)
     fig.subplots_adjust(bottom=0.22, hspace=0.3)
 
     axes[0].plot(d["date"], d["y"])
@@ -92,7 +92,7 @@ def plot_weekly_data(df, weak="c10", normalize_channels=True, channel_map=None):
 
 
 def plot_coeff_forest_prior_posterior(
-    idata, idata_prior, truth=None, channel_map=None, hdi_prob=0.94, figsize=(12, 5)
+    idata, idata_prior, truth=None, channel_map=None, hdi_prob=0.94, figsize=(8, 4)
 ):
     """
     Forest plot for alpha + betas with prior vs posterior overlay (ArviZ).
@@ -198,7 +198,7 @@ def plot_coeff_forest_compare_models(
     channel_map=None,
     coords=None,
     hdi_prob=0.94,
-    figsize=(12, 5),
+    figsize=(8, 4),
 ):
     """
     Forest plot comparing posteriors across multiple models (rows = models, like prior/posterior).
