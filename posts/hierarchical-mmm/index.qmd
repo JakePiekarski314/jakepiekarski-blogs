@@ -1,7 +1,7 @@
 ---
 title: "Improving Marketing Measurement with Hierarchical MMMs"
 subtitle: "A practical DTC example using Bayesian partial pooling in PyMC"
-jupyter: blogs
+jupyter: python3
 execute:
   freeze: true
 ---
