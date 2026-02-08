@@ -224,7 +224,7 @@ window.Quarto = {
 </section>
 <section id="data-inspection" class="level2">
 <h2 class="anchored" data-anchor-id="data-inspection">Data Inspection</h2>
-<div id="de83b4c8" class="cell" data-execution_count="1">
+<div id="bbd0126a" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stderr">
 <pre><code>/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/arviz/__init__.py:50: FutureWarning: 
 ArviZ is undergoing a major refactor to improve flexibility and extensibility while maintaining a user-friendly interface.
@@ -237,7 +237,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>The data represents a DTC subscription brand with weekly performance data over time. Each week includes an outcome variable (think conversions or revenue) alongside spend across a portfolio of paid social campaigns spanning platforms like Meta, TikTok, Pinterest, Reddit, X (Twitter), and LinkedIn.</p>
 <p>Because the data is simulated, we know the <strong>true underlying coefficients</strong> used to generate the outcome. That gives us a rare advantage: we can directly evaluate whether each modeling approach is recovering the ground truth, and how uncertainty changes depending on the assumptions we make.</p>
 <p>A key part of the setup is that <strong>LinkedIn Awareness (Always-on)</strong> is deliberately designed to be difficult to measure. It has low spend relative to the rest of the portfolio and, more importantly, it shows very little week-to-week variation. This is a common real-world pattern for always-on awareness campaigns, and it’s exactly the kind of situation where MMMs tend to produce unstable or overly uncertain estimates.</p>
-<div id="3ef46405" class="cell" data-execution_count="3">
+<div id="d11bbd4c" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -257,7 +257,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p><span class="math display">\[\log(y_t) = \alpha + \sum_j \beta_j \log(x_{j,t}) + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \sigma)\]</span></p>
 <p>With independent priors per channel:</p>
 <p><span class="math display">\[\beta_j \sim \mathcal{N}(0, 0.1) \quad \text{(independent per channel)}\]</span></p>
-<div id="1cf557af" class="cell" data-execution_count="4">
+<div id="429db1d4" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymc_extras.prior <span class="im">import</span> Prior</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -282,7 +282,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>For the larger campaigns, the credible intervals are relatively tight and the posterior is clearly separated from zero. This is what we hope to see: the model is finding enough signal in the data to produce a stable estimate.</p>
 <p>For smaller campaigns, the intervals tend to widen noticeably. This reflects a simple reality of measurement: if a campaign has limited spend or limited variation over time, the model has fewer opportunities to observe how changes in spend relate to changes in the outcome. The result is a posterior distribution that is much less certain.</p>
 <p>This is not necessarily a flaw in the model, it is the unpooled approach being honest about what the data can and cannot support. At this stage, the model is doing exactly what we asked: estimating each campaign independently, with no shared assumptions.</p>
-<div id="1aaef6ca" class="cell" data-execution_count="5">
+<div id="ed0f43a4" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -314,7 +314,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>However, the uncertainty for many campaigns remains relatively wide. In other words, the hierarchy has moved estimates toward more plausible values, but it hasn’t dramatically tightened the credible intervals.</p>
 <p>That’s a useful reminder of what hierarchical modeling can and cannot do. Pooling helps the model make better use of shared structure across campaigns, but it doesn’t magically create new information. If a campaign is consistently low-spend and shows little variation over time, the data still limits how confident the model can be.</p>
 <p>At this stage, the hierarchy is improving the <em>stability of the estimates</em> more than it is reducing uncertainty. The next step is to reparameterize the same hierarchical model in a way that tends to behave better when the signal is weak.</p>
-<div id="105d8e2c" class="cell" data-execution_count="6">
+<div id="54b31aa7" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -344,7 +344,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>The non-centered hierarchical model typically produces similar overall posterior behaviour to the centered model.</p>
 <p>In terms of results, we again see meaningful movement in the location of some campaign effects compared to the unpooled baseline. The posterior estimates are more consistent with the idea that these campaigns belong to the same paid social portfolio and should not behave like completely independent outliers unless the data strongly supports it.</p>
 <p>At the same time, uncertainty remains present for the weakest campaigns. This is expected. Hierarchical modeling improves estimation by borrowing strength, but it does not remove the fundamental limitation that low-variation campaigns provide less identifiable information.</p>
-<div id="67371356" class="cell" data-execution_count="7">
+<div id="157b960a" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -385,7 +385,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>In this case, tuning has a noticeable impact on the posterior distribution for <strong>LinkedIn Awareness (Always-on)</strong>. This is exactly the kind of channel where the data alone may struggle to provide a clean signal, so the strength of pooling meaningfully shapes the final estimate.</p>
 <p>This also exposes one of the biggest weaknesses of many “black-box” MMM solutions. If the pooling assumptions are hidden, the model can appear confident or decisive without it being clear whether that confidence comes from the data or from strong structural assumptions baked into the model. Having the ability to tune and inspect pooling behaviour makes the modeling process far more transparent and controllable.</p>
 <p>From a measurement perspective, this flexibility is valuable. It gives us a practical way to encode reasonable expectations about campaign similarity, while still allowing the model to surface real differences when the data supports them.</p>
-<div id="899b0a02" class="cell" data-execution_count="8">
+<div id="f537db4f" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -403,7 +403,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 <p>The plot below summarizes the key takeaway: even though the credible intervals may remain wide for difficult-to-measure campaigns, the hierarchical approaches tend to produce posteriors that are more stable, more realistic, and more aligned with how marketers actually think about campaign performance. Rather than allowing weak channels to drift toward extreme values, the hierarchy pulls them back toward the broader pattern of the portfolio.</p>
 <p>This is also a useful reminder that MMM results are never purely “what the data says.” They are always a combination of data and assumptions. Comparing these models side-by-side makes those assumptions visible, and helps clarify which approach produces estimates that are most useful for decision-making.</p>
 <p>In practice, the goal is not to eliminate uncertainty — it’s to make uncertainty behave sensibly. A good MMM should produce outputs that are credible enough to act on, while still being honest about where the data is weak.</p>
-<div id="1ac83f93" class="cell" data-execution_count="9">
+<div id="3922a0bd" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -414,7 +414,7 @@ For details and migration guidance, visit: https://python.arviz.org/en/latest/us
 </div>
 <p><strong>Quantitative summary</strong></p>
 <p>To complement the visual comparison, we can also summarize the results numerically. The table below reports the point estimate for each approach, the percentage difference between that estimate and the known true value, and whether the true value falls inside the credible interval (coverage). This provides a simple way to compare accuracy and calibration across the different modeling assumptions.</p>
-<div id="270e0b3e" class="cell" data-execution_count="10">
+<div id="16124d4b" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
