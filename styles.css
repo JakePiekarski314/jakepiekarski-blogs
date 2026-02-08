@@ -1,3 +1,15 @@
+/* Author and date styling - gray, small, below title */
+.quarto-title-meta {
+  font-size: 0.85em;
+  color: #6c757d;
+}
+
+.quarto-title-meta-heading,
+.quarto-title-meta-contents {
+  font-size: inherit;
+  color: inherit;
+}
+
 .sidebar-logo {
   border-radius: 50%;
 }

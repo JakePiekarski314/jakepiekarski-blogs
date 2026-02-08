@@ -3,6 +3,7 @@ pandas
 pymc
 pymc-extras
 arviz
+graphviz
 matplotlib
 seaborn
 ipykernel

@@ -8,6 +8,9 @@ format:
   html:
     theme: lux
     css: styles.css
+    author-title: "Author"
+    published-title: "Publish Date"
+    date-format: "DD/MM/YYYY"
 
 website:
   site-url: https://jakepiekarski314.github.io/jakepiekarski-blogs
