@@ -2,7 +2,7 @@
 title: "Improving Marketing Measurement with Hierarchical MMMs"
 subtitle: "A practical DTC example using Bayesian partial pooling in PyMC"
 author: "Jake Piekarski"
-date: "2026-02-09"
+date: "2026-02-16"
 jupyter: python3
 execute:
   freeze: true
