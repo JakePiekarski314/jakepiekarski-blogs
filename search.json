@@ -1,5 +1,40 @@
 [
   {
+    "objectID": "blogs.html",
+    "href": "blogs.html",
+    "title": "Blogs",
+    "section": "",
+    "text": "Title\nLink\n\n\n\n\nImproving Your Marketing Measurement with Hierarchical MMMs\nRead →"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Jake Piekarski",
+    "section": "",
+    "text": "This site hosts MMM and Bayesian modelling related blogs written by me. Here you’ll find practical guides, case studies, and technical deep-dives on Marketing Mix Modelling, hierarchical priors, incrementality testing, and causal inference, all grounded in Bayesian statistics and implemented in PyMC. Head to Blogs to browse all posts."
+  },
+  {
+    "objectID": "index.html#bio",
+    "href": "index.html#bio",
+    "title": "Jake Piekarski",
+    "section": "Bio",
+    "text": "Bio\nI’m a data scientist with a passion for Bayesian statistics and marketing measurement. Currently working as a Marketing Data Scientist, I specialise in advanced statistical modelling, including Marketing Mix Modelling (MMM), incrementality testing, and causal inference. My expertise lies in translating complex data into actionable insights to optimise marketing strategies and fuel data-driven decision-making. I have both agency and consultancy experience, working with a wide range of clients across various industries, from airlines to Fortune 100 CPGs.\n\n\n\nEducational Achievement\nObtained From\nClass\n\n\n\n\nBachelor’s in Mathematics\nUniversity of Nottingham\nFirst class\n\n\nMaster’s in Mathematics\nUniversity of Nottingham\nFirst class"
+  },
+  {
+    "objectID": "index.html#pymc-labs",
+    "href": "index.html#pymc-labs",
+    "title": "Jake Piekarski",
+    "section": "PyMC Labs",
+    "text": "PyMC Labs\nI’m currently a Data Scientist at PyMC Labs, the Bayesian AI consultancy founded by the creators of PyMC. PyMC Labs partners with organisations worldwide to design, implement, and optimise bespoke Bayesian models, from Media Mix Modelling and marketing analytics to AI systems and causal inference. I joined the team in January 2025 and contribute to client projects and open-source tooling in the Bayesian marketing and analytics space."
+  },
+  {
+    "objectID": "index.html#jtp-analytics",
+    "href": "index.html#jtp-analytics",
+    "title": "Jake Piekarski",
+    "section": "JTP Analytics",
+    "text": "JTP Analytics\nJTP Analytics is my own consultancy, offering expertise in Marketing Mix Modelling and marketing measurement. Whether you need model development, validation, or support with incrementality testing and attribution, I help teams turn complex data into clear, actionable insights. Reach out at jakepiekarski@jtp-analytics.com for any MMM or marketing analytics support.\n\nThank you for reading."
+  },
+  {
     "objectID": "posts/hierarchical-mmm/index.html",
     "href": "posts/hierarchical-mmm/index.html",
     "title": "Improving Marketing Measurement with Hierarchical MMMs",
@@ -68,40 +103,5 @@
     "title": "Improving Marketing Measurement with Hierarchical MMMs",
     "section": "Conclusion",
     "text": "Conclusion\nThis example highlights a common reality in MMM: some campaigns are simply hard to measure in isolation. Always-on awareness spend, low-budget channels, and low-variation campaigns often contain too little identifiable signal for an unpooled model to produce stable, decision-ready estimates. In those cases, the model isn’t necessarily “wrong” it’s being honest about what the data can support.\nHierarchical modelling offers a practical way forward. By treating campaigns as part of a shared portfolio, we can borrow strength across similar channels and produce estimates that are often more stable and more aligned with business intuition, without pretending uncertainty doesn’t exist. The flexibility to tune pooling strength is especially important, and it exposes a major weakness of many black-box MMM solutions: if the structural assumptions are hidden, it becomes unclear whether confidence is coming from the data or from aggressive shrinkage baked into the model. The good news is that hierarchical approaches are relatively straightforward to implement in PyMC, and they provide a transparent framework for balancing data-driven insights with sensible modelling assumptions grounded in how marketing actually works.\nKey take-home: MMM isn’t just about fitting the data: it’s about combining evidence with reasonable business assumptions, and hierarchical priors are one of the most practical tools for making weak channel measurement more stable and usable."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Jake Piekarski",
-    "section": "",
-    "text": "This site hosts MMM and Bayesian modelling related blogs written by me. Here you’ll find practical guides, case studies, and technical deep-dives on Marketing Mix Modelling, hierarchical priors, incrementality testing, and causal inference, all grounded in Bayesian statistics and implemented in PyMC. Head to Blogs to browse all posts."
-  },
-  {
-    "objectID": "index.html#bio",
-    "href": "index.html#bio",
-    "title": "Jake Piekarski",
-    "section": "Bio",
-    "text": "Bio\nI’m a data scientist with a passion for Bayesian statistics and marketing measurement. Currently working as a Marketing Data Scientist, I specialise in advanced statistical modelling, including Marketing Mix Modelling (MMM), incrementality testing, and causal inference. My expertise lies in translating complex data into actionable insights to optimise marketing strategies and fuel data-driven decision-making. I have both agency and consultancy experience, working with a wide range of clients across various industries, from airlines to Fortune 100 CPGs.\n\n\n\nEducational Achievement\nObtained From\nClass\n\n\n\n\nBachelor’s in Mathematics\nUniversity of Nottingham\nFirst class\n\n\nMaster’s in Mathematics\nUniversity of Nottingham\nFirst class"
-  },
-  {
-    "objectID": "index.html#pymc-labs",
-    "href": "index.html#pymc-labs",
-    "title": "Jake Piekarski",
-    "section": "PyMC Labs",
-    "text": "PyMC Labs\nI’m currently a Data Scientist at PyMC Labs, the Bayesian AI consultancy founded by the creators of PyMC. PyMC Labs partners with organisations worldwide to design, implement, and optimise bespoke Bayesian models, from Media Mix Modelling and marketing analytics to AI systems and causal inference. I joined the team in January 2025 and contribute to client projects and open-source tooling in the Bayesian marketing and analytics space."
-  },
-  {
-    "objectID": "index.html#jtp-analytics",
-    "href": "index.html#jtp-analytics",
-    "title": "Jake Piekarski",
-    "section": "JTP Analytics",
-    "text": "JTP Analytics\nJTP Analytics is my own consultancy, offering expertise in Marketing Mix Modelling and marketing measurement. Whether you need model development, validation, or support with incrementality testing and attribution, I help teams turn complex data into clear, actionable insights. Reach out at jakepiekarski@jtp-analytics.com for any MMM or marketing analytics support.\n\nThank you for reading."
-  },
-  {
-    "objectID": "blogs.html",
-    "href": "blogs.html",
-    "title": "Blogs",
-    "section": "",
-    "text": "Title\nLink\n\n\n\n\nImproving Your Marketing Measurement with Hierarchical MMMs\nRead →"
   }
 ]
