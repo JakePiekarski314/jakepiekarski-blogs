@@ -1,0 +1,15 @@
+# Offline model-fitting dependencies for the cross-channel MMM post.
+# These are NOT needed to render the site (see requirements.txt for render-time deps).
+# Used by scripts/fit_cross_channel.py to sample the model and write assets.
+# Pinned to the versions the source notebook was developed against.
+pymc==5.28.5
+pymc-extras==0.10.0
+pymc-marketing==0.19.4
+numpyro
+jax
+numpy
+pandas
+matplotlib
+arviz
+graphviz
+python-dateutil

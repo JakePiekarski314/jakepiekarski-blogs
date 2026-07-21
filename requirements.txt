@@ -3,6 +3,8 @@ pandas
 pymc
 pymc-extras
 arviz
+xarray
+h5netcdf
 graphviz
 matplotlib
 seaborn
