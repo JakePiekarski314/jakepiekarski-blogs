@@ -2,7 +2,7 @@ numpy
 pandas
 pymc
 pymc-extras
-arviz
+arviz<1
 xarray
 h5netcdf
 h5py
