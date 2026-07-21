@@ -1,0 +1,342 @@
+---
+title: "Can MMM Measure How Channels Work Together?"
+subtitle: "Moving from channel-level contribution reporting towards explicit cross-channel measurement"
+author: "Jake Piekarski"
+date: "2026-07-21"
+jupyter: python3
+bibliography: references.bib
+lightbox: true
+draft: false
+execute:
+  freeze: true
+---
+
+```{python}
+#| echo: false
+import sys
+import warnings
+from pathlib import Path
+
+warnings.filterwarnings("ignore")
+
+import matplotlib.pyplot as plt
+
+sys.path.insert(0, ".")
+from src.crosschannel import report
+
+ASSETS = Path("posts/cross-channel-measurement-mmm/assets")
+post, data = report.load_assets(ASSETS)
+```
+
+This post started with a question from a colleague. When we report the contribution of each marketing channel, are we actually measuring how those channels work *together*, or are we still largely evaluating them one at a time?
+
+It is a fair question, and it has stayed with me. Most campaigns are planned as a system: the parts are meant to support one another. Yet when the measurement comes back, it usually collapses into a familiar shape — a table with one row per channel, a contribution figure, and a return on ad spend (ROAS). The way we plan is joint, but the way we report is largely channel by channel.
+
+This is not a story about traditional marketing mix modelling (MMM) being wrong. Additive contribution reporting is useful, well understood and often exactly what a stakeholder needs. What follows is a more specific question, and a framework I have been exploring to answer it: can we make the *interaction* between channels an explicit, reported quantity rather than something that lives implicitly inside the model?
+
+## What does the existing research say?
+
+Before proposing anything, it is worth being clear that the idea is not new. Estimating synergy or interaction between marketing activities has an established research history, and this post sits within that tradition rather than inventing it. The table below summarises the work I lean on.
+
+| Study | What it shows | Why it matters here |
+| --- | --- | --- |
+| Naik & Raman (2003) [@naik2003synergy] | A dynamic model that estimates multimedia *synergy* directly, separating each medium's direct effect from the synergy between media, and finds synergy can be **asymmetric**. | Motivates a **directional** interaction term where $\gamma_{ij} \neq \gamma_{ji}$. |
+| Naik, Raman & Winer (2005) [@naik2005planning] | Once interactions are present, budget allocation becomes a *joint* decision, and effects can **amplify or attenuate**. | Supports observed $\neq$ silo contribution, and allowing negative interactions. |
+| Naik & Peters (2009) [@naik2009hierarchical] | A hierarchical model of online/offline synergies that prefers **structure** over an unrestricted set of terms. | Motivates estimating a small, structured set of interactions. |
+| Kireyev, Pauwels & Gupta (2016) [@kireyev2016display] | Display advertising raises search conversions; accounting for the cross-effect changes estimated returns and the budget split. | Interactions are real but **context-dependent**. |
+| Jin et al. (2017) [@jin2017bayesian] | Bayesian MMM with carryover and saturation; when data are limited or correlated, **priors can dominate** the posterior. | Explains why identification is hard, before interactions even enter. |
+| Sun et al. (2017) [@sun2017geo] | Geo-level hierarchical pooling recovers identification when a single national series is too weak. | A structural way to fix weak identification. |
+
+So my contribution is narrow: to explore one concrete, directional, multiplicative specification within this tradition, implement it transparently, and see how it changes contribution, ROAS and response-curve reporting.
+
+## Proposed directional interaction model
+
+Start with the conventional additive media component. Writing $m_{i,t}$ for the transformed activity of channel $i$ at time $t$ (spend after carryover and saturation), a standard MMM adds the channels up:
+
+$$
+C_t = \sum_{i=1}^{N} \beta_i\, m_{i,t}.
+$$
+
+This is interpretable and decomposes cleanly, but $\beta_i$ is a property of channel $i$ *alone* — nothing lets one channel change the effectiveness of another.
+
+To make the interaction explicit, keep that additive backbone but multiply each channel's contribution by a term that depends on the *other* channels. For channel $i$:
+
+$$
+C_{i,t}^{\text{obs}}
+= \underbrace{\beta_i\, m_{i,t}}_{\text{silo}}\,
+\exp\!\left( \sum_{j \neq i} \gamma_{ij}\, m_{j,t} \right),
+$$
+
+which sits inside the wider outcome model
+
+$$
+y_t = \alpha + \sum_{i=1}^{N} C_{i,t}^{\text{obs}}
++ \mathbf{x}_t^{\top}\boldsymbol{\delta} + \varepsilon_t,
+$$
+
+where $\mathbf{x}_t$ carries the non-media drivers (controls, trend, seasonality, holidays). The exponential keeps the multiplier positive, so a channel's contribution scales up or down but never flips sign.
+
+### What the parameters mean
+
+Because the target is mean-scaled and each channel's media is max-scaled to $[0, 1]$, every parameter lives on an interpretable scale.
+
+- $\beta_i$ — the **silo effectiveness** of channel $i$: the contribution it earns in isolation, ignoring everything else running that week. With max-scaled media, $\beta_i = 0.10$ means channel $i$ can contribute up to about 10% of average sales at its maximum activity.
+- $\gamma_{ij}$ — the **directional interaction**: the effect of modifier channel $j$ on the effectiveness of channel $i$. It acts as a log-multiplier, so at channel $j$'s maximum activity ($m_{j,t} = 1$) it scales channel $i$'s effectiveness by $e^{\gamma_{ij}}$. For example $\gamma_{ij} = 0.50$ means channel $j$ can lift channel $i$'s effectiveness by $e^{0.50} - 1 \approx 65\%$; a negative $\gamma_{ij}$ means suppression or cannibalisation. Crucially $\gamma_{ij}$ need not equal $\gamma_{ji}$.
+
+This gives three contributions worth naming:
+
+$$
+\underbrace{C_{i,t}^{\text{silo}} = \beta_i\, m_{i,t}}_{\text{channel in isolation}}
+\qquad
+\underbrace{C_{i,t}^{\text{obs}} = C_{i,t}^{\text{silo}}\; e^{\sum_{j\neq i}\gamma_{ij} m_{j,t}}}_{\text{channel within the full media system}}
+\qquad
+\underbrace{C_{i,t}^{\text{int}} = C_{i,t}^{\text{obs}} - C_{i,t}^{\text{silo}}}_{\text{interaction increment}}
+$$
+
+The **silo** contribution is the traditional, no-interaction number. The **observed** contribution is what the channel actually earned given the surrounding mix — the number to report to stakeholders. The **interaction increment** is the difference: positive means the channel was amplified by others, negative means it was suppressed. It is an attribute of the existing channels, *not* a spendable fifth channel.
+
+A quick worked example. Suppose paid search has $m_{\text{search}} = 0.6$ and $\beta_{\text{search}} = 0.10$, while video runs at $m_{\text{video}} = 0.8$ with $\gamma_{\text{search,video}} = 0.30$. The silo contribution is $0.10 \times 0.6 = 0.06$; the multiplier from video is $e^{0.30 \times 0.8} \approx 1.27$; so the observed contribution is $0.06 \times 1.27 \approx 0.076$. In words: at this level of video, the model associates about a 27% increase in paid-search effectiveness. That is a statement about the model, not a law of nature.
+
+### Direction matters
+
+The interaction matrix is directional, and that is the point. Video may modify paid-search effectiveness without paid search returning the favour, so in general $\gamma_{\text{search,video}} \neq \gamma_{\text{video,search}}$. The figure below shows the posterior median of the fitted matrix: rows are the *affected* channel $i$; columns are the *modifier* channel $j$; the diagonal is masked because a channel does not modify itself. Each cell also gives the posterior probability the effect is positive.
+
+```{python}
+#| echo: false
+#| label: fig-heatmap
+#| fig-cap: "Posterior median directional interaction matrix. Rows are the affected channel (i); columns are the modifier channel (j). Blue is amplification, red is suppression. P(>0) is the posterior probability the effect is positive."
+report.plot_interaction_heatmap(post, data)
+plt.show()
+```
+
+The clearest signal is online video amplifying paid search (top row); the other directions sit close to zero.
+
+## Why interactions are applied after adstock and saturation
+
+The interaction term acts on transformed media $m_{j,t}$, not raw spend, so the modelling sequence is spend → adstock (carryover) → saturation (diminishing returns) → interaction layer → contribution. There is a reason for this ordering. Spend is not the same as effective media pressure. By applying the interaction to already-transformed media, a heavily saturated channel cannot generate unbounded interaction effects: once a channel stops adding effective pressure, it also stops changing anyone else's effectiveness, and the multiplier reads as a modification of *effectiveness* rather than of raw money. This placement is a modelling choice — one could apply interactions before the transforms, or to spend directly — but tying it to effective media keeps the interpretation clean.
+
+## Building the model in PyMC
+
+Rather than a packaged MMM class, this is a **custom MMM built directly in PyMC**. That is the main reason I reach for PyMC here: its flexibility lets me wire the directional interaction layer straight into the generative model, name every dimension, and expose each contribution as a tracked quantity — none of which is convenient to bolt onto a fixed, off-the-shelf specification.
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+import pymc as pm
+import pytensor.tensor as pt
+from pymc_extras.prior import Prior
+from pymc_marketing.mmm import GeometricAdstock, TanhSaturation
+
+# Named dimensions keep the direction of gamma_ij unambiguous and make every
+# contribution self-describing. `channel` is the affected channel i;
+# `modifier_channel` is the channel j doing the modifying.
+coords = {
+    "date": dates,                     # weekly observation index
+    "channel": channel_names,          # affected channel  (i)
+    "modifier_channel": channel_names, # modifier channel  (j)
+    "control": control_names,
+}
+
+with pm.Model(coords=coords) as model:
+    # --- Data containers ---------------------------------------------------
+    media = pm.Data("media", media_scaled, dims=("date", "channel"))          # max-scaled spend, in [0, 1]
+    controls = pm.Data("controls", controls_scaled, dims=("date", "control")) # standardised controls
+
+    # --- Priors ------------------------------------------------------------
+    intercept = Prior("Normal", mu=0.8, sigma=0.15).create_variable("intercept")   # baseline sales
+    beta = Prior("HalfNormal", sigma=0.15, dims="channel").create_variable("beta") # silo effectiveness (>= 0)
+
+    # gamma_ij is a log-multiplier on effectiveness. sigma=0.40 lets a believable
+    # synergy (~65% at max) through; in production a sparsity prior is preferable.
+    gamma = Prior(
+        "Normal", mu=0.0, sigma=0.40, dims=("channel", "modifier_channel")
+    ).create_variable("gamma")
+
+    sigma = Prior("HalfNormal", sigma=0.03).create_variable("sigma")               # residual noise
+
+    # A channel cannot modify itself: zero the diagonal of the interaction matrix.
+    gamma_eff = pm.Deterministic(
+        "gamma_eff", gamma * (1.0 - pt.eye(len(channel_names))),
+        dims=("channel", "modifier_channel"),
+    )
+
+    # --- Adstock + saturation ---------------------------------------------
+    # Tight, pre-calibrated priors (from lift/geo tests in practice) so the
+    # transforms cannot quietly absorb the cross-channel signal.
+    adstock = GeometricAdstock(l_max=12, normalize=False, priors={
+        "alpha": Prior("TruncatedNormal", mu=alpha_cal, sigma=0.05, lower=0, upper=1, dims="channel"),
+    })
+    saturation = TanhSaturation(priors={
+        "b": Prior("TruncatedNormal", mu=b_cal, sigma=0.05, lower=0, dims="channel"),
+        "c": Prior("TruncatedNormal", mu=c_cal, sigma=0.05, lower=0, dims="channel"),
+    })
+    m = saturation.apply(adstock.apply(media))     # transformed media m_{i,t}, dims (date, channel)
+
+    # --- Contribution decomposition ---------------------------------------
+    silo = pm.Deterministic(                        # beta_i * m_{i,t}
+        "silo_contribution", m * beta, dims=("date", "channel"),
+    )
+    log_multiplier = pt.dot(m, gamma_eff.T)         # sum_j gamma_ij * m_{j,t}
+    multiplier = pm.Deterministic(                  # exp(.) cross-channel multiplier
+        "interaction_multiplier", pt.exp(log_multiplier), dims=("date", "channel"),
+    )
+    observed = pm.Deterministic(                     # realised contribution within the mix
+        "observed_contribution", silo * multiplier, dims=("date", "channel"),
+    )
+
+    # --- Expected sales + likelihood --------------------------------------
+    control_effect = pt.dot(controls, Prior("Normal", mu=0, sigma=0.10, dims="control")
+                            .create_variable("control_beta"))
+    # (yearly Fourier seasonality and holiday events omitted here for brevity)
+    mu = intercept + observed.sum(axis=-1) + control_effect + seasonality + holidays
+
+    pm.Normal("y", mu=mu, sigma=sigma, observed=y_scaled, dims="date")
+```
+
+The two details that make the interaction work are the named `channel` / `modifier_channel` dimensions (which pin down the direction of $\gamma_{ij}$) and the diagonal mask (which stops a channel interacting with itself). Everything downstream — contributions, ROAS, response curves — is derived from the `silo_contribution` and `observed_contribution` deterministics, so the reported numbers always match the fitted model exactly.
+
+The full model graph makes the flow concrete: transformed media and the base coefficients form each channel's silo contribution; the *other* channels enter through the masked $\gamma$ matrix to form the multiplier; the observed contributions are summed with controls, seasonality and holidays before the likelihood. It is wide, so click to zoom into any part.
+
+![The full model graph. Click to enlarge and zoom. Effective media, base coefficients and the masked directional interaction matrix combine into each channel's observed contribution, which is summed with controls, seasonality and holidays before the Normal likelihood.](assets/model_graph.png){.lightbox width=100%}
+
+## Results interpretation
+
+To make the reporting concrete I fit the model to a synthetic four-year, four-channel weekly dataset, then read three things off the posterior: the contribution decomposition, ROAS, and response curves. Throughout, I summarise the posterior with the median and a 94% highest-density interval (HDI).
+
+### Silo vs observed contribution
+
+The decomposition reports, per channel, the silo contribution, the interaction increment, and the observed contribution. By construction, observed = silo + increment, so nothing is double-counted.
+
+```{python}
+#| echo: false
+#| label: tbl-contrib
+#| tbl-cap: "Contribution decomposition by channel (posterior medians; observed = silo + interaction increment). Observed contributions carry a 94% HDI, and shares are of total observed media contribution."
+report.contribution_table(post, data)
+```
+
+```{python}
+#| echo: false
+#| label: fig-contrib
+#| fig-cap: "Silo contribution plus interaction increment equals observed contribution. The increment is an attribute of the existing channels, not a separate spendable unit."
+report.plot_contribution_decomposition(post, data)
+plt.show()
+```
+
+The largest increment attaches to paid search — the channel the model believes video amplifies — while the others sit close to their silo values.
+
+### ROAS under interactions
+
+The same split carries into ROAS. Using raw spend $x_{i,t}$ in the denominator (not transformed media):
+
+$$
+\text{Silo ROAS}_i = \frac{\sum_t C_{i,t}^{\text{silo}}}{\sum_t x_{i,t}},
+\qquad
+\text{Observed ROAS}_i = \frac{\sum_t C_{i,t}^{\text{obs}}}{\sum_t x_{i,t}}.
+$$
+
+```{python}
+#| echo: false
+#| label: tbl-roas
+#| tbl-cap: "Silo vs observed ROAS by channel (posterior median [94% HDI]). The interaction difference is observed minus silo ROAS; the denominator is raw spend in both cases."
+report.roas_table(post, data)
+```
+
+```{python}
+#| echo: false
+#| label: fig-roas
+#| fig-cap: "Silo vs observed ROAS by channel, with 94% HDIs. Observed ROAS reflects performance under the surrounding media; silo ROAS sets the interaction multiplier to one."
+report.plot_reference_vs_realised_roas(post, data)
+plt.show()
+```
+
+This raises an allocation question with no purely technical answer: if video lifts paid search, does the extra value belong to video, to search, or both? In this formulation the increment sits inside the *affected* channel (search), which is coherent and reconciles with the totals — but it is a reporting convention, not the only defensible choice.
+
+### Response curves depend on the media mix
+
+Once interactions are in the model, a channel no longer has a single response curve; its expected response depends on what else is running. Below, paid search is shown under three environments: the silo curve (no modifiers), an average historical mix, and a strong video environment (video at its 90th-percentile spend). The x-axis stays within the historically observed range.
+
+```{python}
+#| echo: false
+#| label: fig-curves
+#| fig-cap: "Paid search response curves under three media environments, with 94% HDI bands. Other channels enter only through the interaction multiplier."
+report.plot_response_curves(post, data, focal=0, modifier=1)
+plt.show()
+```
+
+The gap between the curves is the interaction at work: the same search spend earns more when video runs alongside it.
+
+## What makes this difficult in practice
+
+The interaction model is easy to *write*; estimating it reliably is the hard part, for three reasons:
+
+- **Identification.** If channels always launch, pause and scale together — the normal state of an integrated campaign — there is little independent variation to separate a channel's direct effect, its cross-channel effect, timing and demand. A posterior interaction is not, by itself, evidence of synergy.
+- **A coefficient is not proof.** A non-zero $\gamma_{ij}$ can equally reflect omitted demand drivers, common timing, promotions, or a misspecified transform. Every estimate is conditional on the model, priors and the variation actually present; with limited or correlated data, priors can dominate [@jin2017bayesian].
+- **Experiments still matter.** Staggered campaigns, geo variation and holdouts identify these effects far better than observational time series; pooling across units helps too [@sun2017geo], but none of it manufactures evidence the data do not contain.
+
+## How many interaction parameters?
+
+There is also a plain counting problem. For $N$ channels, a fully directional pairwise model has $N(N-1)$ off-diagonal interaction coefficients, on top of everything the model already carries (base coefficients, adstock, saturation, seasonality, controls, noise).
+
+| Channels $N$ | Directional interactions $N(N-1)$ | Symmetric $N(N-1)/2$ |
+| ---: | ---: | ---: |
+| 4 | 12 | 6 |
+| 8 | 56 | 28 |
+| 12 | 132 | 66 |
+| 20 | 380 | 190 |
+
+The challenge is not computational — PyMC will happily sample all of them. The challenge is whether the data contain enough independent variation to identify them, and whether the output stays interpretable. With 20 channels and 380 interactions, I would struggle to defend most of those numbers to a stakeholder.
+
+## How many response curves?
+
+Reporting suffers from a second kind of explosion. In a traditional MMM each channel has one response curve. With interactions, a focal channel's realised curve depends on which of the other $N-1$ channels are active in its interaction environment. Each modifier is either present or absent, so the number of possible environments is
+
+$$
+\sum_{k=0}^{N-1}\binom{N-1}{k} = 2^{\,N-1},
+$$
+
+which is just the binomial theorem with $a = b = 1$. Across all $N$ channels there are $N\,2^{\,N-1}$ possible curves in total.
+
+A worked example with four channels $\{1,2,3,4\}$, focusing on channel 1. Its possible modifiers are $\{2,3,4\}$, giving $\binom{3}{0}+\binom{3}{1}+\binom{3}{2}+\binom{3}{3} = 1+3+3+1 = 2^{3} = 8$ curves:
+
+| Curve | Active modifiers |
+| --- | --- |
+| Silo curve | $\varnothing$ |
+| + one modifier | $\{2\},\ \{3\},\ \{4\}$ |
+| + two modifiers | $\{2,3\},\ \{2,4\},\ \{3,4\}$ |
+| Full environment | $\{2,3,4\}$ |
+
+Eight curves for *one* channel with only four in the mix. At ten channels that is $2^{9} = 512$ per channel. Plotting them all is hopeless; in practice you fix an environment of interest (as in the response-curve figure above) or explore interactively. It is another reason to keep the interaction set small.
+
+## A targeted approach is more defensible
+
+This is why my current thinking is not "estimate every interaction" but "estimate a few, chosen deliberately". Rather than the full off-diagonal matrix, restrict attention to a set of pairs
+
+$$
+\mathcal{I} = \left\{ (i,j) : \text{there is a substantive reason to estimate } \gamma_{ij} \right\},
+$$
+
+and fit only those:
+
+$$
+C_{i,t}^{\text{obs}}
+= \beta_i\, m_{i,t}\,
+\exp\!\left( \sum_{j:\,(i,j)\in\mathcal{I}} \gamma_{ij}\, m_{j,t} \right).
+$$
+
+A "substantive reason" means a clear strategic relationship, a known customer journey, a demand-creating channel feeding a demand-capturing one, experimental or lift-study evidence, or repeated evidence across regions and campaigns. The structured, hierarchical treatment in @naik2009hierarchical is a good precedent for preferring structure over an unrestricted set of terms, and the context-dependence in @kireyev2016display is a reason to specify interactions per context rather than assume them everywhere.
+
+## Where this could go next
+
+The natural next step is budget optimisation. Once a channel's return depends on the whole mix, allocation stops being a set of independent per-channel curves and becomes a joint problem: moving spend into video changes video's contribution *and* search's effectiveness. That deserves its own treatment rather than a paragraph here.
+
+## Conclusion
+
+Explicit cross-channel modelling is possible and potentially useful, particularly where there is a clear reason to believe one channel changes the effectiveness of another. The framework here gives a concrete way to report it: a silo contribution, an interaction increment, and an observed contribution that add up, with the matching ROAS and response-curve consequences.
+
+But estimating *every* relationship rapidly inflates the parameter count, the demands on the data, and the difficulty of explaining the results. I therefore see this as a **targeted extension** rather than a default MMM specification. Where strategic or experimental evidence supports a particular interaction, estimating it explicitly can give a more faithful account of how a campaign actually worked. Where that evidence is absent, an all-channel interaction model is likely to add more uncertainty than insight.
+
+## References
+
+::: {#refs}
+:::
