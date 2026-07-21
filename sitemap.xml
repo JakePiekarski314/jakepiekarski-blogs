@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jakepiekarski314.github.io/jakepiekarski-blogs/blogs.html</loc>
+    <lastmod>2026-07-21T16:03:57.422Z</lastmod>
+  </url>
+  <url>
     <loc>https://jakepiekarski314.github.io/jakepiekarski-blogs/meta_attribution_causal_analysis.html</loc>
-    <lastmod>2026-03-19T22:25:47.227Z</lastmod>
+    <lastmod>2026-07-21T16:03:57.435Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jakepiekarski314.github.io/jakepiekarski-blogs/posts/cross-channel-measurement-mmm/index.html</loc>
+    <lastmod>2026-07-21T16:03:57.451Z</lastmod>
   </url>
   <url>
     <loc>https://jakepiekarski314.github.io/jakepiekarski-blogs/posts/hierarchical-mmm/index.html</loc>
-    <lastmod>2026-03-19T22:25:47.343Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jakepiekarski314.github.io/jakepiekarski-blogs/index.html</loc>
-    <lastmod>2026-03-19T22:25:47.220Z</lastmod>
+    <lastmod>2026-07-21T16:03:57.538Z</lastmod>
   </url>
   <url>
     <loc>https://jakepiekarski314.github.io/jakepiekarski-blogs/posts/meta-attribution-causal-analysis/index.html</loc>
-    <lastmod>2026-03-19T22:25:47.348Z</lastmod>
+    <lastmod>2026-07-21T16:03:57.543Z</lastmod>
   </url>
   <url>
-    <loc>https://jakepiekarski314.github.io/jakepiekarski-blogs/blogs.html</loc>
-    <lastmod>2026-03-19T22:25:47.220Z</lastmod>
+    <loc>https://jakepiekarski314.github.io/jakepiekarski-blogs/posts/cross-channel-measurement-mmm/cross_channel_mmm_companion.html</loc>
+    <lastmod>2026-07-21T16:03:57.450Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jakepiekarski314.github.io/jakepiekarski-blogs/cross_channel_mmm_blog.html</loc>
+    <lastmod>2026-07-21T16:03:57.428Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jakepiekarski314.github.io/jakepiekarski-blogs/index.html</loc>
+    <lastmod>2026-07-21T16:03:57.428Z</lastmod>
   </url>
 </urlset>
