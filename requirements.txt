@@ -5,6 +5,7 @@ pymc-extras
 arviz
 xarray
 h5netcdf
+h5py
 graphviz
 matplotlib
 seaborn
