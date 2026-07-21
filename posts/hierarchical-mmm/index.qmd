@@ -68,14 +68,14 @@ with open(ASSETS / "data.pkl", "rb") as f:
 with open(ASSETS / "truth.pkl", "rb") as f:
     truth = pickle.load(f)
 
-idata_unpooled = az.from_netcdf(ASSETS / "idata_unpooled.nc")
-prior_unpooled = az.from_netcdf(ASSETS / "prior_unpooled.nc")
-idata_centered_pp = az.from_netcdf(ASSETS / "idata_centered.nc")
-prior_centered_pp = az.from_netcdf(ASSETS / "prior_centered.nc")
-idata_non_centered_pp = az.from_netcdf(ASSETS / "idata_noncentered.nc")
-prior_non_centered_pp = az.from_netcdf(ASSETS / "prior_noncentered.nc")
-idata_tuned_non_centered_pp = az.from_netcdf(ASSETS / "idata_tuned.nc")
-prior_tuned_non_centered_pp = az.from_netcdf(ASSETS / "prior_tuned.nc")
+idata_unpooled = az.InferenceData.from_netcdf(ASSETS / "idata_unpooled.nc")
+prior_unpooled = az.InferenceData.from_netcdf(ASSETS / "prior_unpooled.nc")
+idata_centered_pp = az.InferenceData.from_netcdf(ASSETS / "idata_centered.nc")
+prior_centered_pp = az.InferenceData.from_netcdf(ASSETS / "prior_centered.nc")
+idata_non_centered_pp = az.InferenceData.from_netcdf(ASSETS / "idata_noncentered.nc")
+prior_non_centered_pp = az.InferenceData.from_netcdf(ASSETS / "prior_noncentered.nc")
+idata_tuned_non_centered_pp = az.InferenceData.from_netcdf(ASSETS / "idata_tuned.nc")
+prior_tuned_non_centered_pp = az.InferenceData.from_netcdf(ASSETS / "prior_tuned.nc")
 ```
 
 To keep this post focused on modelling behaviour (rather than the messiness of real-world attribution), we’ll use a **synthetic dataset** that resembles a simplified MMM.
