@@ -45,7 +45,7 @@ ASSETS = PROJECT_ROOT / "posts" / "cross-channel-measurement-mmm" / "assets"
 # Structural parameters kept for render-time recomputation (+ y_mean for the fit plot).
 KEEP_VARS = [
     "intercept", "sigma", "beta", "control_beta",
-    "gamma", "gamma_eff", "adstock_alpha", "saturation_b", "saturation_c",
+    "gamma_offdiag", "gamma_eff", "adstock_alpha", "saturation_b", "saturation_c",
     "y_mean",
 ]
 
@@ -100,7 +100,7 @@ def main():
     # numpy re-derivation of the media transforms.
     tmean = float(truth.target_mean)
     ref_tot = (post["reference_contribution_scaled"].sum("date") * tmean).rename("reference_contribution_tot")
-    obs_tot = (post["observed_contribution_scaled"].sum("date") * tmean).rename("observed_contribution_tot")
+    obs_tot = (post["realised_mix_contribution_scaled"].sum("date") * tmean).rename("realised_mix_contribution_tot")
 
     keep = [v for v in KEEP_VARS if v in post]
     ds = xr.merge([post[keep], ref_tot.to_dataset(), obs_tot.to_dataset()])

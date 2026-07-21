@@ -18,6 +18,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import xarray as xr
 
+from .transforms import transformed_media_draws
+
 HDI_PROB = 0.94
 L_MAX = 12
 
@@ -69,9 +71,9 @@ def compute_contributions(post, data=None):
     Returns a dict of (S, C) arrays: reference, realised (observed) and
     interaction-increment totals.
     """
-    reference_tot = post["reference_contribution_tot"].values   # (S, C)
-    observed_tot = post["observed_contribution_tot"].values     # (S, C)
-    interaction_tot = observed_tot - reference_tot
+    reference_tot = post["reference_contribution_tot"].values         # (S, C)
+    observed_tot = post["realised_mix_contribution_tot"].values       # (S, C)
+    interaction_tot = observed_tot - reference_tot                    # draw-by-draw increment
     return {
         "reference_tot": reference_tot,
         "observed_tot": observed_tot,
@@ -92,21 +94,26 @@ def contribution_table(post, data, contribs=None):
     ref = contribs["reference_tot"]
     obs = contribs["observed_tot"]
 
+    # All derived quantities are formed draw by draw, then summarised, so the
+    # increment reconciles exactly and the share is a genuine posterior summary.
+    inc = obs - ref                                        # (S, C) interaction increment
+    share_draws = 100.0 * obs / obs.sum(axis=1, keepdims=True)  # (S, C) realised-mix share
+
     ref_med = np.median(ref, axis=0)
-    obs_med = np.median(obs, axis=0)
-    inc_med = obs_med - ref_med  # keep realised = reference + increment exactly
-    share = 100.0 * obs_med / obs_med.sum()
+    inc_med = np.median(inc, axis=0)
+    obs_med = ref_med + inc_med                            # reconciles: mix = ref + increment
+    share_med = np.median(share_draws, axis=0)
     obs_hdi = np.array([hdi(obs[:, k]) for k in range(obs.shape[1])])
 
     rows = []
     for k, name in enumerate(labels):
         rows.append({
             "Channel": name,
-            "Silo contribution": _fmt_gbp_m(ref_med[k]),
+            "Reference contribution": _fmt_gbp_m(ref_med[k]),
             "Interaction increment": _fmt_gbp_m(inc_med[k]),
-            "Observed contribution": _fmt_gbp_m(obs_med[k]),
-            "Observed 94% HDI": f"[{obs_hdi[k, 0] / 1e6:,.2f}, {obs_hdi[k, 1] / 1e6:,.2f}]m",
-            "Observed share": f"{share[k]:.1f}%",
+            "Realised-mix contribution": _fmt_gbp_m(obs_med[k]),
+            "Realised-mix 94% HDI": f"[{obs_hdi[k, 0] / 1e6:,.2f}, {obs_hdi[k, 1] / 1e6:,.2f}]m",
+            "Realised-mix share": f"{share_med[k]:.1f}%",
         })
     return pd.DataFrame(rows)
 
@@ -128,8 +135,8 @@ def roas_table(post, data, contribs=None):
         ol, oh = hdi(obs_roas[:, k])
         rows.append({
             "Channel": name,
-            "Silo ROAS": f"{np.median(ref_roas[:, k]):.2f} [{rl:.2f}, {rh:.2f}]",
-            "Observed ROAS": f"{np.median(obs_roas[:, k]):.2f} [{ol:.2f}, {oh:.2f}]",
+            "Reference ROAS": f"{np.median(ref_roas[:, k]):.2f} [{rl:.2f}, {rh:.2f}]",
+            "Realised-mix ROAS": f"{np.median(obs_roas[:, k]):.2f} [{ol:.2f}, {oh:.2f}]",
             "Interaction difference": f"{np.median(diff[:, k]):+.2f}",
         })
     return pd.DataFrame(rows)
@@ -185,7 +192,7 @@ def plot_interaction_heatmap(post, data, figsize=(6.6, 5.4)):
     ax.set_yticklabels(labels)
     ax.set_xlabel("Modifier channel  (j — provides the effect)")
     ax.set_ylabel("Affected channel  (i — effectiveness changes)")
-    ax.set_title(r"Directional interaction $\gamma_{ij}$ (median)")
+    ax.set_title(r"Directional interaction $\gamma_{ij}$ (point estimate)")
 
     for i in range(n):
         for j in range(n):
@@ -208,12 +215,12 @@ def plot_contribution_decomposition(post, data, contribs=None, figsize=(9.5, 5))
         contribs = compute_contributions(post, data)
     labels = _labels(data)
     ref = np.median(contribs["reference_tot"], axis=0) / 1e6
-    obs = np.median(contribs["observed_tot"], axis=0) / 1e6
-    inc = obs - ref
+    inc = np.median(contribs["interaction_tot"], axis=0) / 1e6  # draw-by-draw increment
+    obs = ref + inc                                             # reconciles with the table
 
     x = np.arange(len(labels))
     fig, ax = plt.subplots(figsize=figsize)
-    ax.bar(x, ref, color=C_REFERENCE, label="Silo contribution")
+    ax.bar(x, ref, color=C_REFERENCE, label="Reference contribution")
     ax.bar(x, np.clip(inc, 0, None), bottom=ref, color=C_INTERACTION, label="Interaction increment (+)")
     neg = np.clip(inc, None, 0)
     ax.bar(x, neg, bottom=ref, color="#B5651D", alpha=0.75, label="Interaction increment (−)", hatch="//")
@@ -221,7 +228,7 @@ def plot_contribution_decomposition(post, data, contribs=None, figsize=(9.5, 5))
         ax.text(x[k], max(ref[k], obs[k]), f" £{obs[k]:,.2f}m", ha="center", va="bottom", fontsize=9)
     ax.set_xticks(x); ax.set_xticklabels(labels, rotation=20, ha="right")
     ax.set_ylabel("Contribution over the window (£m)")
-    ax.set_title("Silo + interaction = observed contribution")
+    ax.set_title("Reference + interaction = realised-mix contribution")
     ax.legend(loc="upper right", frameon=False)
     ax.margins(y=0.14)
     fig.tight_layout()
@@ -243,11 +250,11 @@ def plot_reference_vs_realised_roas(post, data, contribs=None, figsize=(9.5, 5))
 
     x = np.arange(len(labels)); w = 0.38
     fig, ax = plt.subplots(figsize=figsize)
-    ax.bar(x - w / 2, ref_med, w, yerr=ref_err, capsize=3, color=C_REFERENCE, label="Silo ROAS")
-    ax.bar(x + w / 2, obs_med, w, yerr=obs_err, capsize=3, color=C_REALISED, label="Observed ROAS")
+    ax.bar(x - w / 2, ref_med, w, yerr=ref_err, capsize=3, color=C_REFERENCE, label="Reference ROAS")
+    ax.bar(x + w / 2, obs_med, w, yerr=obs_err, capsize=3, color=C_REALISED, label="Realised-mix ROAS")
     ax.set_xticks(x); ax.set_xticklabels(labels, rotation=20, ha="right")
     ax.set_ylabel("ROAS (£ return per £ spend)")
-    ax.set_title("Silo vs observed ROAS (median, 94% HDI)")
+    ax.set_title("Reference vs realised-mix ROAS (point estimate, 94% HDI)")
     ax.legend(loc="upper right", frameon=False)
     fig.tight_layout()
     return fig
@@ -268,12 +275,16 @@ def _steady_state_transform(spend, hist_max_k, alpha_k, b_k, c_k, l_max=L_MAX):
 
 
 def plot_response_curves(post, data, focal=0, modifier=1, figsize=(9.5, 5.2)):
-    """Response curve for the focal channel under three media environments.
+    """Steady-state response curve for the focal channel under three environments.
 
-    Environments (other channels enter via the interaction multiplier only):
-      - No interaction modifiers active (reference curve).
-      - Average historical environment (each other channel at its mean weekly spend).
-      - Strong complementary environment (modifier channel at its 90th percentile).
+    Estimand: each curve is the focal channel's modelled weekly contribution if it
+    spent a constant amount every week until its geometric adstock reaches steady
+    state, i.e. transformed media m = b*tanh(x*sum_l alpha^l / (b*c)). Modifier
+    channels enter only through the interaction multiplier, each likewise held at a
+    constant weekly spend until steady state:
+      - reference:  all modifiers off (multiplier = 1);
+      - average:    every other channel at its historical-mean weekly spend;
+      - strong:     the named modifier at its 90th-percentile weekly spend, others at mean.
     """
     labels = _labels(data)
     media_actual = data["media_actual"].values  # (T, C)
@@ -313,9 +324,9 @@ def plot_response_curves(post, data, focal=0, modifier=1, figsize=(9.5, 5.2)):
 
     fig, ax = plt.subplots(figsize=figsize)
     specs = [
-        (env_none, "Silo curve (no interaction modifiers)", "#7f7f7f", "--"),
-        (env_avg, "Average media environment", C_REFERENCE, "-"),
-        (env_strong, f"Strong {labels[modifier]} environment (p90)", C_REALISED, "-"),
+        (env_none, "Reference curve (interaction multiplier = 1)", "#7f7f7f", "--"),
+        (env_avg, "Other channels at historical-mean weekly spend", C_REFERENCE, "-"),
+        (env_strong, f"{labels[modifier]} at its 90th-percentile weekly spend", C_REALISED, "-"),
     ]
     for env, lab, col, ls in specs:
         med, (lo, hi) = curve(env)
@@ -323,9 +334,128 @@ def plot_response_curves(post, data, focal=0, modifier=1, figsize=(9.5, 5.2)):
         if ls != "--":
             ax.fill_between(x_grid / 1e3, lo, hi, color=col, alpha=0.15)
 
-    ax.set_xlabel(f"{labels[focal]} weekly spend (£000s)")
+    ax.set_xlabel(f"{labels[focal]} steady-state weekly spend (£000s)")
     ax.set_ylabel(f"{labels[focal]} weekly contribution (£)")
-    ax.set_title(f"{labels[focal]} response curve shifts with the surrounding media mix")
+    ax.set_title(f"{labels[focal]}: a family of response curves, one per media environment")
     ax.legend(loc="upper left", frameon=False, fontsize=9)
     fig.tight_layout()
     return fig
+
+
+# -------------------------------------------- directional interaction helpers
+def _offdiag_pairs(n):
+    """Directional off-diagonal (affected i, modifier j) pairs, row-major."""
+    return [(i, j) for i in range(n) for j in range(n) if i != j]
+
+
+# --------------------------------------------- prior-predictive multiplier
+def _mean_transformed_media(post, data):
+    """Representative per-channel transformed media using posterior-mean transforms."""
+    media_scaled = np.asarray(data["media_scaled"].values, dtype=float)  # (T, C)
+    alpha = post["adstock_alpha"].values.mean(axis=0, keepdims=True)     # (1, C)
+    b = post["saturation_b"].values.mean(axis=0, keepdims=True)
+    c = post["saturation_c"].values.mean(axis=0, keepdims=True)
+    m = transformed_media_draws(media_scaled, alpha, b, c, l_max=L_MAX)[0]  # (T, C)
+    return m.mean(axis=0)  # (C,)
+
+
+def plot_prior_multiplier(post, data, focal=0, sigma_gamma=0.40, n_draws=40000,
+                          seed=0, figsize=(9.5, 4.6)):
+    """Prior-predictive interaction multiplier M as more modifiers become active.
+
+    Draws gamma ~ N(0, sigma_gamma) per directional pair and evaluates
+    M = exp(sum_j gamma_ij * m_j) with each modifier held at its representative
+    (historical-mean) transformed media. Shows how the prior over the *total*
+    multiplier widens as the number of simultaneously active modifiers grows.
+    """
+    labels = _labels(data)
+    n = len(labels)
+    m_bar = _mean_transformed_media(post, data)  # (C,)
+    modifiers = [j for j in range(n) if j != focal]
+
+    rng = np.random.default_rng(seed)
+    fig, ax = plt.subplots(figsize=figsize)
+    data_by_k, positions = [], []
+    for k in range(1, len(modifiers) + 1):
+        active = modifiers[:k]
+        gam = rng.normal(0.0, sigma_gamma, size=(n_draws, k))
+        log_m = gam @ m_bar[active]
+        data_by_k.append(np.exp(log_m))
+        positions.append(k)
+
+    parts = ax.violinplot(data_by_k, positions=positions, showextrema=False, widths=0.8)
+    for pc in parts["bodies"]:
+        pc.set_facecolor(C_INTERACTION); pc.set_alpha(0.5)
+    for k, samp in zip(positions, data_by_k):
+        lo, hi = np.percentile(samp, [2.5, 97.5])
+        ax.plot([k, k], [lo, hi], color="black", lw=1.4)
+        ax.plot(k, np.median(samp), "o", color="black", ms=4)
+    ax.axhline(1.0, color="grey", ls=":", lw=0.9)
+    ax.set_xlabel(f"Number of modifiers active on {labels[focal]} (each at historical-mean media)")
+    ax.set_ylabel("Prior interaction multiplier  $M$")
+    ax.set_title(rf"Prior-predictive $M$ under $\gamma\sim\mathcal{{N}}(0,{sigma_gamma})$ (black bars: 95%)")
+    ax.set_xticks(positions)
+    fig.tight_layout()
+    return fig
+
+
+def prior_multiplier_summary(post, data, focal=0, sigma_gamma=0.40, n_draws=40000, seed=0):
+    """Companion numbers for the prior-predictive multiplier plot (95% interval of M)."""
+    n = len(_labels(data))
+    m_bar = _mean_transformed_media(post, data)
+    modifiers = [j for j in range(n) if j != focal]
+    rng = np.random.default_rng(seed)
+    rows = []
+    for k in range(1, len(modifiers) + 1):
+        gam = rng.normal(0.0, sigma_gamma, size=(n_draws, k))
+        M = np.exp(gam @ m_bar[modifiers[:k]])
+        lo, hi = np.percentile(M, [2.5, 97.5])
+        rows.append({"Active modifiers": k,
+                     "Prior 95% interval for M": f"[{lo:.2f}, {hi:.2f}]"})
+    return pd.DataFrame(rows)
+
+
+# ------------------------------------------- per-pair interaction increments
+def _recompute_mix(post, data):
+    """Draw-by-draw reference / realised-mix per (date, channel), plus m and params."""
+    media_scaled = np.asarray(data["media_scaled"].values, dtype=float)
+    target_mean = float(data["target_mean"])
+    alpha = post["adstock_alpha"].values
+    b = post["saturation_b"].values
+    c = post["saturation_c"].values
+    beta = post["beta"].values
+    gamma_eff = post["gamma_eff"].values  # (S, i, j)
+    m = transformed_media_draws(media_scaled, alpha, b, c, l_max=L_MAX)  # (S, T, C)
+    ref = m * beta[:, None, :]                                          # (S, T, C)
+    log_all = np.einsum("stj,sij->sti", m, gamma_eff)                   # (S, T, C)
+    mix = ref * np.exp(log_all)
+    return m, ref, mix, log_all, gamma_eff, target_mean
+
+
+def interaction_pairs_table(post, data, top=6):
+    """Leave-one-out realised-mix increment attributable to each directional pair.
+
+    For modifier j acting on affected i, the increment is the realised-mix
+    contribution of i minus what it would be with j alone removed from the
+    multiplier, summed over the window. These do NOT sum to a channel's total
+    increment, because the multiplier is non-additive across modifiers.
+    """
+    labels = _labels(data)
+    m, ref, mix, log_all, gamma_eff, target_mean = _recompute_mix(post, data)
+    n = len(labels)
+    rows = []
+    for i, j in _offdiag_pairs(n):
+        log_wo = log_all[:, :, i] - gamma_eff[:, i, j][:, None] * m[:, :, j]
+        mix_wo = ref[:, :, i] * np.exp(log_wo)
+        inc = (mix[:, :, i] - mix_wo).sum(axis=1) * target_mean  # (S,)
+        g = post["gamma_eff"].values[:, i, j]
+        rows.append({
+            "Modifier (j)": labels[j],
+            "Affected (i)": labels[i],
+            "γ (median [94% HDI])": f"{np.median(g):+.2f} [{hdi(g)[0]:+.2f}, {hdi(g)[1]:+.2f}]",
+            "Increment (£m)": np.median(inc) / 1e6,
+            "_abs": abs(np.median(inc)),
+        })
+    df = pd.DataFrame(rows).sort_values("_abs", ascending=False).drop(columns="_abs").head(top)
+    df["Increment (£m)"] = df["Increment (£m)"].map(lambda v: f"£{v:+,.2f}m")
+    return df.reset_index(drop=True)

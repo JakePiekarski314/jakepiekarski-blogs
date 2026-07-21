@@ -22,10 +22,21 @@ def build_interaction_mmm(truth) -> pm.Model:
     """Build the interaction MMM for a ``SyntheticTruth`` instance."""
     n_channels = len(truth.channel_names)
 
+    # Off-diagonal (i != j) directional pairs. aff_idx = affected channel i,
+    # mod_idx = modifier channel j. We sample ONE gamma per directional pair and
+    # never create diagonal random variables (a channel cannot modify itself).
+    off_mask = ~np.eye(n_channels, dtype=bool)
+    aff_idx, mod_idx = np.where(off_mask)  # length N(N-1), row-major over (i, j)
+    interaction_labels = [
+        f"{truth.channel_names[i]}<-{truth.channel_names[j]}"
+        for i, j in zip(aff_idx, mod_idx)
+    ]
+
     coords = {
         "date": truth.df.index.to_numpy(),
         "channel": truth.channel_names,
         "modifier_channel": truth.channel_names,
+        "interaction": interaction_labels,
         "control": truth.control_names,
         "holiday": truth.holiday_names,
     }
@@ -41,18 +52,24 @@ def build_interaction_mmm(truth) -> pm.Model:
         # ------------------------------------------------------------ priors
         intercept = Prior("Normal", mu=0.8, sigma=0.15).create_variable("intercept")
         beta = Prior("HalfNormal", sigma=0.15, dims="channel").create_variable("beta")
-        # gamma is a log-multiplier. With transformed media in (0, 1), gamma ~ 0.5
-        # is a ~65% effectiveness lift at full intensity. sigma=0.40 regularises
-        # the many near-zero entries while letting genuine effects escape; in
-        # production prefer a sparsity-inducing prior (horseshoe / regularised
-        # Laplace).
-        gamma = Prior("Normal", mu=0.0, sigma=0.40, dims=("channel", "modifier_channel")).create_variable("gamma")
+        # gamma_ij is a log-multiplier on effectiveness. One free parameter per
+        # directional off-diagonal pair (length N(N-1)); no diagonal RVs are
+        # created, so nothing disconnected from the likelihood is sampled.
+        # sigma=0.40 regularises the many near-zero entries while letting genuine
+        # effects escape; in production prefer a sparsity-inducing prior
+        # (horseshoe / regularised Laplace).
+        gamma_offdiag = Prior(
+            "Normal", mu=0.0, sigma=0.40, dims="interaction"
+        ).create_variable("gamma_offdiag")
         control_beta = Prior("Normal", mu=0.0, sigma=0.10, dims="control").create_variable("control_beta")
         sigma = Prior("HalfNormal", sigma=0.03).create_variable("sigma")
 
-        # mask the diagonal so a channel cannot modify itself
+        # Scatter the off-diagonal parameters into a full matrix; the diagonal is
+        # deterministically zero (a channel cannot modify itself).
+        gamma_full = pt.zeros((n_channels, n_channels))
+        gamma_full = pt.set_subtensor(gamma_full[aff_idx, mod_idx], gamma_offdiag)
         gamma_eff = pm.Deterministic(
-            "gamma_eff", gamma * (1.0 - pt.eye(n_channels)), dims=("channel", "modifier_channel")
+            "gamma_eff", gamma_full, dims=("channel", "modifier_channel")
         )
 
         # -------------------------------------------- adstock + saturation
@@ -99,14 +116,14 @@ def build_interaction_mmm(truth) -> pm.Model:
             "interaction_multiplier", pt.exp(log_multiplier), dims=("date", "channel")
         )
 
-        observed_contribution_scaled = pm.Deterministic(
-            "observed_contribution_scaled",
+        realised_mix_contribution_scaled = pm.Deterministic(
+            "realised_mix_contribution_scaled",
             reference_contribution_scaled * interaction_multiplier,
             dims=("date", "channel"),
         )
         pm.Deterministic(
-            "interaction_contribution_scaled",
-            observed_contribution_scaled - reference_contribution_scaled,
+            "interaction_increment_scaled",
+            realised_mix_contribution_scaled - reference_contribution_scaled,
             dims=("date", "channel"),
         )
 
@@ -136,7 +153,7 @@ def build_interaction_mmm(truth) -> pm.Model:
         contribution = pm.Deterministic(
             "contribution",
             intercept
-            + observed_contribution_scaled.sum(axis=-1)
+            + realised_mix_contribution_scaled.sum(axis=-1)
             + control_contribution_scaled
             + fourier_contribution_scaled
             + holiday_contribution_scaled.sum(axis=-1),
