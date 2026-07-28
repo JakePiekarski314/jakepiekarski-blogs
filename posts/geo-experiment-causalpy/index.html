@@ -201,7 +201,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The normal January campaign continues across Great Britain, except in the <strong>South East</strong>, where advertising is switched off for ten weeks. The South East is the treated region. The other ten regions form the donor pool used to estimate what would have happened if advertising had continued.</p>
 <p>Switching advertising off nationally would put the entire business at risk if the campaign is more incremental than expected. A geo-test is a safer option because it limits that risk to one area while the rest of the country continues to receive advertising.</p>
 <p>Because this is a switch-off test, a negative impact means transactions were lost when advertising was removed. The value of keeping advertising on is the same quantity with its sign reversed.</p>
-<div id="713ef5d3" class="cell" data-execution_count="1">
+<div id="e5493e1a" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show imports and experiment setup</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
@@ -235,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="where-the-test-ran" class="level2">
 <h2 class="anchored" data-anchor-id="where-the-test-ran">Where the test ran</h2>
 <p>The map makes the design concrete. The campaign continued in every grey donor region and was withheld in the red treated region.</p>
-<div id="c98afdad" class="cell" data-execution_count="2">
+<div id="9ebc3309" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show region map code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>GEO_URL <span class="op">=</span> (</span>
@@ -282,7 +282,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="load-the-data">Load the data</h2>
 <p>The weekly regional transaction data used in this post is <strong>synthetic</strong>. It is designed to reflect recurring January demand, gradual growth in baseline demand as brand awareness strengthens, and a measurable advertising effect, without representing any real company or customer.</p>
 <p>The synthetic generation code is intentionally omitted. The analysis starts from a fixed CSV so the causal workflow stays in focus.</p>
-<div id="09992286" class="cell" data-execution_count="3">
+<div id="3ac8346a" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show data import</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>transactions <span class="op">=</span> pd.read_csv(</span>
@@ -299,7 +299,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="three-years-of-transactions-by-region" class="level3">
 <h3 class="anchored" data-anchor-id="three-years-of-transactions-by-region">Three years of transactions by region</h3>
 <p>The South East is shown in red against the donor regions in grey. January periods are shaded and the 2026 switch-off date is marked.</p>
-<div id="6f7f7e16" class="cell" data-execution_count="4">
+<div id="e8972716" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show regional history plotting code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="dv">6</span>))</span>
@@ -325,12 +325,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p><a href="assets/transaction_history.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="assets/transaction_history.png" class="img-fluid" alt="Weekly transactions for eleven UK regions from 2023 to 2026, with the South East highlighted and January periods shaded."></a></p>
-<p>The regions share the same broad seasonal pattern. That co-movement is what makes a synthetic control plausible, but it is not enough on its own. The pre-treatment fit still needs to be checked.</p>
+<p>The regions share the same broad seasonal pattern, rising and falling at broadly similar times. That co-movement is what makes a synthetic control plausible. Essentially, the regions in grey need to explain the region in red well enough that their combined history provides a credible comparison. Similar seasonality alone is not sufficient, so the pre-treatment fit still needs to be checked.</p>
 </section>
 <section id="south-east-january-transactions-year-on-year" class="level3">
 <h3 class="anchored" data-anchor-id="south-east-january-transactions-year-on-year">South East January transactions, year on year</h3>
-<p>Comparing the weeks around 1 January shows that the spike is recurring. January 2026 still rises sharply even though advertising is off. The switch-off lowers the peak, but does not remove it.</p>
-<div id="b80a39a1" class="cell" data-execution_count="5">
+<p>Comparing the weeks around 1 January shows that the spike in transactions is recurring. January 2026 still rises sharply even though advertising is off. The switch-off lowers the peak, but does not remove it.</p>
+<div id="15440690" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show January comparison plotting code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">6</span>))</span>
@@ -366,8 +366,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="build-the-counterfactual" class="level2">
 <h2 class="anchored" data-anchor-id="build-the-counterfactual">Build the counterfactual</h2>
 <p><a href="https://causalpy.readthedocs.io/">CausalPy</a> finds a weighted combination of untreated regions that behaves like the South East before the switch-off. That synthetic South East estimates what would probably have happened had the campaign continued.</p>
-<p>The donor weights are non-negative and sum to one. The Bayesian model also carries uncertainty from the pre-period into the post-period counterfactual.</p>
-<div id="68ec18e0" class="cell" data-execution_count="6">
+<p>The donor weights are non-negative and sum to one, ensuring that if every donor region sees one additional transaction, so does our counterfactual. The Bayesian model also carries uncertainty from the pre-period into the post-period counterfactual.</p>
+<div id="241f8010" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show synthetic control model code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sample_kwargs <span class="op">=</span> {</span>
@@ -404,9 +404,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>The model converged cleanly, with no divergences, a maximum R-hat of 1.003 and a minimum bulk effective sample size of 1,938. More importantly for design validity, the pre-treatment correlation between the observed and synthetic South East was <strong>0.968</strong>.</p>
+<p>The model converged cleanly, with no divergences, a maximum R-hat of 1.003 and a minimum bulk effective sample size of 1,938. More importantly for design validity, the pre-treatment correlation between the observed and synthetic South East was <strong>0.968</strong>. Taken together, these diagnostics suggest that the model is statistically sound, fits the pre-treatment data well and is suitable for estimating the campaign effect.</p>
 <p>The largest donor weights were North West at 36%, London at 22% and East of England at 10%. Together, those three regions account for 69% of the synthetic control.</p>
-<div id="f0faa5e3" class="cell" data-execution_count="7">
+<div id="47567d0f" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show CausalPy summary code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>result.summary(round_to<span class="op">=</span><span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -421,8 +421,8 @@ Pre-treatment correlation (South East): 0.9684</code></pre>
 </section>
 <section id="causalpys-view-of-the-result" class="level2">
 <h2 class="anchored" data-anchor-id="causalpys-view-of-the-result">CausalPy’s view of the result</h2>
-<p>The package output shows the observed and counterfactual series, the weekly impact, and the cumulative impact. The gap opens after advertising is switched off and accumulates across the ten-week test.</p>
-<div id="d2a27e1d" class="cell" data-execution_count="8">
+<p>The package output shows the observed and counterfactual series, the weekly impact, and the cumulative impact. The gap opens after advertising is switched off and accumulates across the ten-week test. In practical terms, the South East records fewer transactions each week than it would likely have recorded with advertising still running. Those missed transactions add up throughout the test.</p>
+<div id="d5579a55" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show CausalPy result plot code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, causalpy_axes <span class="op">=</span> result.plot(treated_unit<span class="op">=</span>TREATED_UNIT, show<span class="op">=</span><span class="va">False</span>)</span>
@@ -437,8 +437,8 @@ Pre-treatment correlation (South East): 0.9684</code></pre>
 </section>
 <section id="a-focused-view-of-the-spike" class="level2">
 <h2 class="anchored" data-anchor-id="a-focused-view-of-the-spike">A focused view of the spike</h2>
-<p>The full-history plot is useful for validation. A closer view makes the commercial result easier to see: actual transactions remain high, but they sit below the counterfactual during the switch-off.</p>
-<div id="88687f33" class="cell" data-execution_count="9">
+<p>The full-history plot is useful for validation because it shows how closely the synthetic control tracks the South East before the test. A closer view makes the commercial result easier to see: actual transactions remain high, but they sit below the counterfactual during the switch-off. The red predicted line is clearly above the black actual line, suggesting that marketing had a real effect and that keeping the campaign running would have generated additional transactions.</p>
+<div id="ce4b7720" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show focused spike plotting code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>focus_start <span class="op">=</span> pd.Timestamp(<span class="st">"2025-09-01"</span>)</span>
@@ -568,6 +568,10 @@ Pre-treatment correlation (South East): 0.9684</code></pre>
 </blockquote>
 <p>Geo-testing gives the CMO a practical way to reduce that uncertainty. It will not label every pound as productive or wasted, but it can estimate the incremental return and show whether the next pound of budget is likely to create enough value.</p>
 <p>The next campaign can then serve two purposes: generating profitable demand and learning where the next pound of budget creates genuine value. The central lesson is simple: <strong>a campaign can create real incremental sales and still be overspending</strong>. Attribution made the January spike look like advertising success. The geo-experiment showed how much of that spike the advertising actually caused.</p>
+</section>
+<section id="make-experimentation-standard-practice" class="level2">
+<h2 class="anchored" data-anchor-id="make-experimentation-standard-practice">Make experimentation standard practice</h2>
+<p>If you want to make experimentation a standard part of your marketing practice, or discuss whether geo-testing is feasible for your business, email me at <a href="mailto:jakepiekarski@jtp-analytics.com">jakepiekarski@jtp-analytics.com</a>.</p>
 
 
 </section>

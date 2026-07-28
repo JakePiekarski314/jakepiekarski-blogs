@@ -242,12 +242,12 @@ window.Quarto = {
 </header>
 
 
-<p>This post started with a question from a colleague. When we report the contribution of each marketing channel, are we actually measuring how those channels work <em>together</em>, or are we still largely evaluating them one at a time?</p>
-<p>It is a fair question, and it has stayed with me. Most campaigns are planned as a system: the parts are meant to support one another. Yet when the measurement comes back, it usually collapses into a familiar shape — a table with one row per channel, a contribution figure, and a return on ad spend (ROAS). The way we plan is joint, but the way we report is largely channel by channel.</p>
-<p>This is not a story about traditional marketing mix modelling (MMM) being wrong. Additive contribution reporting is useful, well understood and often exactly what a stakeholder needs. What follows is a more specific question, and a framework I have been exploring to answer it: can we <em>represent and report</em> the interaction between channels explicitly, rather than leaving it unparameterised and potentially conflated with channel main effects or other correlated drivers?</p>
+<p>This post started with a question from a colleague: when we report the contribution of each marketing channel, are we actually measuring how those channels work <em>together</em>, or are we still largely evaluating them one at a time?</p>
+<p>The question has stayed with me because most campaigns are planned as systems whose parts are meant to support one another, yet the measurement usually collapses into a familiar table with one row per channel, a contribution figure and a return on ad spend (ROAS). We plan jointly but continue to report largely channel by channel.</p>
+<p>Traditional marketing mix modelling (MMM) is not wrong, and additive contribution reporting remains useful, well understood and often exactly what a stakeholder needs. The more specific question explored here is whether we can <em>represent and report</em> the interaction between channels explicitly, rather than leaving it unparameterised and potentially conflated with channel main effects or other correlated drivers.</p>
 <section id="what-does-the-existing-research-say" class="level2">
 <h2 class="anchored" data-anchor-id="what-does-the-existing-research-say">What does the existing research say?</h2>
-<p>Before proposing anything, it is worth being clear that the idea is not new. Estimating synergy or interaction between marketing activities has an established research history, and this post sits within that tradition rather than inventing it. The table below summarises the work I lean on.</p>
+<p>Estimating synergy or interaction between marketing activities has an established research history, so this post builds on an existing tradition rather than presenting the idea as new. The table below summarises the work I lean on.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -294,7 +294,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>The broad idea of estimating synergy is therefore well established. The specific model developed here <em>extends</em> it by allowing the effect of channel <span class="math inline">\(j\)</span> on channel <span class="math inline">\(i\)</span> to differ from the reverse relationship — a directional treatment — which I keep clearly separate from the empirical findings of the papers above.</p>
+<p>Although estimating synergy is well established, the model developed here <em>extends</em> that idea by allowing the effect of channel <span class="math inline">\(j\)</span> on channel <span class="math inline">\(i\)</span> to differ from the reverse relationship. This directional treatment is my proposed extension and is kept separate from the empirical findings of the papers above.</p>
 </section>
 <section id="proposed-directional-interaction-model" class="level2">
 <h2 class="anchored" data-anchor-id="proposed-directional-interaction-model">Proposed directional interaction model</h2>
@@ -302,7 +302,7 @@ window.Quarto = {
 <p><span class="math display">\[
 C_t = \sum_{i=1}^{N} \beta_i\, m_{i,t}.
 \]</span></p>
-<p>This is interpretable and decomposes cleanly, but <span class="math inline">\(\beta_i\)</span> is a property of channel <span class="math inline">\(i\)</span> <em>alone</em> — nothing lets one channel change the effectiveness of another. That does not mean cross-channel effects vanish in an additive model; it means they are not represented explicitly. An omitted interaction may instead be:</p>
+<p>This is interpretable and decomposes cleanly, but <span class="math inline">\(\beta_i\)</span> is a property of channel <span class="math inline">\(i\)</span> <em>alone</em>, with no mechanism through which one channel can change the effectiveness of another. Cross-channel effects do not vanish in an additive model simply because they are not represented explicitly; an omitted interaction may instead be:</p>
 <ul>
 <li>aliased with the channel main effects;</li>
 <li>attributed to correlated regressors;</li>
@@ -310,7 +310,7 @@ C_t = \sum_{i=1}^{N} \beta_i\, m_{i,t}.
 <li>associated with poorer out-of-sample prediction;</li>
 <li>absorbed into wider posterior uncertainty.</li>
 </ul>
-<p>None of this is the same as the baseline or controls reliably and cleanly soaking up the interaction. To make it explicit, keep the additive backbone but multiply each channel’s contribution by a term that depends on the <em>other</em> channels. For channel <span class="math inline">\(i\)</span>:</p>
+<p>None of these outcomes means that the baseline or controls have reliably absorbed the interaction. We can represent it explicitly by keeping the additive backbone and multiplying each channel’s contribution by a term that depends on the <em>other</em> channels. For channel <span class="math inline">\(i\)</span>:</p>
 <p><span class="math display">\[
 C_{i,t}^{\mathrm{mix}}
 = \underbrace{\beta_i\, m_{i,t}}_{\text{reference}}\,
@@ -321,13 +321,13 @@ C_{i,t}^{\mathrm{mix}}
 y_t = \alpha + \sum_{i=1}^{N} C_{i,t}^{\mathrm{mix}}
 + \mathbf{x}_t^{\top}\boldsymbol{\delta} + \varepsilon_t,
 \]</span></p>
-<p>where <span class="math inline">\(\mathbf{x}_t\)</span> carries the non-media drivers (controls, trend, seasonality, holidays). The exponential keeps the multiplier positive, so a channel’s contribution scales up or down but never flips sign.</p>
+<p>where <span class="math inline">\(\mathbf{x}_t\)</span> carries the non-media drivers such as controls, trend, seasonality and holidays, while the exponential keeps the multiplier positive so that a channel’s contribution can scale up or down without flipping sign.</p>
 <section id="what-the-parameters-mean" class="level3">
 <h3 class="anchored" data-anchor-id="what-the-parameters-mean">What the parameters mean</h3>
-<p>The interpretation of every parameter depends on the scale of the <em>transformed</em> media, so it is worth being explicit. Raw spend is max-scaled into <span class="math inline">\([0,1]\)</span>; geometric adstock is then applied (here without renormalisation) and passed through a <span class="math inline">\(\tanh\)</span> saturation, which bounds each channel’s transformed media <span class="math inline">\(m_{i,t}\)</span> at roughly <span class="math inline">\(b_i \approx 1\)</span>. So <span class="math inline">\(m_{i,t}\)</span> lies in approximately <span class="math inline">\([0, b_i]\)</span> — close to, but not exactly, <span class="math inline">\([0,1]\)</span> — and reaches its channel maximum only under sustained heavy spend.</p>
+<p>The interpretation of every parameter depends on the scale of the <em>transformed</em> media. Raw spend is max-scaled into <span class="math inline">\([0,1]\)</span>, then geometric adstock is applied without renormalisation and passed through a <span class="math inline">\(\tanh\)</span> saturation, which bounds each channel’s transformed media <span class="math inline">\(m_{i,t}\)</span> at roughly <span class="math inline">\(b_i \approx 1\)</span>. The resulting <span class="math inline">\(m_{i,t}\)</span> lies in approximately <span class="math inline">\([0, b_i]\)</span>, close to but not exactly <span class="math inline">\([0,1]\)</span>, and reaches its channel maximum only under sustained heavy spend.</p>
 <ul>
-<li><span class="math inline">\(\beta_i\)</span> — <strong>base effectiveness</strong>. If the transformed media output is normalised to approximately <span class="math inline">\([0,1]\)</span>, then <span class="math inline">\(\beta_i = 0.10\)</span> represents a reference contribution of up to roughly 10% of average sales at that channel’s maximum transformed activity. It is not a ROAS.</li>
-<li><span class="math inline">\(\gamma_{ij}\)</span> — <strong>directional interaction</strong>: the effect of modifier channel <span class="math inline">\(j\)</span> on the effectiveness of channel <span class="math inline">\(i\)</span>, acting as a log-multiplier. When channel <span class="math inline">\(j\)</span> is near its maximum transformed activity (<span class="math inline">\(m_{j,t}\approx 1\)</span>), it scales channel <span class="math inline">\(i\)</span>’s effectiveness by about <span class="math inline">\(e^{\gamma_{ij}}\)</span>; for example <span class="math inline">\(\gamma_{ij}=0.50\)</span> implies roughly a <span class="math inline">\(e^{0.50}-1\approx 65\%\)</span> lift at that level, and a negative <span class="math inline">\(\gamma_{ij}\)</span> implies suppression. Crucially <span class="math inline">\(\gamma_{ij}\)</span> need not equal <span class="math inline">\(\gamma_{ji}\)</span>.</li>
+<li><strong>Base effectiveness, <span class="math inline">\(\beta_i\)</span>.</strong> If the transformed media output is normalised to approximately <span class="math inline">\([0,1]\)</span>, then <span class="math inline">\(\beta_i = 0.10\)</span> represents a reference contribution of up to roughly 10% of average sales at that channel’s maximum transformed activity, rather than a ROAS.</li>
+<li><strong>Directional interaction, <span class="math inline">\(\gamma_{ij}\)</span>.</strong> This is the effect of modifier channel <span class="math inline">\(j\)</span> on the effectiveness of channel <span class="math inline">\(i\)</span>, acting as a log-multiplier. When channel <span class="math inline">\(j\)</span> is near its maximum transformed activity (<span class="math inline">\(m_{j,t}\approx 1\)</span>), it scales channel <span class="math inline">\(i\)</span>’s effectiveness by about <span class="math inline">\(e^{\gamma_{ij}}\)</span>. For example, <span class="math inline">\(\gamma_{ij}=0.50\)</span> implies roughly a <span class="math inline">\(e^{0.50}-1\approx 65\%\)</span> lift at that level, while a negative <span class="math inline">\(\gamma_{ij}\)</span> implies suppression and <span class="math inline">\(\gamma_{ij}\)</span> need not equal <span class="math inline">\(\gamma_{ji}\)</span>.</li>
 </ul>
 <p>This gives three quantities worth naming, defined draw by draw:</p>
 <p><span class="math display">\[
@@ -340,7 +340,7 @@ C_{i,t}^{\mathrm{mix}} = C_{i,t}^{\mathrm{ref}}\, M_{i,t},
 <p><span class="math display">\[
 C_{i,t}^{\mathrm{int}} = C_{i,t}^{\mathrm{mix}} - C_{i,t}^{\mathrm{ref}}.
 \]</span></p>
-<p>The <strong>reference contribution</strong> <span class="math inline">\(C^{\mathrm{ref}}\)</span> is obtained by setting the interaction multiplier to one. It is a model-derived reference, <em>not</em> an experimentally identified estimate of what the channel would have generated if every other channel had been switched off. The <strong>realised-mix contribution</strong> <span class="math inline">\(C^{\mathrm{mix}}\)</span> is the modelled contribution under the surrounding media environment that actually occurred; it is inferred, not directly observed. The <strong>interaction increment</strong> <span class="math inline">\(C^{\mathrm{int}}\)</span> is the difference — positive if the channel was amplified by others, negative if suppressed — and is an attribute of the existing channels, not a spendable extra channel. (I sometimes call <span class="math inline">\(C^{\mathrm{ref}}\)</span> the “silo” contribution as shorthand; that is only a nickname for the multiplier-off reference.)</p>
+<p>The <strong>reference contribution</strong> <span class="math inline">\(C^{\mathrm{ref}}\)</span> is obtained by setting the interaction multiplier to one, making it a model-derived reference rather than an experimentally identified estimate of what the channel would have generated if every other channel had been switched off. The <strong>realised-mix contribution</strong> <span class="math inline">\(C^{\mathrm{mix}}\)</span> is the inferred contribution under the surrounding media environment that actually occurred. Their difference is the <strong>interaction increment</strong> <span class="math inline">\(C^{\mathrm{int}}\)</span>, which is positive when other channels amplify the channel and negative when they suppress it. This increment belongs to the existing channels and should not be treated as a spendable extra channel. I sometimes use “silo contribution” as shorthand for <span class="math inline">\(C^{\mathrm{ref}}\)</span>, but it is only a nickname for the multiplier-off reference.</p>
 </section>
 <section id="direction-matters" class="level3">
 <h3 class="anchored" data-anchor-id="direction-matters">Direction matters</h3>
@@ -373,7 +373,7 @@ Figure&nbsp;1: Example directional interaction matrix (posterior point estimate)
 <section id="building-the-model-in-pymc" class="level2">
 <h2 class="anchored" data-anchor-id="building-the-model-in-pymc">Building the model in PyMC</h2>
 <p>Building the model directly in PyMC makes the interaction structure, dimensions and derived quantities explicit, rather than requiring the specification to fit within the assumptions of a pre-built MMM class.</p>
-<div id="fafed962" class="cell" data-execution_count="3">
+<div id="7f974bbb" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the PyMC model code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -383,7 +383,7 @@ Figure&nbsp;1: Example directional interaction matrix (posterior point estimate)
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymc_marketing.mmm <span class="im">import</span> GeometricAdstock, TanhSaturation</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Off-diagonal directional pairs: aff_idx = affected channel i, mod_idx = modifier j.</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># One free gamma per directional pair — no diagonal parameters are created, so</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># One free gamma per directional pair; no diagonal parameters are created, so</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># nothing disconnected from the likelihood is sampled.</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>off <span class="op">=</span> <span class="op">~</span>np.eye(n_channels, dtype<span class="op">=</span><span class="bu">bool</span>)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>aff_idx, mod_idx <span class="op">=</span> np.where(off)                                  <span class="co"># length N(N-1)</span></span>
@@ -438,7 +438,7 @@ Figure&nbsp;1: Example directional interaction matrix (posterior point estimate)
 <span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    pm.Normal(<span class="st">"y"</span>, mu<span class="op">=</span>mu, sigma<span class="op">=</span>sigma, observed<span class="op">=</span>y_scaled, dims<span class="op">=</span><span class="st">"date"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>Two details make the interaction well-defined. The <code>channel</code> / <code>modifier_channel</code> dimensions pin down the direction of <span class="math inline">\(\gamma_{ij}\)</span>, and the <code>interaction</code> dimension holds exactly one parameter per directional off-diagonal pair — the diagonal is filled deterministically with zero, so no self-interaction parameters are sampled. Everything downstream is derived from the <code>reference_contribution_scaled</code> and <code>realised_mix_contribution_scaled</code> deterministics, so the reported numbers match the fitted model exactly.</p>
+<p>The interaction is well-defined because the <code>channel</code> / <code>modifier_channel</code> dimensions pin down the direction of <span class="math inline">\(\gamma_{ij}\)</span>, while the <code>interaction</code> dimension holds exactly one parameter per directional off-diagonal pair. Filling the diagonal deterministically with zero prevents self-interaction parameters from being sampled. Everything downstream is derived from the <code>reference_contribution_scaled</code> and <code>realised_mix_contribution_scaled</code> deterministics, which keeps the reported numbers aligned with the fitted model.</p>
 <p>The full model graph makes the flow concrete: transformed media and the base coefficients form each channel’s reference contribution; the <em>other</em> channels enter through the directional <span class="math inline">\(\gamma\)</span> matrix to form the multiplier; the realised-mix contributions are summed with controls, seasonality and holidays before the likelihood. It is wide, so click to zoom into any part.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -508,11 +508,11 @@ Table&nbsp;1: Prior 95% interval for the interaction multiplier M as the number 
 </figure>
 </div>
 </div>
-<p>Even with a modest per-pair prior, three active modifiers already admit roughly a <span class="math inline">\(\pm 30\%\)</span> swing in effectiveness before any data are seen. The practical lesson: the prior width, the media scale and the number of candidate modifiers have to be considered together, not one coefficient at a time.</p>
+<p>Even with a modest per-pair prior, three active modifiers admit roughly a <span class="math inline">\(\pm 30\%\)</span> swing in effectiveness before any data are seen, which means the prior width, media scale and number of candidate modifiers must be considered together rather than one coefficient at a time.</p>
 </section>
 <section id="what-is-the-reference-environment" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-the-reference-environment">What is the reference environment?</h2>
-<p>The multiplier above uses <em>zero surrounding media</em> as its reference: <span class="math inline">\(M_{i,t}=1\)</span> when <span class="math inline">\(m_{j,t}=0\)</span> for all <span class="math inline">\(j\neq i\)</span>. That is a clean synthetic anchor, but in a real dataset it may sit far from where the data actually live — channels are rarely all dark at once. An alternative is to centre the interaction on the average historical environment:</p>
+<p>The multiplier above uses <em>zero surrounding media</em> as its reference, meaning <span class="math inline">\(M_{i,t}=1\)</span> when <span class="math inline">\(m_{j,t}=0\)</span> for all <span class="math inline">\(j\neq i\)</span>. Although this provides a clean synthetic anchor, it may sit far from where real data live because channels are rarely all dark at once. An alternative is to centre the interaction on the average historical environment:</p>
 <p><span class="math display">\[
 M_{i,t} = \exp\!\left(\sum_{j\neq i}\gamma_{ij}\left(m_{j,t}-\bar m_j\right)\right),
 \]</span></p>
@@ -520,9 +520,9 @@ M_{i,t} = \exp\!\left(\sum_{j\neq i}\gamma_{ij}\left(m_{j,t}-\bar m_j\right)\rig
 </section>
 <section id="illustrating-the-reporting-framework" class="level2">
 <h2 class="anchored" data-anchor-id="illustrating-the-reporting-framework">Illustrating the reporting framework</h2>
-<p>To make the reporting concrete, I fit the model to a synthetic four-year, four-channel weekly dataset. The synthetic data contain a small number of directional interactions so that the reporting outputs are easy to interpret. The purpose of the example is not to establish that every cross-channel interaction can be reliably identified. It is to show how an interaction-aware model changes contribution, ROAS and response-curve reporting.</p>
+<p>To make the reporting concrete, I fit the model to a synthetic four-year, four-channel weekly dataset containing a small number of directional interactions. This keeps the outputs easy to interpret while demonstrating how an interaction-aware model changes contribution, ROAS and response-curve reporting; it does not establish that every cross-channel interaction can be reliably identified.</p>
 <p>As with any MMM, the posterior estimates depend on the variation in the data, the media transformations, the controls and the priors. I return to the identification problem later; for now, the fitted example is used to illustrate the reporting framework. I report posterior point summaries alongside 94% highest-density intervals (HDIs) where appropriate, and every derived quantity is formed draw by draw before summarising.</p>
-<p>The posterior predictive distribution broadly tracks the synthetic outcome, giving us a fitted example through which to examine contribution and response reporting. Predictive fit alone does not establish that the individual base and interaction effects are uniquely identified.</p>
+<p>The posterior predictive distribution broadly tracks the synthetic outcome and provides a fitted example for examining contribution and response reporting, although predictive fit alone cannot establish that the individual base and interaction effects are uniquely identified.</p>
 <div id="cell-fig-fit" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div id="fig-fit" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -623,7 +623,7 @@ Figure&nbsp;4: Reference contribution plus interaction increment equals realised
 </div>
 </div>
 </div>
-<p>Because the estimated interactions are modest, realised-mix contributions sit close to their references, with the largest increment attaching to Paid search — the channel the model most associates with a video uplift.</p>
+<p>Because the estimated interactions are modest, realised-mix contributions sit close to their references, with the largest increment attaching to Paid search, which is the channel the model most associates with a video uplift.</p>
 </section>
 <section id="roas-under-interactions" class="level3">
 <h3 class="anchored" data-anchor-id="roas-under-interactions">ROAS under interactions</h3>
@@ -783,7 +783,7 @@ Table&nbsp;4: Directional interactions, largest first: the interaction coefficie
 </figure>
 </div>
 </div>
-<p>The contribution table answers “within which channel’s response does the increment appear?”; this table answers “which channel modified which other channel?”. They are different questions, and there is no single universal rule for allocating the value between them.</p>
+<p>The contribution table answers “within which channel’s response does the increment appear?”, whereas this table answers “which channel modified which other channel?”. Because these are different questions, there is no single universal rule for allocating the value between them.</p>
 </section>
 <section id="response-curves-depend-on-the-media-mix" class="level3">
 <h3 class="anchored" data-anchor-id="response-curves-depend-on-the-media-mix">Response curves depend on the media mix</h3>
@@ -802,14 +802,14 @@ Figure&nbsp;6: Paid search steady-state response curves under three environments
 </div>
 </div>
 </div>
-<p>The gap between the curves is the interaction at work: the same steady-state search spend earns more when video runs alongside it.</p>
+<p>The gap between the curves shows the interaction at work, with the same steady-state search spend earning more when video runs alongside it.</p>
 </section>
 </section>
 <section id="what-makes-this-difficult-in-practice" class="level2">
 <h2 class="anchored" data-anchor-id="what-makes-this-difficult-in-practice">What makes this difficult in practice</h2>
-<p>The interaction model is easy to <em>write</em>; the hard question is whether the data can distinguish the effects it contains.</p>
+<p>Writing the interaction model is straightforward, but determining whether the data can distinguish the effects it contains is much harder.</p>
 <ul>
-<li><strong>Identification.</strong> If channels launch, pause and scale together — the normal state of an integrated campaign — there is little independent variation to separate a channel’s direct effect, its cross-channel effect, campaign timing and demand. When channels share similar timing and spend patterns, the model can trade off a channel’s base effect against the interaction term. Overall prediction may still be strong even when the separate components are weakly identified.</li>
+<li><strong>Identification.</strong> If channels launch, pause and scale together, as they often do in an integrated campaign, there is little independent variation to separate a channel’s direct effect, its cross-channel effect, campaign timing and demand. When channels share similar timing and spend patterns, the model can trade off a channel’s base effect against the interaction term, allowing overall prediction to remain strong even when the separate components are weakly identified.</li>
 <li><strong>Correlation and priors are separate problems.</strong> With limited data, priors can materially influence the posterior <span class="citation" data-cites="jin2017bayesian">(<a href="#ref-jin2017bayesian" role="doc-biblioref">Jin et al. 2017</a>)</span>. Strong correlation between channels is an additional identification problem: several explanations can fit the same movement in the outcome, so a non-zero <span class="math inline">\(\gamma_{ij}\)</span> may equally reflect omitted demand, common timing or a misspecified transform.</li>
 <li><strong>Coefficient size is not commercial impact.</strong> A large <span class="math inline">\(\gamma_{ij}\)</span> does not necessarily imply a large interaction increment. The commercial effect also depends on the affected channel’s base effectiveness <span class="math inline">\(\beta_i\)</span>, the transformed activity <span class="math inline">\(m_{i,t}\)</span> and <span class="math inline">\(m_{j,t}\)</span>, and how much the channels overlap through time.</li>
 <li><strong>Experiments help most.</strong> Staggered campaigns, geo variation and holdouts provide better identifying information than observational time series; partial pooling across geographies can also help <span class="citation" data-cites="sun2017geo">(<a href="#ref-sun2017geo" role="doc-biblioref">Sun et al. 2017</a>)</span>. None of this manufactures evidence the data do not contain.</li>
@@ -862,11 +862,11 @@ Figure&nbsp;6: Paid search steady-state response curves under three environments
 <p><span class="math display">\[
 \sum_{k=0}^{N-1}\binom{N-1}{k} = 2^{\,N-1},
 \]</span></p>
-<p>which is just the binomial theorem with <span class="math inline">\(a=b=1\)</span>; across all <span class="math inline">\(N\)</span> channels that is <span class="math inline">\(N\,2^{\,N-1}\)</span>. With four channels, one focal channel already has <span class="math inline">\(2^{3}=8\)</span> environments; at ten channels it is <span class="math inline">\(2^{9}=512\)</span> each. And because modifier levels are actually continuous, the full model technically implies an <em>infinite</em> family of conditional response curves. In practice one fixes an environment of interest (as in the figure above) or explores interactively — another reason to keep the interaction set small.</p>
+<p>which follows from the binomial theorem with <span class="math inline">\(a=b=1\)</span>; across all <span class="math inline">\(N\)</span> channels that is <span class="math inline">\(N\,2^{\,N-1}\)</span>. One focal channel already has <span class="math inline">\(2^{3}=8\)</span> environments with four channels and <span class="math inline">\(2^{9}=512\)</span> with ten. Because modifier levels are continuous rather than binary, the full model technically implies an <em>infinite</em> family of conditional response curves, so practical reporting requires fixing an environment of interest, as in the figure above, or exploring the results interactively. This is another reason to keep the interaction set small.</p>
 </section>
 <section id="a-targeted-approach-is-more-defensible" class="level2">
 <h2 class="anchored" data-anchor-id="a-targeted-approach-is-more-defensible">A targeted approach is more defensible</h2>
-<p>This is why my current thinking is not “estimate every interaction” but “estimate a few, chosen deliberately”. Rather than the full off-diagonal matrix, restrict attention to a set of pairs</p>
+<p>My current preference is therefore to estimate a small number of deliberately chosen interactions rather than every possible relationship. Instead of fitting the full off-diagonal matrix, restrict attention to a set of pairs</p>
 <p><span class="math display">\[
 \mathcal{I} = \left\{ (i,j) : \text{there is a substantive reason to estimate } \gamma_{ij} \right\},
 \]</span></p>
@@ -880,12 +880,12 @@ C_{i,t}^{\mathrm{mix}}
 </section>
 <section id="where-this-could-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="where-this-could-go-next">Where this could go next</h2>
-<p>The natural next step is budget optimisation. Once a channel’s return depends on the whole mix, allocation stops being a set of independent per-channel curves and becomes a joint problem: moving spend into video changes video’s own contribution <em>and</em> search’s effectiveness. That deserves its own treatment.</p>
+<p>The natural next step is budget optimisation because, once a channel’s return depends on the whole mix, allocation stops being a set of independent per-channel curves and becomes a joint problem. Moving spend into video changes both video’s own contribution and search’s effectiveness, a topic that deserves its own treatment.</p>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <p>Explicit cross-channel modelling is possible and potentially valuable, particularly where there is a clear reason to believe one channel changes the effectiveness of another. The framework here gives a concrete, reconciled way to report it: a reference contribution, an interaction increment and a realised-mix contribution that add up, with the matching ROAS and response-curve consequences.</p>
-<p>But it is also complex, and conditional on assumptions and on the variation actually present in the data. Estimating every possible relationship inflates the parameter count, the identification demands and the reporting burden. It is therefore best used selectively. Where strategic, experimental or empirical evidence supports a particular interaction, explicitly estimating it may provide a richer model-based account of the relationship between those channels. Where that evidence is absent, an all-channel interaction model is likely to introduce more uncertainty than useful information.</p>
+<p>The approach is also complex and depends on both its assumptions and the variation present in the data. Estimating every possible relationship inflates the parameter count, identification demands and reporting burden, so the method is best used selectively. Where strategic, experimental or empirical evidence supports a particular interaction, explicitly estimating it may provide a richer model-based account of the relationship between those channels; where that evidence is absent, an all-channel interaction model is likely to introduce more uncertainty than useful information.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
