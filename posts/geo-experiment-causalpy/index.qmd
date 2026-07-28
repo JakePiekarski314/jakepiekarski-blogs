@@ -160,11 +160,11 @@ plt.show()
 
 ![](assets/transaction_history.png){fig-alt="Weekly transactions for eleven UK regions from 2023 to 2026, with the South East highlighted and January periods shaded."}
 
-The regions share the same broad seasonal pattern. That co-movement is what makes a synthetic control plausible, but it is not enough on its own. The pre-treatment fit still needs to be checked.
+The regions share the same broad seasonal pattern, rising and falling at broadly similar times. That co-movement is what makes a synthetic control plausible. Essentially, the regions in grey need to explain the region in red well enough that their combined history provides a credible comparison. Similar seasonality alone is not sufficient, so the pre-treatment fit still needs to be checked.
 
 ### South East January transactions, year on year
 
-Comparing the weeks around 1 January shows that the spike is recurring. January 2026 still rises sharply even though advertising is off. The switch-off lowers the peak, but does not remove it.
+Comparing the weeks around 1 January shows that the spike in transactions is recurring. January 2026 still rises sharply even though advertising is off. The switch-off lowers the peak, but does not remove it.
 
 ```{python}
 #| echo: true
@@ -204,7 +204,7 @@ plt.show()
 
 [CausalPy](https://causalpy.readthedocs.io/) finds a weighted combination of untreated regions that behaves like the South East before the switch-off. That synthetic South East estimates what would probably have happened had the campaign continued.
 
-The donor weights are non-negative and sum to one. The Bayesian model also carries uncertainty from the pre-period into the post-period counterfactual.
+The donor weights are non-negative and sum to one, ensuring that if every donor region sees one additional transaction, so does our counterfactual. The Bayesian model also carries uncertainty from the pre-period into the post-period counterfactual.
 
 ```{python}
 #| echo: true
@@ -245,7 +245,7 @@ with warnings.catch_warnings():
     )
 ```
 
-The model converged cleanly, with no divergences, a maximum R-hat of 1.003 and a minimum bulk effective sample size of 1,938. More importantly for design validity, the pre-treatment correlation between the observed and synthetic South East was **0.968**.
+The model converged cleanly, with no divergences, a maximum R-hat of 1.003 and a minimum bulk effective sample size of 1,938. More importantly for design validity, the pre-treatment correlation between the observed and synthetic South East was **0.968**. Taken together, these diagnostics suggest that the model is statistically sound, fits the pre-treatment data well and is suitable for estimating the campaign effect.
 
 The largest donor weights were North West at 36%, London at 22% and East of England at 10%. Together, those three regions account for 69% of the synthetic control.
 
@@ -268,7 +268,7 @@ Pre-treatment correlation (South East): 0.9684
 
 ## CausalPy's view of the result
 
-The package output shows the observed and counterfactual series, the weekly impact, and the cumulative impact. The gap opens after advertising is switched off and accumulates across the ten-week test.
+The package output shows the observed and counterfactual series, the weekly impact, and the cumulative impact. The gap opens after advertising is switched off and accumulates across the ten-week test. In practical terms, the South East records fewer transactions each week than it would likely have recorded with advertising still running. Those missed transactions add up throughout the test.
 
 ```{python}
 #| echo: true
@@ -283,7 +283,7 @@ plt.show()
 
 ## A focused view of the spike
 
-The full-history plot is useful for validation. A closer view makes the commercial result easier to see: actual transactions remain high, but they sit below the counterfactual during the switch-off.
+The full-history plot is useful for validation because it shows how closely the synthetic control tracks the South East before the test. A closer view makes the commercial result easier to see: actual transactions remain high, but they sit below the counterfactual during the switch-off. The red predicted line is clearly above the black actual line, suggesting that marketing had a real effect and that keeping the campaign running would have generated additional transactions.
 
 ```{python}
 #| echo: true
@@ -404,3 +404,7 @@ John Wanamaker is credited with a line that still captures the problem:
 Geo-testing gives the CMO a practical way to reduce that uncertainty. It will not label every pound as productive or wasted, but it can estimate the incremental return and show whether the next pound of budget is likely to create enough value.
 
 The next campaign can then serve two purposes: generating profitable demand and learning where the next pound of budget creates genuine value. The central lesson is simple: **a campaign can create real incremental sales and still be overspending**. Attribution made the January spike look like advertising success. The geo-experiment showed how much of that spike the advertising actually caused.
+
+## Make experimentation standard practice
+
+If you want to make experimentation a standard part of your marketing practice, or discuss whether geo-testing is feasible for your business, email me at [jakepiekarski@jtp-analytics.com](mailto:jakepiekarski@jtp-analytics.com).
