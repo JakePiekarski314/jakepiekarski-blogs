@@ -1,10 +1,12 @@
 ---
 title: "Blogs"
+listing:
+  contents: posts/*/index.qmd
+  type: default
+  sort: "date desc"
+  fields: [date, reading-time, title, subtitle]
+  sort-ui: false
+  filter-ui: false
+  categories: false
+  feed: false
 ---
-
-| Title | Link |
-|-------|------|
-| Your Campaign Is Working. You May Still Be Overspending. | [Read →](posts/geo-experiment-causalpy/index.html) |
-| Can MMM Measure How Channels Work Together? | [Read →](posts/cross-channel-measurement-mmm/index.html) |
-| Measure What Matters: Attribution vs Incrementality | [Read →](posts/meta-attribution-causal-analysis/index.html) |
-| Improving Your Marketing Measurement with Hierarchical MMMs | [Read →](posts/hierarchical-mmm/index.html) |
