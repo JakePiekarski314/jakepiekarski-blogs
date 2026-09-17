@@ -3,6 +3,7 @@ title: "Your Campaign Is Working. You May Still Be Overspending."
 subtitle: "Using a geo-experiment and CausalPy to separate incremental transactions from demand that already existed"
 author: "Jake Piekarski"
 date: "2026-07-27"
+content-type: "Blog"
 jupyter: python3
 lightbox: true
 execute:

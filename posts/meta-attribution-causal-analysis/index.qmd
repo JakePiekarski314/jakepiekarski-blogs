@@ -3,6 +3,7 @@ title: "Measure What Matters: Attribution vs Incrementality"
 subtitle: "Using CausalPy's Interrupted Time Series to separate real performance changes from measurement updates"
 author: "Jake Piekarski"
 date: "2026-03-19"
+content-type: "Blog"
 jupyter: python3
 execute:
   freeze: true

@@ -1,0 +1,58 @@
+---
+title: "Contact"
+description: "Tell JTP Analytics about your marketing measurement, modelling, audit, training or agency support requirement."
+---
+
+Tell me what decision you are trying to make, what data is available and when you need support. I will review the request personally and respond at [jakepiekarski@jtp-analytics.com](mailto:jakepiekarski@jtp-analytics.com).
+
+```{=html}
+<form name="project-enquiry" method="POST" action="/thank-you.html" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
+  <input type="hidden" name="form-name" value="project-enquiry">
+  <p class="visually-hidden">
+    <label>Do not fill this out if you are human: <input name="bot-field"></label>
+  </p>
+  <div class="form-grid">
+    <div class="form-field">
+      <label for="contact-name">Name</label>
+      <input id="contact-name" name="name" type="text" autocomplete="name" required>
+    </div>
+    <div class="form-field">
+      <label for="contact-email">Work email</label>
+      <input id="contact-email" name="email" type="email" autocomplete="email" required>
+    </div>
+    <div class="form-field">
+      <label for="contact-company">Company</label>
+      <input id="contact-company" name="company" type="text" autocomplete="organization">
+    </div>
+    <div class="form-field">
+      <label for="contact-service">Service required</label>
+      <select id="contact-service" name="service" required>
+        <option value="" selected disabled>Select a service</option>
+        <option value="Bespoke modelling">Bespoke modelling</option>
+        <option value="Marketing Mix Modelling">Marketing Mix Modelling</option>
+        <option value="Incrementality testing">Incrementality testing</option>
+        <option value="Product adoption modelling">Product adoption modelling</option>
+        <option value="Model audit">Model audit</option>
+        <option value="Team education">Team education</option>
+        <option value="Agency support">Agency support</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="contact-budget">Approximate budget</label>
+      <input id="contact-budget" name="budget" type="text" placeholder="For example, £1,500">
+    </div>
+    <div class="form-field">
+      <label for="contact-timeline">Desired timeline</label>
+      <input id="contact-timeline" name="timeline" type="text" placeholder="For example, within 6 weeks">
+    </div>
+  </div>
+  <div class="form-field">
+    <label for="contact-description">Project description</label>
+    <textarea id="contact-description" name="project-description" rows="7" placeholder="What question are you trying to answer, and what data do you have available?" required></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Send project enquiry</button>
+</form>
+```
+
+The initial conversation is used to understand the problem and confirm whether JTP is a good fit. A proposed scope and time estimate will be provided before paid work begins.

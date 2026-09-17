@@ -1,26 +1,115 @@
 ---
-title: "Jake Piekarski"
+title: "JTP Analytics"
+subtitle: "Independent marketing measurement consultancy"
+description: "Bespoke modelling, causal measurement and practical support for marketing teams that need clearer answers from mature data."
+page-layout: full
+title-block-banner: images/JTP-banner.png
+title-block-banner-color: white
+image: images/JTP-banner.png
+format:
+  html:
+    body-classes: home-page
 ---
 
-This site hosts MMM and Bayesian modelling related blogs written by me. Here you'll find practical guides, case studies, and technical deep-dives on Marketing Mix Modelling, hierarchical priors, incrementality testing, and causal inference, all grounded in Bayesian statistics and implemented in PyMC. Head to [Blogs](blogs.html) to browse all posts.
+JTP Analytics helps data-mature organisations understand what drives growth, where marketing is genuinely working, and how to make better decisions under uncertainty.
 
-## Bio
+Run independently by Jake Piekarski, JTP combines rigorous statistical modelling with practical marketing experience. The focus is not simply producing another dashboard or model: it is building measurement that teams can understand, challenge and use.
 
-I'm a data scientist with a passion for Bayesian statistics and marketing measurement. Currently working as a Marketing Data Scientist, I specialise in advanced statistical modelling, including Marketing Mix Modelling (MMM), incrementality testing, and causal inference. My expertise lies in translating complex data into actionable insights to optimise marketing strategies and fuel data-driven decision-making. I have both agency and consultancy experience, working with a wide range of clients across various industries, from airlines to Fortune 100 CPGs.
+[Explore services](services.html){.btn .btn-primary} [View pricing](pricing.html){.btn .btn-outline-primary}
 
-| Educational Achievement | Obtained From | Class |
-|-------------------------|---------------|-------|
-| Bachelor's in Mathematics | University of Nottingham | First class |
-| Master's in Mathematics | University of Nottingham | First class |
+```{=html}
+<div class="availability-status" role="status" aria-label="Current client availability">
+  <span class="availability-status__indicator" aria-hidden="true"></span>
+  <span class="availability-status__label">Current availability</span>
+  <strong>2 of 4 client spaces available</strong>
+  <time class="availability-status__updated" datetime="2026-09-17">Updated 17 September 2026</time>
+</div>
+```
 
-## PyMC Labs
+## Marketing measurement built around your decisions
 
-I'm currently a Data Scientist at [PyMC Labs](https://www.pymc-labs.com/), the Bayesian AI consultancy founded by the creators of PyMC. PyMC Labs partners with organisations worldwide to design, implement, and optimise bespoke Bayesian models, from Media Mix Modelling and marketing analytics to AI systems and causal inference. I joined the team in January 2025 and contribute to client projects and open-source tooling in the Bayesian marketing and analytics space.
+JTP is best suited to organisations with established data, meaningful marketing activity and questions that standard reporting cannot answer. This includes direct-to-consumer businesses, established brands, in-house marketing teams and agencies strengthening their own measurement offering across the UK and US.
 
-## JTP Analytics
+The methods are designed to remain useful as access to user-level tracking and third-party cookies becomes less reliable. Aggregate modelling, experiments and causal inference provide a more durable foundation for decision-making.
 
-JTP Analytics is my own consultancy, offering expertise in Marketing Mix Modelling and marketing measurement. Whether you need model development, validation, or support with incrementality testing and attribution, I help teams turn complex data into clear, actionable insights. Reach out at [jakepiekarski@jtp-analytics.com](mailto:jakepiekarski@jtp-analytics.com) for any MMM or marketing analytics support.
+## Services
 
----
+::: {.service-grid}
+::: {.service-summary}
+<div class="service-visual" aria-hidden="true"><span style="--bar-height: 38%"></span><span style="--bar-height: 57%"></span><span style="--bar-height: 49%"></span><span style="--bar-height: 76%"></span><span style="--bar-height: 92%"></span></div>
 
-Thank you for reading.
+### Bespoke modelling
+
+Build a model around the commercial question, from Marketing Mix Modelling and budget optimisation to product adoption forecasting.
+
+[Modelling services](services.html#bespoke-modelling)
+:::
+
+::: {.service-summary}
+<div class="service-visual service-visual--experiment" aria-hidden="true"><span style="--bar-height: 46%"></span><span style="--bar-height: 48%"></span><span style="--bar-height: 72%"></span><span style="--bar-height: 74%"></span><span style="--bar-height: 87%"></span></div>
+
+### Incrementality testing
+
+Design and analyse experiments that separate activity which caused an outcome from demand that would have happened anyway.
+
+[Incrementality services](services.html#incrementality-testing)
+:::
+
+::: {.service-summary}
+<div class="service-visual service-visual--audit" aria-hidden="true"><span style="--bar-height: 78%"></span><span style="--bar-height: 64%"></span><span style="--bar-height: 84%"></span><span style="--bar-height: 71%"></span><span style="--bar-height: 90%"></span></div>
+
+### Model audits
+
+Review an existing model's assumptions, validation, implementation and suitability before important decisions are made from it.
+
+[Model audit services](services.html#model-audits-and-validation)
+:::
+
+::: {.service-summary}
+<div class="service-visual service-visual--education" aria-hidden="true"><span style="--bar-height: 42%"></span><span style="--bar-height: 56%"></span><span style="--bar-height: 69%"></span><span style="--bar-height: 80%"></span><span style="--bar-height: 91%"></span></div>
+
+### Team education
+
+Build confidence across technical and marketing teams through training, workshops and practical measurement guidance.
+
+[Education and advisory](services.html#team-education-and-advisory)
+:::
+:::
+
+## Independent expertise, explained clearly
+
+JTP is led by [Jake Piekarski](team.html), a Principal Data Scientist at [PyMC Labs](https://www.pymc-labs.com/) with three years of agency and consultancy experience in marketing analytics. Jake has worked across Fortune 100 consumer packaged goods, airlines, manufacturing and consumer goods, food and beverage businesses, and charities.
+
+Alongside client work, Jake contributes to the open-source [PyMC-Marketing](https://www.pymc-marketing.io/) ecosystem and has taught the [Bayesian Marketing Analytics](https://www.pymc-labs.com/courses/bayesian-marketing-analytics) course. His work combines the statistical depth needed to build credible models with the communication needed to make them useful.
+
+[Meet Jake](team.html){.btn .btn-outline-primary} [Read blogs and case studies](blogs.html){.btn .btn-outline-primary}
+
+## Start a conversation
+
+If you have a modelling problem, an existing model that needs a second opinion, or a marketing measurement question that has become difficult to answer, send a short note below.
+
+```{=html}
+<form name="home-enquiry" method="POST" action="/thank-you.html" data-netlify="true" netlify-honeypot="bot-field" class="contact-form contact-form--compact">
+  <input type="hidden" name="form-name" value="home-enquiry">
+  <p class="visually-hidden">
+    <label>Do not fill this out if you are human: <input name="bot-field"></label>
+  </p>
+  <div class="form-grid">
+    <div class="form-field">
+      <label for="home-name">Name</label>
+      <input id="home-name" name="name" type="text" autocomplete="name" required>
+    </div>
+    <div class="form-field">
+      <label for="home-email">Work email</label>
+      <input id="home-email" name="email" type="email" autocomplete="email" required>
+    </div>
+  </div>
+  <div class="form-field">
+    <label for="home-message">How can JTP help?</label>
+    <textarea id="home-message" name="message" rows="4" required></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Send enquiry</button>
+</form>
+```
+
+For budgets, timelines and more detailed requirements, use the [full project enquiry form](contact.html).

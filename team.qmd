@@ -1,0 +1,26 @@
+---
+title: "Team"
+description: "Meet the people behind JTP Analytics."
+---
+
+JTP Analytics is an independent consultancy. Modelling and measurement work is led by Jake, with Eva supporting operations, content and project delivery.
+
+```{=html}
+<a class="team-profile-card" href="team/jake-piekarski.html" aria-label="View Jake Piekarski's profile">
+  <img src="images/Jake-Piekarski-profile.jpg" alt="Jake Piekarski">
+  <span class="team-profile-card__body">
+    <span class="team-profile-card__name">Jake Piekarski</span>
+    <span class="team-profile-card__title">Managing Director &amp; Principal Data Scientist</span>
+    <span class="team-profile-card__link">View profile</span>
+  </span>
+</a>
+
+<a class="team-profile-card" href="team/eva-slason.html" aria-label="View Eva Slason's profile">
+  <img src="images/Eva-Slason.jpeg" alt="Eva Slason">
+  <span class="team-profile-card__body">
+    <span class="team-profile-card__name">Eva Slason</span>
+    <span class="team-profile-card__title">Operations &amp; Project Coordinator</span>
+    <span class="team-profile-card__link">View profile</span>
+  </span>
+</a>
+```

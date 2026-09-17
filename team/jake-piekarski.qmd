@@ -1,0 +1,46 @@
+---
+title: "Jake Piekarski"
+subtitle: "Managing Director & Principal Data Scientist"
+description: "Jake Piekarski is the independent data scientist behind JTP Analytics."
+---
+
+```{=html}
+<div class="profile-intro profile-intro--compact">
+  <img class="profile-intro__image" src="../images/Jake-Piekarski-profile.jpg" alt="Jake Piekarski">
+  <div class="profile-intro__copy">
+    <p>Jake is the independent data scientist behind JTP Analytics and a Principal Data Scientist at <a href="https://www.pymc-labs.com/team/jake-piekarski">PyMC Labs</a>, the Bayesian consultancy founded by core contributors to PyMC.</p>
+    <p>He has three years of agency and consultancy experience specialising in marketing analytics, statistical modelling and measurement. His work spans Marketing Mix Modelling, incrementality testing, causal inference, experimentation, forecasting and the translation of complex analysis into decisions that marketing and leadership teams can use.</p>
+  </div>
+</div>
+```
+
+## Experience
+
+Jake's experience includes work across Fortune 100 consumer packaged goods, airlines, manufacturing and consumer goods, food and beverage businesses, and charities. Client confidentiality means individual organisations are not named.
+
+Before joining PyMC Labs, Jake worked in a digital marketing agency environment at [Impression](https://www.impressiondigital.com/). That experience provides a practical understanding of how strategy, media planning, platform reporting, client relationships and measurement interact outside the model itself.
+
+He also works with agencies through JTP, helping them strengthen their measurement capabilities, review difficult analyses and answer technically demanding client questions.
+
+## Open source and teaching
+
+Jake has contributed to [PyMC-Marketing](https://www.pymc-marketing.io/), an open-source package for Bayesian marketing analytics, and taught the [Bayesian Marketing Analytics](https://www.pymc-labs.com/courses/bayesian-marketing-analytics) online course.
+
+He also publishes practical technical writing and worked examples covering hierarchical MMM, incrementality, attribution, cross-channel measurement and product adoption forecasting.
+
+[Read blogs](../blogs.html){.btn .btn-outline-primary}
+
+## Education
+
+| Qualification | Institution | Result |
+|---|---|---|
+| Master's in Mathematics | University of Nottingham | First class |
+| Bachelor's in Mathematics | University of Nottingham | First class |
+
+## Working with Jake
+
+Every JTP engagement is led and delivered by Jake. Clients work directly with the person building or reviewing the analysis, with no handoff to a junior delivery team.
+
+To preserve that level of attention, JTP works with no more than four clients at once.
+
+[Discuss a project](../contact.html){.btn .btn-primary} [View services](../services.html){.btn .btn-outline-primary}

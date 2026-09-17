@@ -1,0 +1,110 @@
+---
+title: "Pricing"
+description: "Transparent hourly pricing for independent marketing measurement, modelling, audits, advisory work and training."
+---
+
+::: {.rate-panel}
+<span class="rate-panel__label">Standard consulting rate</span>
+
+<span class="rate-panel__amount">£75</span><span class="rate-panel__unit"> per hour</span>
+:::
+
+All JTP Analytics work is based on an hourly rate of **£75**. The total project price depends on complexity: the question being answered, the number and quality of data sources, the scale of the model, the validation required and the level of documentation or delivery support.
+
+The aim is to keep pricing transparent while avoiding a fixed package that charges a simple project as though it were a complex one.
+
+## What you get with JTP Analytics
+
+The hourly rate covers more than the technical service itself. You work directly with the person delivering the analysis, receive practical advice throughout the engagement and retain visibility into how the work was produced.
+
+```{=html}
+<div class="comparison-table-wrap">
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th scope="col">What you receive</th>
+        <th scope="col">JTP Analytics</th>
+        <th scope="col">Other vendors</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">The service selected for your measurement need</th>
+        <td class="comparison-table__yes"><span class="comparison-icon comparison-icon--yes" aria-hidden="true"></span><span>Included</span></td>
+        <td class="comparison-table__yes comparison-table__vendor"><span class="comparison-icon comparison-icon--yes" aria-hidden="true"></span><span>Usually included</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Direct one-to-one consultancy and advice</th>
+        <td class="comparison-table__yes"><span class="comparison-icon comparison-icon--yes" aria-hidden="true"></span><span>Included</span></td>
+        <td class="comparison-table__no"><span class="comparison-icon comparison-icon--no" aria-hidden="true"></span><span>Not standard</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Practical interpretation and decision support</th>
+        <td class="comparison-table__yes"><span class="comparison-icon comparison-icon--yes" aria-hidden="true"></span><span>Included</span></td>
+        <td class="comparison-table__yes comparison-table__vendor"><span class="comparison-icon comparison-icon--yes" aria-hidden="true"></span><span>Usually included</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Full transparency of code, assumptions and methods</th>
+        <td class="comparison-table__yes"><span class="comparison-icon comparison-icon--yes" aria-hidden="true"></span><span>Included</span></td>
+        <td class="comparison-table__no"><span class="comparison-icon comparison-icon--no" aria-hidden="true"></span><span>Often restricted</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Validation, documentation and agreed delivery support</th>
+        <td class="comparison-table__yes"><span class="comparison-icon comparison-icon--yes" aria-hidden="true"></span><span>Included</span></td>
+        <td class="comparison-table__yes comparison-table__vendor"><span class="comparison-icon comparison-icon--yes" aria-hidden="true"></span><span>Usually included</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Typically cheaper than larger specialist vendors</th>
+        <td class="comparison-table__yes"><span class="comparison-icon comparison-icon--yes" aria-hidden="true"></span><span>Yes</span></td>
+        <td class="comparison-table__no"><span class="comparison-icon comparison-icon--no" aria-hidden="true"></span><span>Often higher cost</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p class="comparison-table-note">This is a comparison with common larger-vendor delivery models. Individual suppliers and project scopes vary.</p>
+```
+
+## Example project estimate
+
+As an indication, a national-level Marketing Mix Model with ten marketing channels, no bespoke components, validation and delivery included would usually require approximately 30 hours.
+
+| Example scope | Estimated time | Indicative price |
+|---|---:|---:|
+| National MMM, 10 channels, standard components, validation and delivery | About 30 hours | About £2,250 |
+
+This is an example rather than a fixed package. A simpler or more complex project is priced from the same £75 hourly rate. Additional outcomes, channels, markets, data preparation, bespoke model components, reporting and training change the time required.
+
+## What affects the scope?
+
+- **Data readiness:** whether the required data is already clean, aligned and documented.
+- **Model scale:** the number of outcomes, channels, campaigns, products, regions or customer groups.
+- **Method:** whether the project uses a standard structure or requires bespoke statistical development.
+- **Validation:** the amount of holdout testing, sensitivity analysis and experimental calibration required.
+- **Outputs:** whether you need a focused answer, reusable code, a written report, decision tools or stakeholder presentations.
+- **Handover:** the level of documentation, training and ongoing support your team needs.
+
+## How a quote is prepared
+
+1. You send a short description of the decision, available data and desired timeline.
+2. JTP holds an initial conversation to clarify the problem and assess fit.
+3. You receive a proposed scope with an estimated number of hours and expected deliverables.
+4. Any meaningful change in scope is discussed before additional work is undertaken.
+
+Short advisory calls, training, model reviews and agency support use the same **£75 hourly rate**. Larger projects are also built from that rate, with the expected time agreed during scoping.
+
+## Limited concurrent availability
+
+JTP deliberately works with no more than four clients at once. This keeps the work senior-led and ensures each project receives proper attention rather than being passed through a large delivery team.
+
+```{=html}
+<div class="availability-status" role="status" aria-label="Current client availability">
+  <span class="availability-status__indicator" aria-hidden="true"></span>
+  <span class="availability-status__label">Current availability</span>
+  <strong>2 of 4 client spaces available</strong>
+  <time class="availability-status__updated" datetime="2026-09-17">Updated 17 September 2026</time>
+</div>
+```
+
+If you are considering work in an upcoming planning cycle, getting in touch early makes it easier to reserve suitable time.
+
+[Request a project estimate](contact.html){.btn .btn-primary} [Explore services](services.html){.btn .btn-outline-primary}

@@ -1,0 +1,142 @@
+---
+title: "Services"
+description: "Marketing measurement, bespoke modelling, model validation and team education for data-mature organisations and agencies."
+---
+
+JTP Analytics provides independent marketing measurement support for organisations that already have meaningful data and need better answers from it. Engagements can cover a complete modelling project, a focused analysis, an independent audit or ongoing support for an internal or agency team.
+
+::: {.service-detail-section .service-detail-section--media-left}
+::: {.service-detail-lead}
+::: {.service-detail-copy}
+## Bespoke modelling
+
+Models are designed around the decision they need to support, rather than forcing every organisation into the same template.
+:::
+
+::: {.service-detail-media}
+<img src="images/mmm-stacked-decomposition.png" alt="A stacked Marketing Mix Modelling decomposition showing changing channel contributions over time" loading="lazy">
+:::
+:::
+
+::: {.service-detail-body}
+Typical projects include:
+
+- Marketing Mix Modelling to estimate channel contribution, returns and uncertainty.
+- Budget optimisation and scenario planning to explore where additional spend can work hardest.
+- Hierarchical models for campaigns, products, regions or other related parts of a business.
+- Product adoption and launch forecasting, including uncertainty around future demand.
+- Bespoke Bayesian and time-series models for questions that do not fit an off-the-shelf solution.
+
+Deliverables are agreed during scoping and can include the model, validation, documented assumptions, decision-ready outputs and a practical handover.
+:::
+:::
+
+::: {.service-detail-section}
+::: {.service-detail-lead}
+::: {.service-detail-copy}
+## Incrementality testing
+
+Attribution records where conversions were credited. Incrementality asks how many outcomes were actually caused by the activity.
+:::
+
+::: {.service-detail-media}
+<img src="images/incrementality-uplift.png" alt="An incrementality analysis showing an observed outcome separating from its counterfactual after an intervention" loading="lazy">
+:::
+:::
+
+::: {.service-detail-body}
+JTP can help with:
+
+- Designing geo-experiments, holdouts and switch-on or switch-off tests.
+- Assessing whether an experiment is feasible before budget or markets are committed.
+- Analysing test results with appropriate causal methods and uncertainty.
+- Connecting experimental evidence to MMM assumptions and calibration.
+- Building an experimentation roadmap where not every channel can be tested at once.
+:::
+:::
+
+::: {.service-detail-section .service-detail-section--media-left}
+::: {.service-detail-lead}
+::: {.service-detail-copy}
+## Model audits and validation
+
+An independent review can reveal whether a model is credible enough for the decisions being made from it.
+:::
+
+::: {.service-detail-media}
+<img src="images/model-audit-inspection.png" alt="A statistical model being examined closely to reveal uncertainty, assumptions and an anomalous result" loading="lazy">
+:::
+:::
+
+::: {.service-detail-body}
+Audits can examine:
+
+- Data suitability, transformations and feature construction.
+- Model structure, assumptions, priors and constraints.
+- Validation, holdout performance and sensitivity.
+- Channel contribution, ROI and uncertainty estimates.
+- Reproducibility, documentation and maintainability.
+- Whether the outputs support the intended commercial decisions.
+
+The result is a clear assessment of what is working, what needs attention and what should happen next. An audit can be used before accepting a vendor model, before a major planning cycle or when results do not pass a commercial sense check.
+:::
+:::
+
+::: {.service-detail-section}
+::: {.service-detail-lead}
+::: {.service-detail-copy}
+## Team education and advisory
+
+Good measurement should leave a team more capable, not more dependent on a black box.
+:::
+
+::: {.service-detail-media}
+<img src="images/team-education-workshop.png" alt="A collaborative team workshop discussing marketing measurement charts and statistical model outputs" loading="lazy">
+:::
+:::
+
+::: {.service-detail-body}
+Support can include:
+
+- Marketing measurement foundations for mixed technical and non-technical audiences.
+- Practical MMM, Bayesian modelling and causal inference training.
+- Workshops on interpreting model outputs and uncertainty.
+- Guidance for communicating measurement to senior stakeholders.
+- Technical mentoring and review for analysts or data scientists.
+- Ongoing office hours for difficult measurement questions.
+
+Sessions can be tailored to the team's existing knowledge, data and live commercial questions.
+:::
+:::
+
+::: {.service-detail-section .service-detail-section--media-left}
+::: {.service-detail-lead}
+::: {.service-detail-copy}
+## Agency measurement support
+
+JTP also works with marketing agencies that want to strengthen their measurement offering without immediately adding a permanent specialist role.
+:::
+
+::: {.service-detail-media}
+<img src="images/agency-digital-marketing.png" alt="Multiple digital marketing channels flowing into unified measurement, reporting and media planning" loading="lazy">
+:::
+:::
+
+::: {.service-detail-body}
+This can include behind-the-scenes modelling support, independent review, method development, pitch or scoping advice, and help answering technically difficult client questions. The arrangement can be structured around a single project or ongoing advisory time.
+:::
+:::
+
+## Privacy-resilient measurement
+
+The loss of third-party cookies and incomplete user-level tracking make platform attribution a less dependable foundation for long-term planning. MMM, controlled experiments and causal methods work primarily with aggregate outcomes and variation over time or geography. They can therefore provide useful evidence without relying on a complete trail of individual user journeys.
+
+No method removes every limitation. JTP will make assumptions and uncertainty explicit, and recommend the simplest credible method for the decision at hand.
+
+## Is JTP a good fit?
+
+JTP is best suited to UK and US organisations with mature data, established marketing activity and stakeholders ready to act on the findings. Direct-to-consumer businesses are a particularly strong fit, although the methods apply across many sectors.
+
+JTP works with no more than four clients concurrently so each engagement receives meaningful senior attention.
+
+[Discuss a project](contact.html){.btn .btn-primary} [View pricing](pricing.html){.btn .btn-outline-primary}

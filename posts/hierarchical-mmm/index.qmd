@@ -3,6 +3,7 @@ title: "Improving Marketing Measurement with Hierarchical MMMs"
 subtitle: "A practical DTC example using Bayesian partial pooling in PyMC"
 author: "Jake Piekarski"
 date: "2026-02-16"
+content-type: "Blog"
 jupyter: python3
 execute:
   freeze: true
@@ -342,4 +343,3 @@ This example highlights a common reality in MMM: some campaigns are simply hard 
 Hierarchical modelling offers a practical way forward. By treating campaigns as part of a shared portfolio, we can borrow strength across similar channels and produce estimates that are often more stable and more aligned with business intuition, without pretending uncertainty doesn’t exist. The flexibility to tune pooling strength is especially important, and it exposes a major weakness of many black-box MMM solutions: if the structural assumptions are hidden, it becomes unclear whether confidence is coming from the data or from aggressive shrinkage baked into the model. The good news is that hierarchical approaches are relatively straightforward to implement in PyMC, and they provide a transparent framework for balancing data-driven insights with sensible modelling assumptions grounded in how marketing actually works.
 
 **Key take-home:** MMM isn’t just about fitting the data: it’s about combining evidence with reasonable business assumptions, and hierarchical priors are one of the most practical tools for making weak channel measurement more stable and usable.
-

@@ -1,0 +1,36 @@
+---
+title: "Eva Slason"
+subtitle: "Operations & Project Coordinator"
+description: "Eva Slason supports operations, content publishing and project delivery at JTP Analytics."
+---
+
+```{=html}
+<div class="profile-intro profile-intro--compact">
+  <img class="profile-intro__image" src="../images/Eva-Slason.jpeg" alt="Eva Slason">
+  <div class="profile-intro__copy">
+    <p>Eva supports the day-to-day operations of JTP Analytics, helping projects and communications run smoothly.</p>
+    <p>She is responsible for publishing content, coordinating and leading meetings, and supporting communication throughout an engagement. On higher-capacity projects, Eva will often manage delivery so timelines, actions and stakeholders remain aligned.</p>
+  </div>
+</div>
+```
+
+## Role at JTP
+
+Eva provides the operational structure around JTP's technical work. Her responsibilities include:
+
+- Publishing and maintaining JTP content.
+- Coordinating and leading meetings.
+- Tracking actions, timelines and project communication.
+- Managing delivery on projects that require additional capacity.
+
+## Education
+
+| Qualification | Institution | Result |
+|---|---|---|
+| Bachelor's degree in Marketing | Nottingham Trent University | First class |
+
+## Working with Eva
+
+Clients may work with Eva during project planning, meetings and delivery coordination. She helps keep each engagement organised while Jake remains responsible for the modelling and measurement work.
+
+[Discuss a project](../contact.html){.btn .btn-primary} [Back to the team](../team.html){.btn .btn-outline-primary}
