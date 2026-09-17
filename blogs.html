@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Practical writing and worked examples covering marketing measurement, Bayesian modelling, incrementality and forecasting.">
 
-<title>Blogs</title>
+<title>Blogs &amp; Case Studies – JTP Analytics</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -31,9 +32,14 @@ ul.task-list li input[type="checkbox"] {
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./images/JTP-logo.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-listing/list.min.js"></script>
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -43,8 +49,20 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d9f580a6342e09f41277260f8f970a78.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-a047bf84fafc8693e0f33ea940c31cbb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -62,20 +80,20 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-insights-listing .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-date','listing-reading-time','listing-title','listing-subtitle',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-project','listing-format','listing-website','listing-engines','listing-language','listing-title','listing-subtitle','listing-author','listing-date','listing-content-type','listing-jupyter','listing-bibliography','listing-lightbox','listing-draft','listing-execute','listing-path','listing-outputHref','listing-date-modified','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description"],
+      searchColumns: ["listing-project","listing-format","listing-website","listing-engines","listing-language","listing-title","listing-subtitle","listing-author","listing-date","listing-content-type","listing-jupyter","listing-bibliography","listing-lightbox","listing-draft","listing-execute","listing-path","listing-outputHref","listing-date-modified","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-insights-listing'] = new List('listing-insights-listing', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -120,61 +138,67 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Blogs &amp; Case Studies – JTP Analytics">
+<meta property="og:description" content="Practical writing and worked examples covering marketing measurement, Bayesian modelling, incrementality and forecasting.">
+<meta property="og:site_name" content="JTP Analytics">
+<meta name="twitter:title" content="Blogs &amp; Case Studies – JTP Analytics">
+<meta name="twitter:description" content="Practical writing and worked examples covering marketing measurement, Bayesian modelling, incrementality and forecasting.">
+<meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar docked nav-fixed fullcontent quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./images/JTP-logo.png" alt="JTP Analytics" class="navbar-logo light-content">
+    <img src="./images/JTP-logo.png" alt="JTP Analytics" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">JTP Analytics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
-<span class="menu-text">Home</span></a>
+    <a class="nav-link" href="./services.html"> 
+<span class="menu-text">Services</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./pricing.html"> 
+<span class="menu-text">Pricing</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./blogs.html" aria-current="page"> 
-<span class="menu-text">Blogs</span></a>
+<span class="menu-text">Blogs &amp; Case Studies</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./team.html"> 
+<span class="menu-text">Team</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./contact.html"> 
+<span class="menu-text">Contact</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+    <a href="https://www.linkedin.com/in/jake-piekarski-715b6a267" title="" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+    <a href="https://github.com/JakePiekarski314" title="" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Blogs</li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-      <a href="./index.html" class="sidebar-logo-link">
-      <img src="./images/Jake-Piekarski.jpeg" alt="Jake Piekarski" class="sidebar-logo light-content py-0 d-lg-inline d-none">
-      <img src="./images/Jake-Piekarski.jpeg" alt="Jake Piekarski" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
-      </a>
-      <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/JakePiekarski314" title="" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
-    <a href="https://www.linkedin.com/in/jake-piekarski-715b6a267" title="" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-    <a href="mailto:jakepiekarski@jtp-analytics.com" title="" class="quarto-navigation-tool px-1" aria-label="Email"><i class="bi bi-envelope"></i></a>
-</div>
-      </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     
 <!-- main -->
@@ -182,9 +206,14 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Blogs</h1>
+<h1 class="title">Blogs &amp; Case Studies</h1>
 </div>
 
+<div>
+  <div class="description">
+    Practical writing and worked examples covering marketing measurement, Bayesian modelling, incrementality and forecasting.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -199,105 +228,163 @@ window.Quarto = {
 </header>
 
 
+<p>Browse practical writing on marketing measurement, Bayesian modelling, incrementality and forecasting. Case studies will be added here as suitable work becomes available to publish.</p>
+<div class="content-filter">
+  <label for="content-type-filter">Show</label>
+  <select id="content-type-filter">
+    <option value="all" selected="">All content</option>
+    <option value="Blog">Blogs</option>
+    <option value="Case Study">Case studies</option>
+  </select>
+</div>
+<div id="listing-insights-listing" class="quarto-listing quarto-listing-container-custom">
 
+  
+  
+  <article class="featured-content" data-content-type="Blog">
+    <div class="featured-content__meta">
+      <span class="featured-content__label">Featured</span>
+      <span class="content-type-badge">Blog</span>
+      <span>15/09/2026</span>
+      <span>15 min</span>
+    </div>
+    <h2 class="anchored"><a href="./posts/product-adoption-forecasting/index.html">An Introduction to Product Adoption Forecasting</a></h2>
+    <p>Using Bass diffusion and Bayesian uncertainty to reason about adoption curves before and after launch</p>
+    <a class="featured-content__link" href="./posts/product-adoption-forecasting/index.html">Read featured article <span aria-hidden="true">→</span></a>
+  </article>
 
+<div class="content-list">
 
+  
+  <article class="content-list-item" data-content-type="Blog">
+    <div class="content-list-meta">
+      <span class="content-type-badge">Blog</span>
+      <span>27/07/2026</span>
+      <span>13 min</span>
+    </div>
+    <h2 class="anchored"><a href="./posts/geo-experiment-causalpy/index.html">Your Campaign Is Working. You May Still Be Overspending.</a></h2>
+    <p>Using a geo-experiment and CausalPy to separate incremental transactions from demand that already existed</p>
+  </article>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1789430400000" data-listing-file-modified-sort="1789487592424" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2913">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/product-adoption-forecasting/index.html" class="no-external">An Introduction to Product Adoption Forecasting</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/product-adoption-forecasting/index.html" class="no-external">Using Bass diffusion and Bayesian uncertainty to reason about adoption curves before and after launch</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/product-adoption-forecasting/index.html" class="no-external">
-<div class="listing-date">
-15/09/2026
-</div>
-<div class="listing-reading-time">15 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1785110400000" data-listing-file-modified-sort="1789487592339" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2558">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/geo-experiment-causalpy/index.html" class="no-external">Your Campaign Is Working. You May Still Be Overspending.</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/geo-experiment-causalpy/index.html" class="no-external">Using a geo-experiment and CausalPy to separate incremental transactions from demand that already existed</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/geo-experiment-causalpy/index.html" class="no-external">
-<div class="listing-date">
-27/07/2026
-</div>
-<div class="listing-reading-time">13 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1784592000000" data-listing-file-modified-sort="1789487592337" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="21" data-listing-word-count-sort="4054">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/cross-channel-measurement-mmm/index.html" class="no-external">Can MMM Measure How Channels Work Together?</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/cross-channel-measurement-mmm/index.html" class="no-external">Moving from channel-level contribution reporting towards explicit cross-channel measurement</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/cross-channel-measurement-mmm/index.html" class="no-external">
-<div class="listing-date">
-21/07/2026
-</div>
-<div class="listing-reading-time">21 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1773878400000" data-listing-file-modified-sort="1789487592416" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2171">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/meta-attribution-causal-analysis/index.html" class="no-external">Measure What Matters: Attribution vs Incrementality</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/meta-attribution-causal-analysis/index.html" class="no-external">Using CausalPy’s Interrupted Time Series to separate real performance changes from measurement updates</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/meta-attribution-causal-analysis/index.html" class="no-external">
-<div class="listing-date">
-19/03/2026
-</div>
-<div class="listing-reading-time">11 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1771200000000" data-listing-file-modified-sort="1789487592412" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2878">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/hierarchical-mmm/index.html" class="no-external">Improving Marketing Measurement with Hierarchical MMMs</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/hierarchical-mmm/index.html" class="no-external">A practical DTC example using Bayesian partial pooling in PyMC</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/hierarchical-mmm/index.html" class="no-external">
-<div class="listing-date">
-16/02/2026
-</div>
-<div class="listing-reading-time">15 min</div>
-</a>
-</div>
-</div>
+  
+  <article class="content-list-item" data-content-type="Blog">
+    <div class="content-list-meta">
+      <span class="content-type-badge">Blog</span>
+      <span>21/07/2026</span>
+      <span>21 min</span>
+    </div>
+    <h2 class="anchored"><a href="./posts/cross-channel-measurement-mmm/index.html">Can MMM Measure How Channels Work Together?</a></h2>
+    <p>Moving from channel-level contribution reporting towards explicit cross-channel measurement</p>
+  </article>
+
+  
+  <article class="content-list-item" data-content-type="Blog">
+    <div class="content-list-meta">
+      <span class="content-type-badge">Blog</span>
+      <span>19/03/2026</span>
+      <span>11 min</span>
+    </div>
+    <h2 class="anchored"><a href="./posts/meta-attribution-causal-analysis/index.html">Measure What Matters: Attribution vs Incrementality</a></h2>
+    <p>Using CausalPy's Interrupted Time Series to separate real performance changes from measurement updates</p>
+  </article>
+
+  
+  <article class="content-list-item" data-content-type="Blog">
+    <div class="content-list-meta">
+      <span class="content-type-badge">Blog</span>
+      <span>16/02/2026</span>
+      <span>15 min</span>
+    </div>
+    <h2 class="anchored"><a href="./posts/hierarchical-mmm/index.html">Improving Marketing Measurement with Hierarchical MMMs</a></h2>
+    <p>A practical DTC example using Bayesian partial pooling in PyMC</p>
+  </article>
+
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div>
+<p id="content-filter-empty" class="content-filter-empty" hidden="">No items match this selection.</p>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const filter = document.getElementById("content-type-filter");
+  const items = Array.from(document.querySelectorAll("[data-content-type]"));
+  const emptyState = document.getElementById("content-filter-empty");
+
+  if (!filter || items.length === 0) return;
+
+  filter.addEventListener("change", () => {
+    let visibleItems = 0;
+
+    items.forEach((item) => {
+      const isVisible = filter.value === "all" || item.dataset.contentType === filter.value;
+      item.hidden = !isVisible;
+      if (isVisible) visibleItems += 1;
+    });
+
+    emptyState.textContent = filter.value === "Case Study"
+      ? "No case studies have been published yet."
+      : "No items match this selection.";
+    emptyState.hidden = visibleItems !== 0;
+  });
+});
+</script>
+
+
+
+
+</main> <!-- /main -->
+<script>
+  (() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const homePage = document.body.classList.contains("home-page");
+
+    if (!reduceMotion.matches && "IntersectionObserver" in window) {
+      const targets = document.querySelectorAll(
+        ".home-page #quarto-document-content > h2, .service-summary, .availability-status, .contact-form, .team-profile-card, .content-list-item"
+      );
+
+      if (targets.length) {
+        document.documentElement.classList.add("has-reveal");
+        targets.forEach((target) => target.classList.add("reveal-target"));
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -24px" }
+        );
+
+        targets.forEach((target) => observer.observe(target));
+      }
+    }
+
+    if (!homePage || reduceMotion.matches) return;
+
+    const hero = document.querySelector(".quarto-title-banner");
+    if (!hero) return;
+
+    let frame;
+    hero.addEventListener("pointermove", (event) => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const bounds = hero.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+        const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+        hero.style.setProperty("--hero-x", `${99 + x * 2}%`);
+        hero.style.setProperty("--hero-y", `${50 + y * 2}%`);
+      });
+    });
+
+    hero.addEventListener("pointerleave", () => {
+      hero.style.setProperty("--hero-x", "100%");
+      hero.style.setProperty("--hero-y", "50%");
+    });
+  })();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -699,6 +786,19 @@ window.Quarto = {
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>JTP Analytics</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p><a href="mailto:jakepiekarski@jtp-analytics.com">Email</a></p>
+</div>
+  </div>
+</footer>
 
 
 
