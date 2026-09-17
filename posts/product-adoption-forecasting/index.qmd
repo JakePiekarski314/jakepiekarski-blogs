@@ -3,6 +3,7 @@ title: "An Introduction to Product Adoption Forecasting"
 subtitle: "Using Bass diffusion and Bayesian uncertainty to reason about adoption curves before and after launch"
 author: "Jake Piekarski"
 date: "2026-09-15"
+content-type: "Blog"
 lightbox: true
 draft: false
 execute:

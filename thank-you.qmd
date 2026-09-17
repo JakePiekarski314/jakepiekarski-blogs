@@ -1,0 +1,9 @@
+---
+title: "Thank you"
+description: "Your enquiry has been sent to JTP Analytics."
+search: false
+---
+
+Your enquiry has been sent. Jake will review it personally and respond by email.
+
+[Return to the home page](index.html){.btn .btn-primary} [Read blogs and case studies](blogs.html){.btn .btn-outline-primary}

@@ -1,12 +1,57 @@
 ---
-title: "Blogs"
+title: "Blogs & Case Studies"
+description: "Practical writing and worked examples covering marketing measurement, Bayesian modelling, incrementality and forecasting."
 listing:
+  id: insights-listing
   contents: posts/*/index.qmd
-  type: default
+  template: content-listing.ejs.md
   sort: "date desc"
-  fields: [date, reading-time, title, subtitle]
   sort-ui: false
   filter-ui: false
-  categories: false
+  page-size: 50
   feed: false
 ---
+
+Browse practical writing on marketing measurement, Bayesian modelling, incrementality and forecasting. Case studies will be added here as suitable work becomes available to publish.
+
+```{=html}
+<div class="content-filter">
+  <label for="content-type-filter">Show</label>
+  <select id="content-type-filter">
+    <option value="all" selected>All content</option>
+    <option value="Blog">Blogs</option>
+    <option value="Case Study">Case studies</option>
+  </select>
+</div>
+```
+
+::: {#insights-listing}
+:::
+
+```{=html}
+<p id="content-filter-empty" class="content-filter-empty" hidden>No items match this selection.</p>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const filter = document.getElementById("content-type-filter");
+  const items = Array.from(document.querySelectorAll("[data-content-type]"));
+  const emptyState = document.getElementById("content-filter-empty");
+
+  if (!filter || items.length === 0) return;
+
+  filter.addEventListener("change", () => {
+    let visibleItems = 0;
+
+    items.forEach((item) => {
+      const isVisible = filter.value === "all" || item.dataset.contentType === filter.value;
+      item.hidden = !isVisible;
+      if (isVisible) visibleItems += 1;
+    });
+
+    emptyState.textContent = filter.value === "Case Study"
+      ? "No case studies have been published yet."
+      : "No items match this selection.";
+    emptyState.hidden = visibleItems !== 0;
+  });
+});
+</script>
+```

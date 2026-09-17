@@ -3,6 +3,7 @@ title: "Can MMM Measure How Channels Work Together?"
 subtitle: "Moving from channel-level contribution reporting towards explicit cross-channel measurement"
 author: "Jake Piekarski"
 date: "2026-07-21"
+content-type: "Blog"
 jupyter: python3
 bibliography: references.bib
 lightbox: true

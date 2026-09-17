@@ -3,37 +3,55 @@ project:
   output-dir: _site
   execute-dir: project
   resources: images
+  render:
+    - "*.qmd"
+    - "*.ipynb"
+    - "posts/**/*.qmd"
+    - "posts/**/*.ipynb"
+    - "team/**/*.qmd"
+    - "!content-listing.ejs.md"
 
 format:
   html:
     theme: lux
     css: styles.css
+    include-after-body: site-interactions.html
     author-title: "Author"
     published-title: "Publish Date"
     date-format: "DD/MM/YYYY"
 
 website:
+  title: "JTP Analytics"
+  description: "Independent marketing measurement consultancy specialising in Bayesian modelling, marketing mix modelling, incrementality and product adoption."
   site-url: https://jakepiekarski314.github.io/jakepiekarski-blogs
-  search: false
-  sidebar:
-    - style: docked
-      logo: images/Jake-Piekarski.jpeg
-      logo-alt: Jake Piekarski
-      contents: []
-      tools:
-        - icon: github
-          href: https://github.com/JakePiekarski314
-          aria-label: GitHub
-        - icon: linkedin
-          href: https://www.linkedin.com/in/jake-piekarski-715b6a267
-          aria-label: LinkedIn
-        - icon: envelope
-          href: mailto:jakepiekarski@jtp-analytics.com
-          aria-label: Email
+  search: true
+  open-graph: true
+  twitter-card: true
+  favicon: images/JTP-logo.png
   navbar:
+    logo: images/JTP-logo.png
+    logo-alt: "JTP Analytics"
+    background: "#101312"
+    foreground: light
     left:
-      - href: index.qmd
-        text: Home
+      - href: services.qmd
+        text: Services
+      - href: pricing.qmd
+        text: Pricing
       - href: blogs.qmd
-        text: Blogs
+        text: Blogs & Case Studies
+      - href: team.qmd
+        text: Team
+      - href: contact.qmd
+        text: Contact
+    tools:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/jake-piekarski-715b6a267
+        aria-label: LinkedIn
+      - icon: github
+        href: https://github.com/JakePiekarski314
+        aria-label: GitHub
+  page-footer:
+    left: "JTP Analytics"
+    right: "[Email](mailto:jakepiekarski@jtp-analytics.com)"
   page-navigation: true
