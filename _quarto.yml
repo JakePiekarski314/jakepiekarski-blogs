@@ -34,8 +34,10 @@ website:
   twitter-card: true
   favicon: images/JTP-logo.png
   navbar:
+    title: false
     logo: images/JTP-logo.png
     logo-alt: "JTP Analytics"
+    collapse-below: xl
     background: "#101312"
     foreground: light
     left:

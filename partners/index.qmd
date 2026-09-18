@@ -1,6 +1,9 @@
 ---
 title: "Partners"
 description: "Technology partners that complement JTP Analytics consulting, modelling and measurement support."
+format:
+  html:
+    body-classes: partners-page
 ---
 
 JTP Analytics works with selected technology partners when direct access to a specialist product is a better fit than a bespoke consulting engagement. These partnerships broaden the options available while keeping the choice grounded in the measurement problem you need to solve.
@@ -27,6 +30,12 @@ JTP Analytics works with selected technology partners when direct access to a sp
       <li>You want a platform your team can access and use directly.</li>
       <li>You need to deploy, refresh and explore models on an ongoing basis.</li>
       <li>You value transparent assumptions, uncertainty and an open-source modelling foundation.</li>
+    </ul>
+
+    <h3>How JTP and SIMBA can work together</h3>
+    <ul>
+      <li><strong>Lift-test calibration:</strong> JTP can design and run incrementality tests, then integrate the measured lift directly into SIMBA to calibrate the MMM.</li>
+      <li><strong>Product adoption calibration:</strong> JTP can use saturation estimates from SIMBA to calibrate bespoke product adoption models, connecting media response with realistic adoption potential.</li>
     </ul>
 
     <h3>Where JTP can help</h3>
