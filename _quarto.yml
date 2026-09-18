@@ -27,7 +27,7 @@ format:
 website:
   title: "JTP Analytics"
   description: "Independent marketing measurement consultancy specialising in Bayesian modelling, marketing mix modelling, incrementality and product adoption."
-  site-url: https://www.jtp-analytics.com
+  site-url: https://jtp-analytics.com
   search: true
   open-graph: true
   twitter-card: true
