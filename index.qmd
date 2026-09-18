@@ -15,7 +15,7 @@ JTP Analytics helps data-mature organisations understand what drives growth, whe
 
 Run independently by Jake Piekarski, JTP combines rigorous statistical modelling with practical marketing experience. The focus is not simply producing another dashboard or model: it is building measurement that teams can understand, challenge and use.
 
-[Explore services](services/index.qmd){.btn .btn-primary} [View pricing](pricing/index.qmd){.btn .btn-outline-primary}
+[Let's talk](https://calendly.com/jakepiekarski-jtp-analytics/30min){.btn .btn-primary} [Explore services](services/index.qmd){.btn .btn-outline-primary}
 
 ```{=html}
 <div class="availability-status" role="status" aria-label="Current client availability">
