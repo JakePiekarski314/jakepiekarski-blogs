@@ -1,0 +1,49 @@
+---
+title: "Partners"
+description: "Technology partners that complement JTP Analytics consulting, modelling and measurement support."
+---
+
+JTP Analytics works with selected technology partners when direct access to a specialist product is a better fit than a bespoke consulting engagement. These partnerships broaden the options available while keeping the choice grounded in the measurement problem you need to solve.
+
+```{=html}
+<section class="partner-feature" aria-labelledby="simba-partner-heading">
+  <div class="partner-feature__brand">
+    <span class="partner-feature__eyebrow">Technology partner</span>
+    <p class="partner-feature__name">SIMBA<span class="partner-feature__logo-dot" aria-hidden="true"></span></p>
+    <p class="partner-feature__descriptor">Marketing Mix Modeling</p>
+    <div class="partner-feature__steps" aria-label="SIMBA workflow">
+      <span>Audit</span>
+      <span>Measure</span>
+      <span>Predict</span>
+      <span>Optimise</span>
+    </div>
+  </div>
+  <div class="partner-feature__content">
+    <h2 id="simba-partner-heading">A product route for deployable MMM</h2>
+    <p class="partner-feature__lead">SIMBA is a hosted marketing mix modelling platform built on PyMC-Marketing. It gives marketing and analytics teams direct access to data auditing, Bayesian MMM, scenario planning and budget optimisation in one place.</p>
+
+    <h3>When SIMBA may be a good fit</h3>
+    <ul>
+      <li>You want a platform your team can access and use directly.</li>
+      <li>You need to deploy, refresh and explore models on an ongoing basis.</li>
+      <li>You value transparent assumptions, uncertainty and an open-source modelling foundation.</li>
+    </ul>
+
+    <h3>Where JTP can help</h3>
+    <p>If you are unsure whether a platform, a bespoke model or independent advice is the right route, Jake can talk through your requirements. JTP can also provide complementary support with model design, validation, incrementality, training and interpretation.</p>
+
+    <div class="partner-feature__actions">
+      <a class="btn btn-primary" href="https://getsimba.ai/?utm_source=jtp-analytics&amp;utm_medium=partner&amp;utm_campaign=partners" target="_blank" rel="noopener noreferrer">Explore SIMBA <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+      <a class="btn btn-outline-primary" href="https://calendly.com/jakepiekarski-jtp-analytics/30min" target="_blank" rel="noopener noreferrer"><i class="bi bi-calendar3" aria-hidden="true"></i> Discuss SIMBA with Jake</a>
+    </div>
+
+    <p class="partner-feature__note">SIMBA provides and operates the platform, and determines its own plans and pricing. The tagged partner link identifies visitors referred by JTP Analytics.</p>
+  </div>
+</section>
+```
+
+## Product, consulting or both?
+
+A platform is useful when a team wants direct access to a deployable modelling workflow. Bespoke consulting is better suited to unusual data, specialist methods, independent model review or a question that does not fit a standard workflow. The two can also work together, with SIMBA providing the platform and JTP supporting the decisions, assumptions and capability around it.
+
+[Explore consulting services](../services/index.qmd){.btn .btn-outline-primary} [Discuss your requirements](../contact/index.qmd){.btn .btn-primary}

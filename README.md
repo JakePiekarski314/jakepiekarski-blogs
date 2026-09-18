@@ -7,7 +7,7 @@ Source for the [JTP Analytics website](https://www.jtp-analytics.com), built wit
 | Path | Purpose |
 |---|---|
 | `index.qmd` | Homepage |
-| `services/`, `pricing/`, `contact/`, `thank-you/` | Main website pages, each using an `index.qmd` |
+| `services/`, `pricing/`, `partners/`, `contact/`, `thank-you/` | Main website pages, each using an `index.qmd` |
 | `blogs/` | Blogs and case studies listing plus its custom listing template |
 | `team/` | Team listing and individual profile pages |
 | `posts/` | Published long-form articles and their post-specific assets |
