@@ -7,7 +7,9 @@ JTP Analytics is an independent consultancy. Modelling and measurement work is l
 
 ```{=html}
 <a class="team-profile-card" href="jake-piekarski.html" aria-label="View Jake Piekarski's profile">
-  <img src="../images/Jake-Piekarski-profile.jpg" alt="Jake Piekarski">
+  <span class="team-profile-card__media">
+    <img src="../images/Jake-Piekarski-profile.jpg" alt="Jake Piekarski">
+  </span>
   <span class="team-profile-card__body">
     <span class="team-profile-card__name">Jake Piekarski</span>
     <span class="team-profile-card__title">Managing Director &amp; Principal Data Scientist</span>
@@ -16,7 +18,9 @@ JTP Analytics is an independent consultancy. Modelling and measurement work is l
 </a>
 
 <a class="team-profile-card" href="eva-slason.html" aria-label="View Eva Slason's profile">
-  <img src="../images/Eva-Slason.jpeg" alt="Eva Slason">
+  <span class="team-profile-card__media">
+    <img src="../images/Eva-Slason.jpeg" alt="Eva Slason">
+  </span>
   <span class="team-profile-card__body">
     <span class="team-profile-card__name">Eva Slason</span>
     <span class="team-profile-card__title">Operations &amp; Project Coordinator</span>
