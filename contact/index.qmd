@@ -6,7 +6,7 @@ description: "Tell JTP Analytics about your marketing measurement, modelling, au
 Tell me what decision you are trying to make, what data is available and when you need support. I will review the request personally and respond at [jakepiekarski@jtp-analytics.com](mailto:jakepiekarski@jtp-analytics.com).
 
 ```{=html}
-<form name="project-enquiry" method="POST" action="/thank-you.html" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
+<form name="project-enquiry" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
   <input type="hidden" name="form-name" value="project-enquiry">
   <p class="visually-hidden">
     <label>Do not fill this out if you are human: <input name="bot-field"></label>

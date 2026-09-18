@@ -14,7 +14,7 @@ Models are designed around the decision they need to support, rather than forcin
 :::
 
 ::: {.service-detail-media}
-<img src="images/mmm-stacked-decomposition.png" alt="A stacked Marketing Mix Modelling decomposition showing changing channel contributions over time" loading="lazy">
+<img src="../images/mmm-stacked-decomposition.png" alt="A stacked Marketing Mix Modelling decomposition showing changing channel contributions over time" loading="lazy">
 :::
 :::
 
@@ -40,7 +40,7 @@ Attribution records where conversions were credited. Incrementality asks how man
 :::
 
 ::: {.service-detail-media}
-<img src="images/incrementality-uplift.png" alt="An incrementality analysis showing an observed outcome separating from its counterfactual after an intervention" loading="lazy">
+<img src="../images/incrementality-uplift.png" alt="An incrementality analysis showing an observed outcome separating from its counterfactual after an intervention" loading="lazy">
 :::
 :::
 
@@ -64,7 +64,7 @@ An independent review can reveal whether a model is credible enough for the deci
 :::
 
 ::: {.service-detail-media}
-<img src="images/model-audit-inspection.png" alt="A statistical model being examined closely to reveal uncertainty, assumptions and an anomalous result" loading="lazy">
+<img src="../images/model-audit-inspection.png" alt="A statistical model being examined closely to reveal uncertainty, assumptions and an anomalous result" loading="lazy">
 :::
 :::
 
@@ -91,7 +91,7 @@ Good measurement should leave a team more capable, not more dependent on a black
 :::
 
 ::: {.service-detail-media}
-<img src="images/team-education-workshop.png" alt="A collaborative team workshop discussing marketing measurement charts and statistical model outputs" loading="lazy">
+<img src="../images/team-education-workshop.png" alt="A collaborative team workshop discussing marketing measurement charts and statistical model outputs" loading="lazy">
 :::
 :::
 
@@ -118,7 +118,7 @@ JTP also works with marketing agencies that want to strengthen their measurement
 :::
 
 ::: {.service-detail-media}
-<img src="images/agency-digital-marketing.png" alt="Multiple digital marketing channels flowing into unified measurement, reporting and media planning" loading="lazy">
+<img src="../images/agency-digital-marketing.png" alt="Multiple digital marketing channels flowing into unified measurement, reporting and media planning" loading="lazy">
 :::
 :::
 
@@ -139,4 +139,4 @@ JTP is best suited to UK and US organisations with mature data, established mark
 
 JTP works with no more than four clients concurrently so each engagement receives meaningful senior attention.
 
-[Discuss a project](contact.html){.btn .btn-primary} [View pricing](pricing.html){.btn .btn-outline-primary}
+[Discuss a project](../contact/index.qmd){.btn .btn-primary} [View pricing](../pricing/index.qmd){.btn .btn-outline-primary}

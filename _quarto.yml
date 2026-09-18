@@ -2,14 +2,18 @@ project:
   type: website
   output-dir: _site
   execute-dir: project
-  resources: images
+  resources:
+    - images
+    - _redirects
   render:
-    - "*.qmd"
-    - "*.ipynb"
-    - "posts/**/*.qmd"
-    - "posts/**/*.ipynb"
+    - "index.qmd"
+    - "services/index.qmd"
+    - "pricing/index.qmd"
+    - "blogs/index.qmd"
+    - "contact/index.qmd"
+    - "thank-you/index.qmd"
     - "team/**/*.qmd"
-    - "!content-listing.ejs.md"
+    - "posts/*/index.qmd"
 
 format:
   html:
@@ -34,15 +38,15 @@ website:
     background: "#101312"
     foreground: light
     left:
-      - href: services.qmd
+      - href: services/index.qmd
         text: Services
-      - href: pricing.qmd
+      - href: pricing/index.qmd
         text: Pricing
-      - href: blogs.qmd
+      - href: blogs/index.qmd
         text: Blogs & Case Studies
-      - href: team.qmd
+      - href: team/index.qmd
         text: Team
-      - href: contact.qmd
+      - href: contact/index.qmd
         text: Contact
     tools:
       - icon: linkedin
