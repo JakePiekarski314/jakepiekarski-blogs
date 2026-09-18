@@ -28,7 +28,7 @@ Jake has contributed to [PyMC-Marketing](https://www.pymc-marketing.io/), an ope
 
 He also publishes practical technical writing and worked examples covering hierarchical MMM, incrementality, attribution, cross-channel measurement and product adoption forecasting.
 
-[Read blogs](../blogs.html){.btn .btn-outline-primary}
+[Read blogs](../blogs/index.qmd){.btn .btn-outline-primary}
 
 ## Education
 
@@ -43,4 +43,4 @@ Every JTP engagement is led and delivered by Jake. Clients work directly with th
 
 To preserve that level of attention, JTP works with no more than four clients at once.
 
-[Discuss a project](../contact.html){.btn .btn-primary} [View services](../services.html){.btn .btn-outline-primary}
+[Discuss a project](../contact/index.qmd){.btn .btn-primary} [View services](../services/index.qmd){.btn .btn-outline-primary}

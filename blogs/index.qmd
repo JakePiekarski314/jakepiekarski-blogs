@@ -3,7 +3,7 @@ title: "Blogs & Case Studies"
 description: "Practical writing and worked examples covering marketing measurement, Bayesian modelling, incrementality and forecasting."
 listing:
   id: insights-listing
-  contents: posts/*/index.qmd
+  contents: ../posts/*/index.qmd
   template: content-listing.ejs.md
   sort: "date desc"
   sort-ui: false

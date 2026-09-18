@@ -33,4 +33,4 @@ Eva provides the operational structure around JTP's technical work. Her responsi
 
 Clients may work with Eva during project planning, meetings and delivery coordination. She helps keep each engagement organised while Jake remains responsible for the modelling and measurement work.
 
-[Discuss a project](../contact.html){.btn .btn-primary} [Back to the team](../team.html){.btn .btn-outline-primary}
+[Discuss a project](../contact/index.qmd){.btn .btn-primary} [Back to the team](index.qmd){.btn .btn-outline-primary}

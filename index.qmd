@@ -15,7 +15,7 @@ JTP Analytics helps data-mature organisations understand what drives growth, whe
 
 Run independently by Jake Piekarski, JTP combines rigorous statistical modelling with practical marketing experience. The focus is not simply producing another dashboard or model: it is building measurement that teams can understand, challenge and use.
 
-[Explore services](services.html){.btn .btn-primary} [View pricing](pricing.html){.btn .btn-outline-primary}
+[Explore services](services/index.qmd){.btn .btn-primary} [View pricing](pricing/index.qmd){.btn .btn-outline-primary}
 
 ```{=html}
 <div class="availability-status" role="status" aria-label="Current client availability">
@@ -42,7 +42,7 @@ The methods are designed to remain useful as access to user-level tracking and t
 
 Build a model around the commercial question, from Marketing Mix Modelling and budget optimisation to product adoption forecasting.
 
-[Modelling services](services.html#bespoke-modelling)
+[Modelling services](services/index.qmd#bespoke-modelling)
 :::
 
 ::: {.service-summary}
@@ -52,7 +52,7 @@ Build a model around the commercial question, from Marketing Mix Modelling and b
 
 Design and analyse experiments that separate activity which caused an outcome from demand that would have happened anyway.
 
-[Incrementality services](services.html#incrementality-testing)
+[Incrementality services](services/index.qmd#incrementality-testing)
 :::
 
 ::: {.service-summary}
@@ -62,7 +62,7 @@ Design and analyse experiments that separate activity which caused an outcome fr
 
 Review an existing model's assumptions, validation, implementation and suitability before important decisions are made from it.
 
-[Model audit services](services.html#model-audits-and-validation)
+[Model audit services](services/index.qmd#model-audits-and-validation)
 :::
 
 ::: {.service-summary}
@@ -72,24 +72,24 @@ Review an existing model's assumptions, validation, implementation and suitabili
 
 Build confidence across technical and marketing teams through training, workshops and practical measurement guidance.
 
-[Education and advisory](services.html#team-education-and-advisory)
+[Education and advisory](services/index.qmd#team-education-and-advisory)
 :::
 :::
 
 ## Independent expertise, explained clearly
 
-JTP is led by [Jake Piekarski](team.html), a Principal Data Scientist at [PyMC Labs](https://www.pymc-labs.com/) with three years of agency and consultancy experience in marketing analytics. Jake has worked across Fortune 100 consumer packaged goods, airlines, manufacturing and consumer goods, food and beverage businesses, and charities.
+JTP is led by [Jake Piekarski](team/index.qmd), a Principal Data Scientist at [PyMC Labs](https://www.pymc-labs.com/) with three years of agency and consultancy experience in marketing analytics. Jake has worked across Fortune 100 consumer packaged goods, airlines, manufacturing and consumer goods, food and beverage businesses, and charities.
 
 Alongside client work, Jake contributes to the open-source [PyMC-Marketing](https://www.pymc-marketing.io/) ecosystem and has taught the [Bayesian Marketing Analytics](https://www.pymc-labs.com/courses/bayesian-marketing-analytics) course. His work combines the statistical depth needed to build credible models with the communication needed to make them useful.
 
-[Meet Jake](team.html){.btn .btn-outline-primary} [Read blogs and case studies](blogs.html){.btn .btn-outline-primary}
+[Meet Jake](team/index.qmd){.btn .btn-outline-primary} [Read blogs and case studies](blogs/index.qmd){.btn .btn-outline-primary}
 
 ## Start a conversation
 
 If you have a modelling problem, an existing model that needs a second opinion, or a marketing measurement question that has become difficult to answer, send a short note below.
 
 ```{=html}
-<form name="home-enquiry" method="POST" action="/thank-you.html" data-netlify="true" netlify-honeypot="bot-field" class="contact-form contact-form--compact">
+<form name="home-enquiry" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field" class="contact-form contact-form--compact">
   <input type="hidden" name="form-name" value="home-enquiry">
   <p class="visually-hidden">
     <label>Do not fill this out if you are human: <input name="bot-field"></label>
@@ -112,4 +112,4 @@ If you have a modelling problem, an existing model that needs a second opinion, 
 </form>
 ```
 
-For budgets, timelines and more detailed requirements, use the [full project enquiry form](contact.html).
+For budgets, timelines and more detailed requirements, use the [full project enquiry form](contact/index.qmd).

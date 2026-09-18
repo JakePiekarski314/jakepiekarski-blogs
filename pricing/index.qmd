@@ -107,4 +107,4 @@ JTP deliberately works with no more than four clients at once. This keeps the wo
 
 If you are considering work in an upcoming planning cycle, getting in touch early makes it easier to reserve suitable time.
 
-[Request a project estimate](contact.html){.btn .btn-primary} [Explore services](services.html){.btn .btn-outline-primary}
+[Request a project estimate](../contact/index.qmd){.btn .btn-primary} [Explore services](../services/index.qmd){.btn .btn-outline-primary}
