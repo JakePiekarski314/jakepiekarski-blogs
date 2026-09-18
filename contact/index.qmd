@@ -1,6 +1,6 @@
 ---
 title: "Contact"
-description: "Tell JTP Analytics about your marketing measurement, modelling, audit, training or agency support requirement."
+description: "Tell us about your marketing measurement, modelling, audit, training or agency support requirement."
 ---
 
 ## Let's talk
