@@ -10,6 +10,7 @@ project:
     - "services/index.qmd"
     - "pricing/index.qmd"
     - "blogs/index.qmd"
+    - "partners/index.qmd"
     - "contact/index.qmd"
     - "thank-you/index.qmd"
     - "team/**/*.qmd"
@@ -46,6 +47,8 @@ website:
         text: Blogs & Case Studies
       - href: team/index.qmd
         text: Team
+      - href: partners/index.qmd
+        text: Partners
       - href: contact/index.qmd
         text: Contact
     right:
