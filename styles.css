@@ -44,6 +44,18 @@ a:hover { color: var(--jtp-coral); }
   transform: scaleX(0.3); transition: opacity 160ms ease, transform 160ms ease;
 }
 .navbar .nav-link:hover::after, .navbar .nav-link.active::after { opacity: 1; transform: scaleX(1); }
+.navbar a[href^="https://calendly.com"] {
+  display: inline-flex; min-height: 40px; align-items: center; margin-left: 0.35rem;
+  padding: 0.5rem 0.9rem; border: 1px solid var(--jtp-teal); border-radius: 4px;
+  background: var(--jtp-teal); color: var(--jtp-white); font-size: 0.88rem; font-weight: 700;
+  text-decoration: none; transition: background-color 150ms ease, border-color 150ms ease,
+    box-shadow 150ms ease, transform 150ms ease;
+}
+.navbar a[href^="https://calendly.com"]:hover,
+.navbar a[href^="https://calendly.com"]:focus-visible {
+  border-color: var(--jtp-coral); background: var(--jtp-coral); color: var(--jtp-white);
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.2); transform: translateY(-1px);
+}
 
 /* Shared page structure */
 #quarto-document-content { line-height: 1.72; }
@@ -444,7 +456,19 @@ body:not(.home-page) .quarto-title h1 { max-width: 850px; font-size: 2.65rem; }
 #quarto-document-content .figure { max-width: 100%; }
 #quarto-document-content .cell-output img, #quarto-document-content .figure img,
 #quarto-document-content figure img { max-width: 100%; width: auto; height: auto; }
-.nav-footer { border-top: 1px solid var(--jtp-line); background: var(--jtp-paper); }
+.nav-footer {
+  min-height: 112px; align-items: center; padding: 1.5rem max(1.5rem, calc((100vw - 1120px) / 2));
+  border-top: 4px solid var(--jtp-teal); background: var(--jtp-ink);
+  color: rgba(255, 255, 255, 0.72);
+}
+.nav-footer-left, .nav-footer-center, .nav-footer-right { margin: 0; }
+.nav-footer-left p { margin: 0; line-height: 1.5; }
+.nav-footer-left strong { color: var(--jtp-white); font-size: 1.03rem; }
+.nav-footer a { color: rgba(255, 255, 255, 0.88); font-weight: 600; text-decoration: none; }
+.nav-footer a:hover, .nav-footer a:focus-visible { color: var(--jtp-coral); }
+.nav-footer .footer-items { gap: 0.9rem; }
+.nav-footer-right p { display: flex; justify-content: flex-end; gap: 1rem; margin: 0; }
+.footer-social-link { display: inline-flex; align-items: center; gap: 0.4rem; }
 
 /* Motion is added progressively so the page remains usable without JavaScript. */
 .has-reveal .reveal-target {
@@ -500,6 +524,15 @@ body:not(.home-page) .quarto-title h1 { max-width: 850px; font-size: 2.65rem; }
   .profile-intro { grid-template-columns: 1fr; gap: 1.25rem; }
   .profile-intro__image { width: min(100%, 320px); }
   .rate-panel__amount { font-size: 2.75rem; }
+  .nav-footer {
+    display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;
+    padding: 1.5rem 1rem; text-align: left;
+  }
+  .nav-footer-left, .nav-footer-center, .nav-footer-right {
+    width: 100%; order: 0; justify-content: flex-start; text-align: left;
+  }
+  .nav-footer-center .footer-items { justify-content: flex-start; }
+  .nav-footer-right p { justify-content: flex-start; }
 }
 
 @media (max-width: 420px) {
